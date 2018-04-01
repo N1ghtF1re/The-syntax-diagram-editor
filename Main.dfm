@@ -10,15 +10,17 @@ object EditorForm: TEditorForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object canv: TImage
     Left = 0
-    Top = 0
+    Top = 41
     Width = 737
-    Height = 424
+    Height = 383
     Align = alClient
     OnMouseDown = canvMouseDown
     OnMouseMove = canvMouseMove
@@ -41,49 +43,61 @@ object EditorForm: TEditorForm
     Height = 13
     Caption = 'Label2'
   end
-  object edtRectText: TEdit
-    Left = 224
-    Top = 8
-    Width = 209
-    Height = 21
-    TabOrder = 0
-    Text = 'Kek'
-  end
-  object btnDef: TButton
-    Left = 24
+  object pnlOptions: TPanel
+    Left = 0
     Top = 0
-    Width = 41
-    Height = 37
-    Caption = '::='
-    TabOrder = 1
-    OnClick = btnDefClick
-  end
-  object btnMV: TButton
-    Left = 71
-    Top = 0
-    Width = 42
-    Height = 37
-    Caption = '<>'
-    TabOrder = 2
-    OnClick = btnMVClick
-  end
-  object btnMC: TButton
-    Left = 119
-    Top = 0
-    Width = 42
-    Height = 37
-    Caption = 'C'
-    TabOrder = 3
-    OnClick = btnMCClick
-  end
-  object btnLine: TButton
-    Left = 167
-    Top = -2
-    Width = 41
+    Width = 737
     Height = 41
-    Caption = '---'
-    TabOrder = 4
-    OnClick = btnLineClick
+    Align = alTop
+    TabOrder = 0
+    ExplicitLeft = 432
+    ExplicitTop = 152
+    ExplicitWidth = 185
+    object btnMV: TButton
+      Left = 71
+      Top = 0
+      Width = 42
+      Height = 37
+      Caption = '<>'
+      TabOrder = 0
+      OnClick = btnMVClick
+    end
+    object btnDef: TButton
+      Left = 24
+      Top = 0
+      Width = 41
+      Height = 37
+      Caption = '::='
+      TabOrder = 1
+      OnClick = btnDefClick
+    end
+    object btnLine: TButton
+      Left = 167
+      Top = -2
+      Width = 41
+      Height = 41
+      Caption = '---'
+      TabOrder = 2
+      OnClick = btnLineClick
+    end
+    object btnMC: TButton
+      Left = 119
+      Top = 0
+      Width = 42
+      Height = 37
+      Caption = 'C'
+      TabOrder = 3
+      OnClick = btnMCClick
+    end
+    object edtRectText: TEdit
+      Left = 224
+      Top = 8
+      Width = 209
+      Height = 21
+      AutoSelect = False
+      TabOrder = 4
+      Text = 'Kek'
+    end
   end
   object Timer1: TTimer
     Interval = 100

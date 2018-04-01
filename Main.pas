@@ -14,7 +14,7 @@ type
 
   // СПИСОК ТОЧЕК НАЧАЛО
   TPointsInfo = record
-    x,y: integer;
+    id,x,y: integer;
   end;
   PPointsList = ^TPointsList;
   TPointsList = record
@@ -50,6 +50,7 @@ type
     btnMV: TButton;
     btnMC: TButton;
     btnLine: TButton;
+    pnlOptions: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -61,7 +62,8 @@ type
     procedure btnDefClick(Sender: TObject);
     procedure btnMVClick(Sender: TObject);
     procedure btnMCClick(Sender: TObject);
-    procedure btnLineClick(Sender: TObject);  private
+    procedure btnLineClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);  private
   public
     { Public declarations }
   end;
@@ -70,10 +72,11 @@ var
   EditorForm: TEditorForm;
   RectHead: PRectList;
   CurrType: TType;
-  CurrFigure: PRectList;
+  CurrFigure, ClickFigure: PRectList;
   tempX, tempY: integer;
   DM: TDrawMode;
   EM: TEditMode;
+  currPointAdr: PPointsList;
   //FT: TFigureType;
 const
   Tolerance = 5; // Кол-во пискелей, на которые юзеру можно "промахнуться"
@@ -87,21 +90,50 @@ implementation
 procedure addNewPoint(var head: PPointsList; x,y:integer);
 var
   tmp :PPointsList;
+  id :integer;
 begin
   tmp := head;
   while tmp^.adr <> nil do
     tmp := tmp^.Adr;
+  id := tmp^.Info.id + 1;
   new(tmp^.adr);
   tmp := tmp^.adr;
   tmp^.Info.x := x;
   tmp^.Info.y := y;
+  tmp^.Info.id := id;
   tmp^.Adr := nil;
+end;
+
+function getClickFigure(x,y:integer; head: PRectList):PRectList;
+var
+  tmp:PRectList;
+begin
+  tmp := head^.adr;
+  while tmp <> nil do
+  begin
+
+    if (x > tmp^.Info.x1)
+        and
+        (x < tmp^.Info.x2)
+        and
+        (y > tmp^.Info.y1)
+        and
+        (y < tmp^.Info.y2)
+        then
+    begin
+      result := tmp;
+      exit;
+    end;
+    tmp := tmp^.Adr;
+  end;
+  Result := nil;
 end;
 
 // Добавляем линию
 function addLine(head: PRectList; x,y: integer):PRectList;
 var
   tmp: PRectList;
+  id: integer;
 begin
   tmp := head;
   while tmp^.adr <> nil do
@@ -112,6 +144,7 @@ begin
   tmp^.Info.tp := line;
   new(tmp^.Info.PointHead);
   tmp^.Info.PointHead^.Adr := nil;
+  tmp^.Info.PointHead^.Info.id := 0;
   addNewPoint(tmp^.Info.PointHead, x,y);
 
   result := tmp;
@@ -170,6 +203,8 @@ begin
   CurrType := MetaVar;
 end;
 
+
+
 procedure TEditorForm.canvMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
@@ -200,6 +235,7 @@ begin
     tempx:= x;
     tempy:= y;
   end;
+  ClickFigure := getClickFigure(x,y, RectHead);
 end;
 
 procedure changeCursor(Form:TForm; Mode: TEditMode);
@@ -222,12 +258,13 @@ function getEditMode(status: TDrawMode; x,y: Integer; head: PRectList) :TEditMod
 var
   r:TRectInfo;
   temp: PRectList;
+  tmpPoint: PPointsList;
 begin
   temp := head;
   while temp <> nil do
   begin
     R := temp^.Info;
-    if status = nodraw then
+    if (status = nodraw) and (R.tp <> Line) then
     begin
       if ( (x > R.x1) and (x < R.x2) and (y > R.y1) and (y < R.y2)) then
       begin
@@ -274,11 +311,27 @@ begin
       begin
         // Правая нижняя вершина
         Result := Vert4;
+        // ?? ?? ??? ?? ??? ?? ?? \\
       end;
       if result <> NoEdit then
       begin
         CurrFigure := temp;
         exit;
+      end;
+    end
+    else if (status = nodraw) then
+    begin
+      tmpPoint := R.PointHead;
+      while tmpPoint <> nil do
+      begin
+        if (abs(y-tmpPoint^.Info.y) < Tolerance) and (abs(x-tmpPoint^.Info.x) < Tolerance) then
+        begin
+          CurrFigure := temp;
+          currPointAdr := tmpPoint;
+          Result := Move;
+          exit;
+        end;
+        tmpPoint := tmpPoint^.Adr;
       end;
     end;
     temp := temp^.Adr;
@@ -307,6 +360,8 @@ begin
 end;
 
 procedure ChangeCoords(F: PRectList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
+var
+  tmp: PPointsList;
 begin
   if F <> nil then
   case EM of
@@ -317,12 +372,21 @@ begin
     end;
     Move: // Перемещаем объект :)
     begin
+      if F^.Info.tp = Line then
+      begin
+
+        currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
+        currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
+      end
+      else
+      begin
       // Смещаем объект
       // TmpX, TmpY - смещение координат относительно прошлого вызова события
       F^.Info.x1 := F^.Info.x1 - (TmpX - x);
       F^.Info.x2 := F^.Info.x2 - (TmpX - x);
       F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
       F^.Info.y2 := F^.Info.y2 - (TmpY - y);
+      end;
     end;
     TSide:
     begin
@@ -452,15 +516,41 @@ begin
   end;
 end;
 
+procedure selectFigure(canvas: TCanvas; head:PRectList);
+var x1,x2,y1,y2: integer;
+begin
+  //ShowMessage('kek');
+  canvas.Pen.Color := clGreen;
+  canvas.Brush.Color := clGreen;
+  x1 := head^.Info.x1;
+  x2 := head^.Info.x2;
+  y1 := head^.Info.y1;
+  y2 := head^.Info.y2;
+  // Рисуем вершины
+  canvas.Rectangle(x1-VertRad,y1-VertRad, x1+VertRad, y1+VertRad);
+  canvas.Rectangle(x2-VertRad,y1-VertRad, x2+VertRad, y1+VertRad);
+  canvas.Rectangle(x1-VertRad,y2-VertRad, x1+VertRad, y2+VertRad);
+  canvas.Rectangle(x2-VertRad,y2-VertRad, x2+VertRad, y2+VertRad);
+
+  //canvas.Pen.Color := clBlack;
+  //showMessage('kek');
+  canvas.Brush.Color := clWhite;
+end;
+
+
 procedure TEditorForm.canvMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
+
   if (CurrType <> Line) and (DM = DrawLine) then
     DM := nodraw;
   if dm = NoDraw then
   begin
     EM := getEditMode(DM, x,y,RectHead);
     changeCursor(Self, EM); // Меняем курсор в зависимости от положения мыши
+
+    if ClickFigure <> nil then
+      selectFigure(canv.Canvas, ClickFigure);
   end;
   if (DM = draw) and (currfigure <> nil)  then
   begin
@@ -471,6 +561,7 @@ begin
     drawRectFigure(canv.Canvas, RectHead);
   end;
 end;
+
 
 procedure TEditorForm.canvMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
@@ -495,6 +586,36 @@ begin
   EM := NoEdit;
   CurrFigure := nil;
   clearScreen;
+end;
+
+procedure removeFigure(head: PRectList; adr: PRectList);
+var
+  temp,temp2:PRectList;
+begin
+  temp := head;
+  while temp^.adr <> nil do
+  begin
+    temp2 := temp^.adr;
+    if temp2 = adr then
+    begin
+      temp^.adr := temp2^.adr;
+      dispose(temp2);
+    end
+    else
+      temp:= temp^.adr;
+  end;
+end;
+
+procedure TEditorForm.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = 46) and (ClickFigure <> nil) then
+  begin
+    removeFigure(RectHead, ClickFigure);
+    clearScreen; // Чистим экран
+    drawRectFigure(canv.Canvas, RectHead);
+    ClickFigure := nil;
+  end;
 end;
 
 procedure TEditorForm.Timer1Timer(Sender: TObject);
