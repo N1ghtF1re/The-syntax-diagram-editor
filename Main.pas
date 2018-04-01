@@ -415,6 +415,26 @@ begin
   end;
 end;
 
+procedure checkLineCoords(head: PPointsList);
+var 
+  tmp:PPointsList;
+begin
+  tmp := head^.adr;
+  while tmp^.adr <> NIL do
+  begin
+    //showmessage( Inttostr( tmp^.Adr^.Info.y ) );
+    try
+      if arctan(abs((tmp^.Adr^.Info.y-tmp^.Info.y)/(tmp^.Adr^.Info.x-tmp^.Info.x))) < pi/4 then
+          tmp^.Info.y := tmp^.adr^.Info.y
+      else
+         tmp^.Info.x := tmp^.adr^.Info.x;
+      except on E: Exception do
+
+    end;
+    tmp := tmp^.Adr;
+  end;
+end;
+
 procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
 var
   tmp: PPointsList;
@@ -433,6 +453,7 @@ begin
 
         currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
         currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
+        checkLineCoords(CurrFigure^.Info.PointHead);
       end
       else
       begin
@@ -487,12 +508,21 @@ begin
   end;
 end;
 
-procedure drawArrow(Canvas:TCanvas; x,y : integer);
+procedure drawArrowVertical(Canvas:TCanvas; x,y : integer; coef: ShortInt);
 begin
   canvas.MoveTo(x,y);
-  canvas.LineTo(x-25,y-15);
+  canvas.LineTo(x-10,y+20*coef);
   canvas.MoveTo(x,y);
-  canvas.LineTo(x-25,y+15);
+  canvas.LineTo(x+10,y+20*coef);
+  canvas.MoveTo(x,y);
+end;
+
+procedure drawArrow(Canvas:TCanvas; x,y : integer; coef: ShortInt);
+begin
+  canvas.MoveTo(x,y);
+  canvas.LineTo(x-20*coef,y-10);
+  canvas.MoveTo(x,y);
+  canvas.LineTo(x-20*coef,y+10);
   canvas.MoveTo(x,y);
 end;
 
@@ -500,32 +530,46 @@ procedure drawLines(Canvas:TCanvas; head: PPointsList);
 var
   tmp: PPointsList;
   midx, midy: integer;
-  FirstP: TPointsInfo;    
+  FirstP,PrevP: TPointsInfo;  
+  tmpx, tmpy:integer;
   delta: byte;
+  isFirstLine:boolean;
   isDegEnd: boolean;
-begin
-  
+  coef: -1..1;
+begin                  //\\
   canvas.Pen.Width := 2;
+  isFirstLine := false;
   tmp := head;
   if tmp^.Adr <> nil then
   begin
     FirstP.X := tmp^.Adr^.Info.x;
     FirstP.y := tmp^.Adr^.Info.y;
+    prevp.x := FirstP.X;
+    prevp.y := FirstP.Y;
     tmp := tmp^.Adr;
     canvas.MoveTo(tmp^.Info.x, tmp^.Info.y);
 
     if (tmp^.Adr <> nil) and (FirstP.x = tmp^.adr^.Info.x) and (FirstP.y <> tmp^.adr^.Info.y)  then
     begin
       //showMessage('kek');
+      if FirstP.y - tmp^.adr^.Info.y < 0 then
+        coef := 1
+      else
+        coef := -1;
+      
       canvas.moveTo(tmp^.Info.x-15, tmp^.Info.y);
-      canvas.LineTo(tmp^.Info.x, tmp^.Info.y+15);
-      canvas.moveTo(tmp^.Info.x, tmp^.Info.y+15);
-      canvas.Pen.Width := 1;
-      canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15+VertRad);
-      canvas.Pen.Width := 2;
-    end
-    else 
-      canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
+      canvas.LineTo(tmp^.Info.x, tmp^.Info.y+coef*15);
+      canvas.moveTo(tmp^.Info.x, tmp^.Info.y+coef*15);
+      isFirstLine := true;
+      //canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15*coef-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15*coef+VertRad);
+      
+    end;
+    
+    canvas.Pen.Width := 1;
+     
+    canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
+   
+    canvas.Pen.Width := 2;
     tmp := tmp^.adr;
     isDegEnd := false;
     while tmp <> nil do
@@ -533,13 +577,14 @@ begin
       
       if isDegEnd then
       begin
-        canvas.lineto(tmp^.Info.x, tmp^.Info.y+15); 
-        canvas.moveto(tmp^.Info.x, tmp^.Info.y+15); 
-        canvas.lineto(tmp^.Info.x+15, tmp^.Info.y); 
         
+        canvas.lineto(tmp^.Info.x, tmp^.Info.y + (15*coef)); 
+        canvas.moveto(tmp^.Info.x, tmp^.Info.y + (15*coef)); 
+        canvas.lineto(tmp^.Info.x+15, tmp^.Info.y);  
         canvas.Pen.Width := 1;
-        canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15+VertRad);
+        canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
         canvas.Pen.Width := 2;
+        drawArrowVertical(canvas, tmp^.Info.x, tmp^.Info.y+15*coef, coef);
         tmp := tmp^.Adr;
         continue;
       end
@@ -549,20 +594,52 @@ begin
       canvas.Pen.Width := 1;
       canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
       canvas.Pen.Width := 2;
-
+      // Рисуем стрелочку в конце линии
       if tmp^.Adr = nil then
-      begin
-        drawArrow(canvas,tmp^.Info.x, tmp^.Info.y);
+      begin  
+        tmpx := tmp^.Info.x - PrevP.x;
+        //ShowMessage( IntToStr( tmp^.Info.x) + ' ' + IntToStr(PrevP.x));
+        if tmpx > 0 then  
+          drawArrow(canvas,tmp^.Info.x, tmp^.Info.y,1)
+        else if tmpx < 0 then
+          drawArrow(canvas,tmp^.Info.x, tmp^.Info.y,-1);
+
+        tmpy := tmp^.Info.y - PrevP.y;
+        if tmpy > 0 then
+          drawArrowVertical(canvas,tmp^.Info.x, tmp^.Info.y,-1)
+        else if tmpy < 0 then
+          drawArrowVertical(canvas,tmp^.Info.x, tmp^.Info.y,1);
+             
+        
+
+        //drawArrow(canvas,tmp^.Info.x, tmp^.Info.y);
       end;
       if (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x) 
-        and (tmp^.Info.x = tmp^.adr^.Info.x) and (tmp^.Info.y <> tmp^.adr^.Info.y) then
+        and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2) then
       begin
+        if isFirstLine then
+        begin
+          tmpx := tmp^.Info.x - PrevP.x;
+          if tmpx > 0 then
+            tmpx := 1 
+          else 
+            tmpx := -1;
+          drawArrow(Canvas,tmp^.Info.x + 10 - (tmp^.Info.x - PrevP.x) div 2, tmp^.Info.y, tmpx);
+          canvas.moveto(tmp^.Info.x , tmp^.Info.y) 
+        end;
+        if tmp^.Info.y - tmp^.adr^.Info.y < 0 then
+          coef := -1
+        else
+          coef := 1;
+        //showmessage('kek'); 
         isDegEnd := true;
       end
       else
       begin
         isDegEnd:= false;
       end;
+      prevp.x := tmp^.Info.x;
+      prevp.y := tmp^.Info.y;
       tmp:= tmp^.Adr;
     end;
 
