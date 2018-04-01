@@ -14,7 +14,6 @@ object EditorForm: TEditorForm
   OldCreateOrder = False
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
   object canv: TImage
@@ -91,22 +90,13 @@ object EditorForm: TEditorForm
       OnClick = btnMCClick
     end
     object edtRectText: TEdit
-      Left = 280
+      Left = 224
       Top = 8
       Width = 209
       Height = 21
       AutoSelect = False
       TabOrder = 4
       Text = 'Kek'
-    end
-    object btnNone: TButton
-      Left = 214
-      Top = 0
-      Width = 43
-      Height = 41
-      Caption = 'N'
-      TabOrder = 5
-      OnClick = btnNoneClick
     end
   end
   object Timer1: TTimer

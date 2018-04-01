@@ -9,7 +9,7 @@ uses
 type
   TDrawMode = (Draw, NoDraw, DrawLine);
   TEditMode = (NoEdit, Move, TSide, BSide, RSide, LSide, Vert1, Vert2, Vert3, Vert4);
-  TType = (Def,MetaVar,MetaConst, Line);
+  TType = (Def,MetaVar,MetaConst, Line, None);
   //TFigureType = (rect, line);
 
   // СПИСОК ТОЧЕК НАЧАЛО
@@ -51,6 +51,7 @@ type
     btnMC: TButton;
     btnLine: TButton;
     pnlOptions: TPanel;
+    btnNone: TButton;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -63,7 +64,9 @@ type
     procedure btnMVClick(Sender: TObject);
     procedure btnMCClick(Sender: TObject);
     procedure btnLineClick(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);  private
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btnNoneClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);  private
   public
     { Public declarations }
   end;
@@ -107,22 +110,55 @@ end;
 function getClickFigure(x,y:integer; head: PRectList):PRectList;
 var
   tmp:PRectList;
+  tmpP: PPointsList;
+  kek:real;
 begin
   tmp := head^.adr;
   while tmp <> nil do
   begin
-
-    if (x > tmp^.Info.x1)
-        and
-        (x < tmp^.Info.x2)
-        and
-        (y > tmp^.Info.y1)
-        and
-        (y < tmp^.Info.y2)
-        then
+    if tmp^.Info.tp <> Line then
     begin
-      result := tmp;
-      exit;
+      if (x > tmp^.Info.x1)
+          and
+          (x < tmp^.Info.x2)
+          and
+          (y > tmp^.Info.y1)
+          and
+          (y < tmp^.Info.y2)
+          then
+      begin
+        result := tmp;
+        exit;
+      end;
+    end
+    else
+    begin
+      tmpP := tmp^.Info.PointHead^.Adr;
+      while tmpP <> nil do
+      begin
+        if (abs(y-tmpP^.Info.x) < Tolerance) and (abs(x-tmpP^.Info.y) < Tolerance) then
+        begin
+          result := tmp;
+          exit;
+        end;
+
+        if tmpP^.Adr <> nil then
+        begin
+          kek := abs((tmpP^.Info.y - tmpP^.adr^.Info.y)*x +
+            (tmpP^.adr^.Info.x - tmpP^.Info.x)*y
+            + (tmpP^.Info.x * tmpP^.adr^.Info.y - tmpP^.adr^.Info.x * tmpP^.Info.y));
+          //ShowMessage( FloatToStr(kek) );
+          if kek <= 3000 then
+          begin
+            Result:= tmp;
+            exit;
+          end;
+
+        end;
+        tmpP := tmpP^.Adr;
+
+      end;
+
     end;
     tmp := tmp^.Adr;
   end;
@@ -205,6 +241,11 @@ end;
 
 
 
+procedure TEditorForm.btnNoneClick(Sender: TObject);
+begin
+  CurrType := None;
+end;
+
 procedure TEditorForm.canvMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
@@ -220,7 +261,7 @@ begin
   else
     DM := Draw; // Начинаем рисование
 
-  if EM = NoEdit then
+  if (EM = NoEdit) and (CurrType <> None) then
   begin
     if CurrType <> Line then
       CurrFigure := addRect(RectHead, x,y, CurrType, edtRectText.Text)
@@ -342,6 +383,7 @@ procedure checkFigureCoord(R: PRectList);
 var
   temp:integer;
 begin
+  if R<>nil then
   with R^.Info do
   begin
     if x1 > x2 then
@@ -518,21 +560,36 @@ end;
 
 procedure selectFigure(canvas: TCanvas; head:PRectList);
 var x1,x2,y1,y2: integer;
+tmp : PPointsList;
 begin
   //ShowMessage('kek');
   canvas.Pen.Color := clGreen;
   canvas.Brush.Color := clGreen;
-  x1 := head^.Info.x1;
-  x2 := head^.Info.x2;
-  y1 := head^.Info.y1;
-  y2 := head^.Info.y2;
-  // Рисуем вершины
-  canvas.Rectangle(x1-VertRad,y1-VertRad, x1+VertRad, y1+VertRad);
-  canvas.Rectangle(x2-VertRad,y1-VertRad, x2+VertRad, y1+VertRad);
-  canvas.Rectangle(x1-VertRad,y2-VertRad, x1+VertRad, y2+VertRad);
-  canvas.Rectangle(x2-VertRad,y2-VertRad, x2+VertRad, y2+VertRad);
-
-  //canvas.Pen.Color := clBlack;
+  if head^.Info.tp <> line then
+  begin
+    x1 := head^.Info.x1;
+    x2 := head^.Info.x2;
+    y1 := head^.Info.y1;
+    y2 := head^.Info.y2;
+    // Рисуем вершины
+    canvas.Rectangle(x1-VertRad,y1-VertRad, x1+VertRad, y1+VertRad);
+    canvas.Rectangle(x2-VertRad,y1-VertRad, x2+VertRad, y1+VertRad);
+    canvas.Rectangle(x1-VertRad,y2-VertRad, x1+VertRad, y2+VertRad);
+    canvas.Rectangle(x2-VertRad,y2-VertRad, x2+VertRad, y2+VertRad);
+  end
+  else
+  begin
+    //showmessage('kek');
+    tmp := head^.Info.PointHead^.adr;
+    while tmp <> nil do
+    begin
+      x1 := tmp^.Info.x;
+      y1 := tmp^.Info.y;
+      canvas.Rectangle(x1-VertRad,y1-VertRad, x1+VertRad, y1+VertRad);
+      tmp := tmp^.Adr;
+    end;
+  end;
+  canvas.Pen.Color := clBlack;
   //showMessage('kek');
   canvas.Brush.Color := clWhite;
 end;
@@ -616,6 +673,14 @@ begin
     drawRectFigure(canv.Canvas, RectHead);
     ClickFigure := nil;
   end;
+end;
+
+procedure TEditorForm.FormResize(Sender: TObject);
+begin
+  canv.Picture.Bitmap.Height := canv.Height;
+  canv.Picture.Bitmap.Width := canv.Width;
+  clearScreen;
+  drawRectFigure(canv.Canvas, RectHead);
 end;
 
 procedure TEditorForm.Timer1Timer(Sender: TObject);
