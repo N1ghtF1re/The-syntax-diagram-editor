@@ -11,6 +11,7 @@ object EditorForm: TEditorForm
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
+  Menu = MainMenu
   OldCreateOrder = False
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
@@ -91,8 +92,8 @@ object EditorForm: TEditorForm
       OnClick = btnMCClick
     end
     object edtRectText: TEdit
-      Left = 280
-      Top = 8
+      Left = 376
+      Top = 14
       Width = 209
       Height = 21
       AutoSelect = False
@@ -100,13 +101,22 @@ object EditorForm: TEditorForm
       Text = 'Kek'
     end
     object btnNone: TButton
-      Left = 214
-      Top = 0
+      Left = 270
+      Top = -2
       Width = 43
       Height = 41
       Caption = 'N'
       TabOrder = 5
       OnClick = btnNoneClick
+    end
+    object btnALine: TButton
+      Left = 215
+      Top = -2
+      Width = 49
+      Height = 41
+      Caption = '\----/'
+      TabOrder = 6
+      OnClick = btnALineClick
     end
   end
   object Timer1: TTimer
@@ -114,5 +124,28 @@ object EditorForm: TEditorForm
     OnTimer = Timer1Timer
     Left = 136
     Top = 216
+  end
+  object MainMenu: TMainMenu
+    Left = 424
+    Top = 200
+    object mnFile: TMenuItem
+      Caption = #1060#1072#1081#1083
+      object mniSave: TMenuItem
+        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+        OnClick = mniSaveClick
+      end
+      object mniOpen: TMenuItem
+        Caption = #1054#1090#1082#1088#1099#1090#1100
+        OnClick = mniOpenClick
+      end
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 640
+    Top = 160
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 56
+    Top = 168
   end
 end

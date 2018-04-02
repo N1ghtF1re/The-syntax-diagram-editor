@@ -4,10 +4,12 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
+  Vcl.Menus;
 
 type
   TDrawMode = (Draw, NoDraw, DrawLine);
+  TLineType = (LLine, LAdditLine);
   TEditMode = (NoEdit, Move, TSide, BSide, RSide, LSide, Vert1, Vert2, Vert3, Vert4);
   TType = (Def,MetaVar,MetaConst, Line, None);
   //TFigureType = (rect, line);
@@ -27,7 +29,7 @@ type
   TFigureInfo = record
     case tp:TType of
     Def, MetaConst, MetaVar: (Txt: string[255];x1,x2,y1,y2: integer);
-    Line: (PointHead: PPointsList);
+    Line: (PointHead: PPointsList; LT: TLineType);
   end;
   PFigList = ^FigList;
   FigList = record
@@ -52,6 +54,13 @@ type
     btnLine: TButton;
     pnlOptions: TPanel;
     btnNone: TButton;
+    btnALine: TButton;
+    MainMenu: TMainMenu;
+    mnFile: TMenuItem;
+    mniSave: TMenuItem;
+    mniOpen: TMenuItem;
+    OpenDialog1: TOpenDialog;
+    SaveDialog1: TSaveDialog;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -66,7 +75,11 @@ type
     procedure btnLineClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnNoneClick(Sender: TObject);
-    procedure FormResize(Sender: TObject);  private
+    procedure changeEditorText(newtext: string);
+    procedure FormResize(Sender: TObject);
+    procedure btnALineClick(Sender: TObject);
+    procedure mniSaveClick(Sender: TObject);
+    procedure mniOpenClick(Sender: TObject);  private
   public
     { Public declarations }
   end;
@@ -75,10 +88,12 @@ var
   EditorForm: TEditorForm;
   FigHead: PFigList;
   CurrType: TType;
+  CurrLineType: TLineType;
   CurrFigure, ClickFigure: PFigList;
   tempX, tempY: integer;
   DM: TDrawMode;
-  EM: TEditMode;
+  EM: TEditMode;    
+  prevText:String;
   currPointAdr: PPointsList;
   //FT: TFigureType;
 const
@@ -89,6 +104,70 @@ const
 implementation
 
 {$R *.dfm}
+
+procedure saveToFile(Head: PFigList; filedir: string);
+var f: file of TFigureInfo;
+  temp: PFigList;
+begin
+  AssignFile(f, filedir);
+  rewrite(f);
+  temp := head^.adr;
+  while temp <> nil do
+  begin
+    write(f, temp^.Info);
+    temp:=temp^.adr;
+  end;
+  close(F);
+end;
+
+procedure removeAllList(head:PFigList);
+var
+  temp, temp2: PFigList;
+begin
+  temp := head^.Adr;
+  while temp <> nil do
+  begin
+    temp2:=temp^.Adr;
+    dispose(temp);
+    temp:=temp2;
+  end;
+  head.Adr := nil;
+end;
+
+procedure readFile(const head:PFigList; filedir:string);
+var
+  f: file of TFigureInfo;
+  OTemp: PFigList;
+begin
+  AssignFile(f, filedir);
+  if fileExists(filedir) then
+  begin
+    Reset(f);
+    //ShowMessage(objfile);
+    //Writeln('Read file ' + ObjFile);
+    OTemp := Head;
+    head^.Adr := nil;
+    while not EOF(f) do
+    begin
+      new(OTemp^.adr);
+      OTemp:=OTemp^.adr;
+      OTemp^.adr:=nil;
+
+      read(f, OTemp^.Info);
+      //ShowMessage(otemp^.Info.obType);
+      //OTemp^.Info
+
+    end;
+    close(f);
+  end
+  else
+  begin
+    Rewrite(f);
+    //Writeln('Create File');
+    close(f);
+  end;
+  EditorForm.Resize;
+end; 
 
 procedure addNewPoint(var head: PPointsList; x,y:integer);
 var
@@ -106,7 +185,7 @@ begin
     py := tmp^.Info.y;
     // Запрещаем проводить прямую под углом.
     try
-      if arctan(abs((y-py)/(x-px))) < pi/4 then
+      if (arctan(abs((y-py)/(x-px))) < pi/4) or (CurrLineType = LAdditLine) then
         y:=py
       else
         x:=px;
@@ -122,11 +201,15 @@ begin
   tmp^.Adr := nil;
 end;
 
+procedure TEditorForm.changeEditorText(newtext: string);
+begin
+  edtRectText.text := newtext;
+end;
+
 function getClickFigure(x,y:integer; head: PFigList):PFigList;
 var
   tmp:PFigList;
   tmpP: PPointsList;
-  
 begin
   tmp := head^.adr;
   while tmp <> nil do
@@ -195,6 +278,7 @@ begin
   new(tmp^.Info.PointHead);
   tmp^.Info.PointHead^.Adr := nil;
   tmp^.Info.PointHead^.Info.id := 0;
+  tmp^.Info.LT := CurrLineType;
   addNewPoint(tmp^.Info.PointHead, x,y);
 
   result := tmp;
@@ -233,6 +317,12 @@ begin
   head.Adr := nil;
 end;
 
+procedure TEditorForm.btnALineClick(Sender: TObject);
+begin
+  CurrType := Line;
+  CurrLineType := LAdditLine;
+end;
+
 procedure TEditorForm.btnDefClick(Sender: TObject);
 begin
   CurrType := def;
@@ -241,6 +331,7 @@ end;
 procedure TEditorForm.btnLineClick(Sender: TObject);
 begin
   CurrType := Line;
+  CurrLineType := LLine;
 end;
 
 procedure TEditorForm.btnMCClick(Sender: TObject);
@@ -290,7 +381,16 @@ begin
     tempx:= x;
     tempy:= y;
   end;
+  
   ClickFigure := getClickFigure(x,y, FigHead);
+  if (ClickFigure <> nil) and (CurrFigure^.Info.tp <> line) then
+  begin
+    changeEditorText(ClickFigure^.Info.Txt);
+  end 
+  else
+  begin  
+    changeEditorText(prevText);
+  end;
 end;
 
 procedure changeCursor(Form:TForm; Mode: TEditMode);
@@ -526,7 +626,7 @@ begin
   canvas.MoveTo(x,y);
 end;
 
-procedure drawLines(Canvas:TCanvas; head: PPointsList);
+procedure drawLines(Canvas:TCanvas; head: PPointsList; LT: TLineType);
 var
   tmp: PPointsList;
   midx, midy: integer;
@@ -548,6 +648,7 @@ begin                  //\\
     prevp.y := FirstP.Y;
     tmp := tmp^.Adr;
     canvas.MoveTo(tmp^.Info.x, tmp^.Info.y);
+    
 
     if (tmp^.Adr <> nil) and (FirstP.x = tmp^.adr^.Info.x) and (FirstP.y <> tmp^.adr^.Info.y)  then
     begin
@@ -556,13 +657,20 @@ begin                  //\\
         coef := 1
       else
         coef := -1;
-      
       canvas.moveTo(tmp^.Info.x-15, tmp^.Info.y);
       canvas.LineTo(tmp^.Info.x, tmp^.Info.y+coef*15);
       canvas.moveTo(tmp^.Info.x, tmp^.Info.y+coef*15);
       isFirstLine := true;
       //canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15*coef-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15*coef+VertRad);
-      
+    end;
+    if (LT = LAdditLine) then
+    begin
+      if (tmp^.Adr <> nil) and (FirstP.x - tmp^.adr^.Info.x < 0) then
+        coef := 1
+      else
+        coef := -1;
+      canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-15);
+      canvas.LineTo(tmp^.Info.x+15*coef, tmp^.Info.y);
     end;
     
     canvas.Pen.Width := 1;
@@ -574,8 +682,17 @@ begin                  //\\
     isDegEnd := false;
     while tmp <> nil do
     begin
-      
-      if isDegEnd then
+      if (tmp^.Adr = nil) and (LT = LAdditLine) then
+      begin
+        canvas.LineTo(tmp^.Info.x-15*coef, tmp^.Info.y);
+        canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-15);
+        canvas.LineTo(tmp^.Info.x-15*coef, tmp^.Info.y);
+        canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
+        tmp:=tmp^.Adr;
+        continue;
+    
+      end;
+      if isDegEnd and (LT <> LAdditLine)  then
       begin
         
         canvas.lineto(tmp^.Info.x, tmp^.Info.y + (15*coef)); 
@@ -589,13 +706,14 @@ begin                  //\\
         continue;
       end
       else
-      canvas.lineto(tmp^.Info.x, tmp^.Info.y);
+        canvas.lineto(tmp^.Info.x, tmp^.Info.y);
       canvas.moveto(tmp^.Info.x, tmp^.Info.y);
       canvas.Pen.Width := 1;
       canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
       canvas.Pen.Width := 2;
       // Рисуем стрелочку в конце линии
-      if tmp^.Adr = nil then
+      
+      if (tmp^.Adr = nil) and  (LT <> LAdditLine) then
       begin  
         tmpx := tmp^.Info.x - PrevP.x;
         //ShowMessage( IntToStr( tmp^.Info.x) + ' ' + IntToStr(PrevP.x));
@@ -614,7 +732,7 @@ begin                  //\\
 
         //drawArrow(canvas,tmp^.Info.x, tmp^.Info.y);
       end;
-      if (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x) 
+      if  (LT <> LAdditLine) and (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x) 
         and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2) then
       begin
         if isFirstLine then
@@ -668,7 +786,7 @@ begin
         MetaConst: ;
         line:
         begin
-          drawLines(Canvas, temp^.Info.PointHead);
+          drawLines(Canvas, temp^.Info.PointHead, temp^.Info.LT);
           temp := temp^.adr;
           continue;
         end;
@@ -749,7 +867,8 @@ end;
 procedure TEditorForm.canvMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
-
+  if clickfigure = nil then
+    prevText:= edtRectText.Text;
   if (CurrType <> Line) and (DM = DrawLine) then
     DM := nodraw;
   if dm = NoDraw then
@@ -826,6 +945,11 @@ begin
     drawFigure(canv.Canvas, FigHead);
     ClickFigure := nil;
   end;
+  if (key = 13) and (ClickFigure <> nil) then
+  begin
+    ClickFigure.Info.Txt := edtRectText.Text;
+    Self.Resize;
+  end;
 end;
 
 procedure TEditorForm.FormResize(Sender: TObject);
@@ -834,6 +958,28 @@ begin
   canv.Picture.Bitmap.Width := canv.Width;
   clearScreen;
   drawFigure(canv.Canvas, FigHead);
+end;
+
+procedure TEditorForm.mniOpenClick(Sender: TObject);
+begin
+  OpenDialog1.DefaultExt := 'brakh';
+  OpenDialog1.Filter := 'Source-File|*.brakh';
+  if OpenDialog1.Execute then
+  begin
+    removeAllList(FigHead);
+    readFile(FigHead, OpenDialog1.FileName);
+  end;
+end;
+
+procedure TEditorForm.mniSaveClick(Sender: TObject);
+begin
+  saveDialog1.Filter := 'Source-File|*.brakh';
+  saveDialog1.DefaultExt := 'brakh'; 
+  if SaveDialog1.Execute then
+  begin
+    saveToFile(FigHead, SaveDialog1.FileName);  
+  end;
+  
 end;
 
 procedure TEditorForm.Timer1Timer(Sender: TObject);
