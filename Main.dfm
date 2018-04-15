@@ -2,7 +2,7 @@ object EditorForm: TEditorForm
   Left = 0
   Top = 0
   Caption = 'EditorForm'
-  ClientHeight = 424
+  ClientHeight = 384
   ClientWidth = 737
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,7 +22,7 @@ object EditorForm: TEditorForm
     Left = 0
     Top = 41
     Width = 737
-    Height = 383
+    Height = 343
     Align = alClient
     OnMouseDown = canvMouseDown
     OnMouseMove = canvMouseMove
@@ -52,9 +52,6 @@ object EditorForm: TEditorForm
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = 432
-    ExplicitTop = 152
-    ExplicitWidth = 185
     object btnMV: TButton
       Left = 71
       Top = 0

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.524,=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.105,C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\labs\Syntax diagrams\Main.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.054,=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.105,C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\labs\Syntax diagrams\Main.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.524,=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.106,C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\labs\Syntax diagrams\Main.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.638,C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Project1.dproj=D:\labs\Syntax diagrams\SyntaxDiag.dproj</Transaction>
   </Transactions>

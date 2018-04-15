@@ -1,4 +1,4 @@
-unit Main;
+    unit Main;
 
 interface
 
@@ -39,7 +39,11 @@ type
   // СПИСОК ОБЪЕКТОВ КОНЕЦ
 
 
-
+  TFigureInFile = record
+    case tp:TType of
+    Def, MetaConst, MetaVar: (Txt: string[255];x1,x2,y1,y2: integer);
+    Line: (Point:String[255]; LT: TLineType);
+  end;
 
 
   TEditorForm = class(TForm)
@@ -92,28 +96,53 @@ var
   CurrFigure, ClickFigure: PFigList;
   tempX, tempY: integer;
   DM: TDrawMode;
-  EM: TEditMode;    
+  EM: TEditMode;
   prevText:String;
   currPointAdr: PPointsList;
   //FT: TFigureType;
 const
   Tolerance = 5; // Кол-во пискелей, на которые юзеру можно "промахнуться"
+  NearFigure = 10; // Количество пикселей, при котором идет "присоединение" фигуры;
   VertRad = 3; // Радиус вершин
-
+  step_round = 30;
 
 implementation
-
 {$R *.dfm}
 
 procedure saveToFile(Head: PFigList; filedir: string);
 var f: file of TFigureInfo;
   temp: PFigList;
+  tmpPoints: PPointsList;
+  tempRec: TFigureInFile;
+  st: string[255];
 begin
   AssignFile(f, filedir);
   rewrite(f);
+  st := '';
   temp := head^.adr;
   while temp <> nil do
   begin
+    tempRec.tp := temp^.Info.tp;
+    if tempRec.tp = Line then
+    begin
+      tmpPoints := temp^.Info.PointHead^.adr;
+      while tmpPoints <> nil do
+      begin
+        st := st + '"' + IntToStr(tmpPoints.Info.x) + '"' + '"' + IntToStr(tmpPoints.Info.y) +'"';
+        tmpPoints := tmpPoints^.Adr;
+      end;
+      showMessage(st);
+      tempRec.Point := st;
+    end
+    else
+    begin
+      tempRec.txt := temp^.Info.Txt;
+      tempRec.x1 := temp^.Info.x1;
+      tempRec.x2 := temp^.Info.x2;
+      tempRec.y1 := temp^.Info.y1;
+      tempRec.y2 := temp^.Info.y2;
+    end;
+
     write(f, temp^.Info);
     temp:=temp^.adr;
   end;
@@ -167,7 +196,7 @@ begin
     close(f);
   end;
   EditorForm.Resize;
-end; 
+end;
 
 procedure addNewPoint(var head: PPointsList; x,y:integer);
 var
@@ -242,9 +271,9 @@ begin
 
         if tmpP^.Adr <> nil then
         begin
-          
+
           if ((abs(y - tmpP^.Info.y) < Tolerance*2 ) and (x > min(tmpP^.Info.x, tmpP^.adr^.Info.x)) and (x < max(tmpP^.Info.x, tmpP^.adr^.Info.x)) )
-              or 
+              or
              ((abs(x - tmpP^.Info.x) < Tolerance*2) and (y > min(tmpP^.Info.y, tmpP^.adr^.Info.y)) and (y < max(tmpP^.Info.y, tmpP^.adr^.Info.y))) then
           begin
             Result:= tmp;
@@ -309,8 +338,57 @@ begin
   Result := tmp;
 end;
 
-
 // Создаем массив прямоугольных фигур
+
+procedure searchNearFigure(head: PFigList; var x,y: integer);
+var
+  temp: PFigList;
+  tmpP: PPointsList;
+begin
+  temp:= head.adr;
+  while temp <> nil do
+  begin
+    if temp^.Info.tp = line then
+    begin
+      tmpP:= temp^.Info.PointHead^.adr;
+      while tmpP <> nil do
+      begin
+        if round(tmpP^.Info.x/NearFigure)*NearFigure = round(x/NearFigure)*NearFigure then
+        begin
+          x := tmpP^.Info.x;
+        end;
+        if round(tmpP^.Info.y/NearFigure)*NearFigure = round(x/NearFigure)*NearFigure then
+        begin
+          x := tmpP^.Info.y;
+        end;
+        tmpP := tmpP^.adr;
+      end;
+
+    end
+    else
+    begin
+      if round(temp.Info.x1/NearFigure)*NearFigure = round(x/NearFigure)*NearFigure then
+      begin
+        x := temp.Info.x1;
+      end;
+      if round(temp.Info.x2/NearFigure)*NearFigure = round(x/NearFigure)*NearFigure then
+      begin
+        x := temp.Info.x2;
+      end;
+      if round(temp.Info.y1/NearFigure)*NearFigure = round(y/NearFigure)*NearFigure then
+      begin
+        y := temp.Info.y1;
+      end;
+      if round(temp.Info.y2/NearFigure)*NearFigure = round(y/NearFigure)*NearFigure then
+      begin
+        y := temp.Info.y2;
+      end;
+
+    end;
+    temp := temp^.Adr;
+  end;
+end;
+
 procedure createFigList(var head: PFigList);
 begin
   new(head);
@@ -344,8 +422,6 @@ begin
   CurrType := MetaVar;
 end;
 
-
-
 procedure TEditorForm.btnNoneClick(Sender: TObject);
 begin
   CurrType := None;
@@ -365,6 +441,10 @@ begin
   end
   else
     DM := Draw; // Начинаем рисование
+  x:= round(x/step_round)*step_round;
+  y:= round(y/step_round)*step_round;
+
+  searchNearFigure(FigHead, x,y);
 
   if (EM = NoEdit) and (CurrType <> None) then
   begin
@@ -381,14 +461,14 @@ begin
     tempx:= x;
     tempy:= y;
   end;
-  
+
   ClickFigure := getClickFigure(x,y, FigHead);
   if (ClickFigure <> nil) and (CurrFigure^.Info.tp <> line) then
   begin
     changeEditorText(ClickFigure^.Info.Txt);
-  end 
+  end
   else
-  begin  
+  begin
     changeEditorText(prevText);
   end;
 end;
@@ -516,7 +596,7 @@ begin
 end;
 
 procedure checkLineCoords(head: PPointsList);
-var 
+var
   tmp:PPointsList;
 begin
   tmp := head^.adr;
@@ -630,7 +710,7 @@ procedure drawLines(Canvas:TCanvas; head: PPointsList; LT: TLineType);
 var
   tmp: PPointsList;
   midx, midy: integer;
-  FirstP,PrevP: TPointsInfo;  
+  FirstP,PrevP: TPointsInfo;
   tmpx, tmpy:integer;
   delta: byte;
   isFirstLine:boolean;
@@ -648,7 +728,7 @@ begin                  //\\
     prevp.y := FirstP.Y;
     tmp := tmp^.Adr;
     canvas.MoveTo(tmp^.Info.x, tmp^.Info.y);
-    
+
 
     if (tmp^.Adr <> nil) and (FirstP.x = tmp^.adr^.Info.x) and (FirstP.y <> tmp^.adr^.Info.y)  then
     begin
@@ -672,11 +752,11 @@ begin                  //\\
       canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-15);
       canvas.LineTo(tmp^.Info.x+15*coef, tmp^.Info.y);
     end;
-    
+
     canvas.Pen.Width := 1;
-     
+
     canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
-   
+
     canvas.Pen.Width := 2;
     tmp := tmp^.adr;
     isDegEnd := false;
@@ -690,14 +770,14 @@ begin                  //\\
         canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
         tmp:=tmp^.Adr;
         continue;
-    
+
       end;
       if isDegEnd and (LT <> LAdditLine)  then
       begin
-        
-        canvas.lineto(tmp^.Info.x, tmp^.Info.y + (15*coef)); 
-        canvas.moveto(tmp^.Info.x, tmp^.Info.y + (15*coef)); 
-        canvas.lineto(tmp^.Info.x+15, tmp^.Info.y);  
+
+        canvas.lineto(tmp^.Info.x, tmp^.Info.y + (15*coef));
+        canvas.moveto(tmp^.Info.x, tmp^.Info.y + (15*coef));
+        canvas.lineto(tmp^.Info.x+15, tmp^.Info.y);
         canvas.Pen.Width := 1;
         canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
         canvas.Pen.Width := 2;
@@ -712,12 +792,12 @@ begin                  //\\
       canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
       canvas.Pen.Width := 2;
       // Рисуем стрелочку в конце линии
-      
+
       if (tmp^.Adr = nil) and  (LT <> LAdditLine) then
-      begin  
+      begin
         tmpx := tmp^.Info.x - PrevP.x;
         //ShowMessage( IntToStr( tmp^.Info.x) + ' ' + IntToStr(PrevP.x));
-        if tmpx > 0 then  
+        if tmpx > 0 then
           drawArrow(canvas,tmp^.Info.x, tmp^.Info.y,1)
         else if tmpx < 0 then
           drawArrow(canvas,tmp^.Info.x, tmp^.Info.y,-1);
@@ -727,29 +807,29 @@ begin                  //\\
           drawArrowVertical(canvas,tmp^.Info.x, tmp^.Info.y,-1)
         else if tmpy < 0 then
           drawArrowVertical(canvas,tmp^.Info.x, tmp^.Info.y,1);
-             
-        
+
+
 
         //drawArrow(canvas,tmp^.Info.x, tmp^.Info.y);
       end;
-      if  (LT <> LAdditLine) and (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x) 
+      if  (LT <> LAdditLine) and (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x)
         and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2) then
       begin
         if isFirstLine then
         begin
           tmpx := tmp^.Info.x - PrevP.x;
           if tmpx > 0 then
-            tmpx := 1 
-          else 
+            tmpx := 1
+          else
             tmpx := -1;
           drawArrow(Canvas,tmp^.Info.x + 10 - (tmp^.Info.x - PrevP.x) div 2, tmp^.Info.y, tmpx);
-          canvas.moveto(tmp^.Info.x , tmp^.Info.y) 
+          canvas.moveto(tmp^.Info.x , tmp^.Info.y)
         end;
         if tmp^.Info.y - tmp^.adr^.Info.y < 0 then
           coef := -1
         else
           coef := 1;
-        //showmessage('kek'); 
+        //showmessage('kek');
         isDegEnd := true;
       end
       else
@@ -863,10 +943,14 @@ begin
   canvas.Brush.Color := clWhite;
 end;
 
-
 procedure TEditorForm.canvMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
+  x:= round(x/step_round)*step_round;
+  y:= round(y/step_round)*step_round;
+
+  searchNearFigure(FigHead, x,y);
+
   if clickfigure = nil then
     prevText:= edtRectText.Text;
   if (CurrType <> Line) and (DM = DrawLine) then
@@ -888,7 +972,6 @@ begin
     drawFigure(canv.Canvas, FigHead);
   end;
 end;
-
 
 procedure TEditorForm.canvMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
@@ -974,12 +1057,12 @@ end;
 procedure TEditorForm.mniSaveClick(Sender: TObject);
 begin
   saveDialog1.Filter := 'Source-File|*.brakh';
-  saveDialog1.DefaultExt := 'brakh'; 
+  saveDialog1.DefaultExt := 'brakh';
   if SaveDialog1.Execute then
   begin
-    saveToFile(FigHead, SaveDialog1.FileName);  
+    saveToFile(FigHead, SaveDialog1.FileName);
   end;
-  
+
 end;
 
 procedure TEditorForm.Timer1Timer(Sender: TObject);
