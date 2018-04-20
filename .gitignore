@@ -2,6 +2,8 @@ __history/
 __recovery/
 src/__recovery/
 src/__history/
+units/__recovery/
+units/__history/
 src/Win32/Debug/
 src/test/
 *~
