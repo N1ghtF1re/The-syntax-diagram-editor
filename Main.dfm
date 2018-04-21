@@ -18,16 +18,20 @@ object EditorForm: TEditorForm
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
-  object canv: TImage
+  object canv: TPaintBox
     Left = 0
     Top = 41
     Width = 737
     Height = 283
     Align = alClient
+    Color = clWhite
+    ParentColor = False
     OnMouseDown = canvMouseDown
     OnMouseMove = canvMouseMove
     OnMouseUp = canvMouseUp
-    ExplicitTop = 8
+    OnPaint = canvPaint
+    ExplicitLeft = 408
+    ExplicitTop = 136
     ExplicitWidth = 105
     ExplicitHeight = 105
   end

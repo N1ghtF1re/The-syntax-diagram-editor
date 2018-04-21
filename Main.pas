@@ -8,7 +8,6 @@ uses
   Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils;
 type
   TEditorForm = class(TForm)
-    canv: TImage;
     edtRectText: TEdit;
     btnDef: TButton;
     btnMV: TButton;
@@ -24,6 +23,7 @@ type
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
     mniToSVG: TMenuItem;
+    canv: TPaintBox;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -45,6 +45,7 @@ type
     procedure mniToSVGClick(Sender: TObject);
     procedure saveBrakhFile;
     procedure saveSVGFile;
+    procedure canvPaint(Sender: TObject);
     
   private
   public
@@ -232,8 +233,9 @@ begin
     ChangeCoords(CurrFigure, EM, x,y, tempX, tempY);
     TempX:= X; // Обновляем прошлые координаты
     TempY:= Y;
-    clearScreen; // Чистим экран
-    drawFigure(canv.Canvas, FigHead);
+    canv.Repaint;
+    //clearScreen; // Чистим экран
+    //drawFigure(canv.Canvas, FigHead);
   end;
 end;
 
@@ -245,8 +247,14 @@ begin
     DM := NoDraw; // Заканчиваем рисование
     checkFigureCoord(CurrFigure);
   end;
-  if CurrType = Line then
-    clearScreen;
+  {if CurrType = Line then
+    clearScreen;}
+  canv.Repaint;
+end;
+
+procedure TEditorForm.canvPaint(Sender: TObject);
+begin
+  clearScreen;
   drawFigure(canv.Canvas, FigHead);
 end;
 
@@ -257,6 +265,7 @@ end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);
 begin
+  Self.DoubleBuffered := true;
   createFigList(FigHead);
   CurrType := Def;
   EM := NoEdit;
@@ -282,10 +291,9 @@ end;
 
 procedure TEditorForm.FormResize(Sender: TObject);
 begin
-  canv.Picture.Bitmap.Height := canv.Height;
-  canv.Picture.Bitmap.Width := canv.Width;
-  clearScreen;
-  drawFigure(canv.Canvas, FigHead);
+  //canv.Picture.Bitmap.Height := canv.Height;
+  //canv.Picture.Bitmap.Width := canv.Width;
+  canv.Repaint;
 end;
 
 function TEditorForm.openFile(mode: TFileMode):string;
