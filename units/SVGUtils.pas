@@ -26,6 +26,20 @@ begin
   + IntToStr(width) + '" />'
 end;
 
+function writeSVGText(Figure: TFigureInfo; text: string; family:string = 'Arial'; size:integer = 16):string;
+var TH, TW, TX,TY: integer;
+begin
+  EditorForm.getTextWH(TW,TH, Text, size, family);
+  with figure do
+  begin
+    TX := x1 + (x2 - x1) div 2 - TW div 3; //+ TW;
+    TY := y1 + (y2 - y1) div 2 + 5;
+  end;
+  Result:= '<text x = "'+ IntToStr(TX) + '" y = "'+ IntToStr(TY) 
+    + '" font-family = "'+ family +'" font-size = "' + IntToStr(size) + '">'
+    +' ' + text + '  </text>';
+end;
+
 procedure drawSVGBoundLine(var f: TextFile; FirstP: TPointsInfo; tmp:PPointsList; var lastp:PPointsList);
 var
   coef: -1..1;
@@ -81,6 +95,15 @@ begin
   writeln(f, writePatch(p1,p2));
 end;
 
+function htmlspecialchars(s: string):string;
+begin
+ s:=StringReplace(s,'&','&amp;',[rfReplaceAll, rfIgnoreCase]);
+ s:=StringReplace(s,'<','&lt;',[rfReplaceAll, rfIgnoreCase]);
+ s:=StringReplace(s,'>','&gt;',[rfReplaceAll, rfIgnoreCase]);
+ s:=StringReplace(s,'"','&quot;',[rfReplaceAll, rfIgnoreCase]);
+ result:=s;
+end;
+
 procedure drawArrowAtSVG(var f: textfile; point, PrevPoint:TPointsInfo);
 var
   tmpx, tmpy:integer;
@@ -128,6 +151,7 @@ var
   firstP: TPointsInfo;
   isFirstLine,isDegEnd :Boolean;
   coef: ShortInt;
+  text: string;
 begin
   AssignFile(f, path);
   rewrite(f);
@@ -237,8 +261,18 @@ begin
             isDegEnd:= false;
           end;
       end;
+    end
+    else
+    begin // Other Figures
+      text:= tmp^.Info.Txt;
+      case tmp^.Info.tp of
+        Def: Text := Text + ' ::= ';
+        MetaVar: Text := '< ' + Text + ' >';
+        MetaConst: ;
+      end;
+      text := htmlspecialchars(text);
+      Writeln(f, writeSVGText(tmp^.Info, text));
     end;
-
     tmp := tmp^.Adr;
   end;
 

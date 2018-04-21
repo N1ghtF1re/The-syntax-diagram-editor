@@ -43,10 +43,14 @@ type
     procedure mniSaveClick(Sender: TObject);
     procedure mniOpenClick(Sender: TObject);
     procedure mniToSVGClick(Sender: TObject);
+    
   private
   public
     procedure SD_Resize;
     function getFigureHead:PFigList;
+    procedure getTextWH(var TW, TH: Integer; text: string; size: integer; family: string);
+
+    
   end;
 
 var
@@ -179,6 +183,24 @@ begin
   Result:= FigHead;
 end;
 
+procedure TEditorForm.getTextWH (var TW, TH: Integer; text: string; size: integer; family: string);
+var 
+  PrevF: string;
+  prevSize:integer;
+begin
+  with canv do
+  begin
+    prevSize := Canvas.Font.Size;
+
+    //canvas.Font.Size := size;
+    TW := canvas.TextWidth(text);
+    TH := Canvas.TextHeight(text);
+
+    canvas.Font.Size := prevSize;
+  end;
+
+end;
+
 procedure TEditorForm.canvMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
@@ -285,8 +307,7 @@ end;
 
 procedure TEditorForm.mniToSVGClick(Sender: TObject);
 var path: string;
-begin
-  
+begin  
   ExportTOSvg(FigHead, canv.Width, canv.Height, 'kek.svg', 'BrakhMen', 'brakhmen');
 end;
 

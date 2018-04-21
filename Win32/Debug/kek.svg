@@ -5,27 +5,49 @@
 " viewBox="0 0 1106 454"
 xmlns="http://www.w3.org/2000/svg" version="1.1">
 <title>BrakhMen</title>
-<!-- BOUND LINE -->
-<path d="M 205 115 L 220 130" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 220 130 L 220 240" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 220 240 L 500 240" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 370 240 L 350 230" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 370 240 L 350 250" fill="none" stroke="black" stroke-width="2" />
+<text x = "80" y = "92" font-family = "Arial" font-size = "16"> BrakhMen  </text>
 <!-- LAST: -->
 <!-- LINE: -->
-<path d="M 500 240 L 500 50" fill="none" stroke="black" stroke-width="2" />
-<!-- xa-xa-xa-->
-<path d="M 500 50 L 515 35" fill="none" stroke="black" stroke-width="2" />
+<path d="M 42 180 L 120 180" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
-<path d="M 500 50 L 490 70" fill="none" stroke="black" stroke-width="2" />
+<path d="M 120 180 L 100 170" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
-<path d="M 500 50 L 510 70" fill="none" stroke="black" stroke-width="2" />
-<!-- Additional line: -->
-<path d="M 295 160 L 485 160" fill="none" stroke="red" stroke-width="2" />
-<!-- Additional line Intersect 2: -->
-<path d="M 500 145 L 485 160" fill="none" stroke="red" stroke-width="2" />
+<path d="M 120 180 L 100 190" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST: -->
+<!-- LINE: -->
+<path d="M 220 180 L 320 180" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 320 180 L 300 170" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 320 180 L 300 190" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST: -->
+<!-- LINE: -->
+<path d="M 420 180 L 560 180" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 560 180 L 540 170" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 560 180 L 540 190" fill="none" stroke="black" stroke-width="2" />
+<!-- BOUND LINE -->
+<path d="M 505 210 L 520 225" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 520 225 L 520 280" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 520 280 L 380 280" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 380 280 L 280 280" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 340 280 L 360 270" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 340 280 L 360 290" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST: -->
+<!-- LINE: -->
+<path d="M 280 280 L 280 225" fill="none" stroke="black" stroke-width="2" />
+<!-- xa-xa-xa-->
+<path d="M 280 225 L 295 210" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 280 225 L 270 245" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 280 225 L 290 245" fill="none" stroke="black" stroke-width="2" />
+<text x = "144" y = "186" font-family = "Arial" font-size = "16"> Brakh ::=   </text>
+<text x = "345" y = "184" font-family = "Arial" font-size = "16"> Men ::=   </text>
 </svg>

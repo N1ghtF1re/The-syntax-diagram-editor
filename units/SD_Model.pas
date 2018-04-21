@@ -550,6 +550,7 @@ begin
       OTemp^.adr:=nil;
       try
         read(f, tmp);
+        OTemp^.Info.tp := tmp.tp;
         if tmp.tp = line then
         begin
           //showMessage(tmp.Point);

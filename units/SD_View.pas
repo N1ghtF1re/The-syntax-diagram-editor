@@ -257,7 +257,8 @@ begin
   begin
     with temp^.Info do
     begin
-      text := String(txt);
+      if tp <> Line then
+        text := String(txt);
       case Tp of
         Def: Text := Text + ' ::= ';
         MetaVar: Text := '< ' + Text + ' >';
