@@ -43,12 +43,16 @@ type
     procedure mniSaveClick(Sender: TObject);
     procedure mniOpenClick(Sender: TObject);
     procedure mniToSVGClick(Sender: TObject);
+    procedure saveBrakhFile;
+    procedure saveSVGFile;
     
   private
   public
     procedure SD_Resize;
     function getFigureHead:PFigList;
     procedure getTextWH(var TW, TH: Integer; text: string; size: integer; family: string);
+    function openFile(mode: TFileMode):string;
+    function saveFile(mode: TFileMode):string;
 
     
   end;
@@ -152,7 +156,8 @@ begin
   end;
 
   ClickFigure := getClickFigure(x0,y0, FigHead);
-  if (ClickFigure <> nil) and (CurrFigure^.Info.tp <> line) then
+  if (ClickFigure <> nil) and (ClickFigure^.Info.tp <> line) 
+        and (CurrFigure^.Info.tp <> line) then
   begin
     changeEditorText(String(ClickFigure^.Info.Txt));
   end
@@ -283,32 +288,87 @@ begin
   drawFigure(canv.Canvas, FigHead);
 end;
 
-procedure TEditorForm.mniOpenClick(Sender: TObject);
+function TEditorForm.openFile(mode: TFileMode):string;
 begin
-  OpenDialog1.DefaultExt := 'brakh';
-  OpenDialog1.Filter := 'Source-File|*.brakh';
+  Result := '';
+  case mode of
+    FSVG:
+    begin
+      OpenDialog1.DefaultExt := 'svg';
+      OpenDialog1.Filter := 'SVG|*.svg';
+    end;
+    FBRakh:
+    begin
+      OpenDialog1.DefaultExt := 'brakh';
+      OpenDialog1.Filter := 'Source-File|*.brakh';
+    end;
+  end;
   if OpenDialog1.Execute then
   begin
-    removeAllList(FigHead);
-    readFile(FigHead, OpenDialog1.FileName);
+    Result := OpenDialog1.FileName;
   end;
+end;
+
+procedure TEditorForm.mniOpenClick(Sender: TObject);
+var
+  path: string;
+begin
+  path := openFile(FBrakh);
+  if path <> '' then
+  begin
+    removeAllList(FigHead);
+    readFile(FigHead, path);
+  end;
+end;
+
+function TEditorForm.saveFile(mode: TFileMode):string;
+begin
+  Result := '';
+  case mode of
+    FSvg:
+    begin
+      saveDialog1.Filter := 'SVG|*.svg';
+      saveDialog1.DefaultExt := 'svg';
+    end;
+    FBrakh:
+    begin
+      saveDialog1.Filter := 'Source-File|*.brakh';
+      saveDialog1.DefaultExt := 'brakh';
+    end;
+  end;
+  if SaveDialog1.Execute then
+  begin
+    Result := SaveDialog1.FileName;
+  end;
+
+end;
+
+procedure TEditorForm.saveBrakhFile;
+  var
+  path: string;
+begin
+  path := saveFile(FBrakh);
+  if path <> '' then
+    saveToFile(FigHead, path);
+end;
+
+procedure TEditorForm.saveSVGFile;
+var
+  path: string;
+begin
+  path := saveFile(FSvg);
+  if path <> '' then
+    ExportTOSvg(FigHead, canv.Width, canv.Height, path, 'Syntax Diagram Project', 'Create by BrakhMen.info');
 end;
 
 procedure TEditorForm.mniSaveClick(Sender: TObject);
 begin
-  saveDialog1.Filter := 'Source-File|*.brakh';
-  saveDialog1.DefaultExt := 'brakh';
-  if SaveDialog1.Execute then
-  begin
-    saveToFile(FigHead, SaveDialog1.FileName);
-  end;
-
+  saveBrakhFile;
 end;
 
 procedure TEditorForm.mniToSVGClick(Sender: TObject);
-var path: string;
-begin  
-  ExportTOSvg(FigHead, canv.Width, canv.Height, 'kek.svg', 'BrakhMen', 'brakhmen');
+begin
+  saveSVGFile;
 end;
 
 procedure TEditorForm.SD_Resize;

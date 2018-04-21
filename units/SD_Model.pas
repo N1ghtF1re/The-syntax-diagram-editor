@@ -286,6 +286,8 @@ begin
     end
     else
     begin
+      temp := temp^.Adr;
+      continue;
       if round(temp.Info.x1/NearFigure)*NearFigure = round(x/NearFigure)*NearFigure then
       begin
         x := temp.Info.x1;
