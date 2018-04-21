@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
-  Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils;
+  Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils, Vcl.Buttons;
 type
   TEditorForm = class(TForm)
     edtRectText: TEdit;
@@ -30,6 +30,7 @@ type
     mniNew: TMenuItem;
     mnSettings: TMenuItem;
     mniHolstSize: TMenuItem;
+    ScrollBox1: TScrollBox;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -58,6 +59,10 @@ type
     procedure mniSaveAsClick(Sender: TObject);
     procedure mniNewClick(Sender: TObject);
     procedure mniHolstSizeClick(Sender: TObject);
+    procedure ScrollBox1MouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure ScrollBox1MouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
     
   private
     isChanged: Boolean;
@@ -69,6 +74,7 @@ type
     procedure getTextWH(var TW, TH: Integer; text: string; size: integer; family: string);
     function openFile(mode: TFileMode):string;
     function saveFile(mode: TFileMode):string;
+    procedure changeCanvasSize(w,h: Integer);
 
     
   end;
@@ -90,6 +96,7 @@ var
 implementation
 {$R *.dfm}
 
+uses FCanvasSizeSettings;
 
 procedure TEditorForm.changeEditorText(newtext: string);
 begin
@@ -196,19 +203,19 @@ begin
 
 end;
 
-procedure changeCursor(Form:TForm; Mode: TEditMode);
+procedure changeCursor(ScrollBox:TScrollBox; Mode: TEditMode);
 begin
   case mode of
-    NoEdit: Form.Cursor := crArrow;
-    Move: Form.Cursor := crSizeAll;
-    TSide: Form.Cursor := crSizeNS;
-    BSide: Form.Cursor := crSizeNS;
-    RSide: Form.Cursor := crSizeWE;
-    LSide: Form.Cursor := crSizeWE;
-    Vert1: Form.Cursor := crSizeNWSE;
-    Vert2: Form.Cursor := crSizeNESW;
-    Vert3: Form.Cursor := crSizeNESW;
-    Vert4: Form.Cursor := crSizeNWSE;
+    NoEdit: ScrollBox.Cursor := crArrow;
+    Move: ScrollBox.Cursor := crSizeAll;
+    TSide: ScrollBox.Cursor := crSizeNS;
+    BSide: ScrollBox.Cursor := crSizeNS;
+    RSide: ScrollBox.Cursor := crSizeWE;
+    LSide: ScrollBox.Cursor := crSizeWE;
+    Vert1: ScrollBox.Cursor := crSizeNWSE;
+    Vert2: ScrollBox.Cursor := crSizeNESW;
+    Vert3: ScrollBox.Cursor := crSizeNESW;
+    Vert4: ScrollBox.Cursor := crSizeNWSE;
   end;
 end;
 
@@ -238,7 +245,6 @@ end;
 procedure TEditorForm.canvMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
-
   if clickfigure = nil then
     prevText:= edtRectText.Text;
   if (CurrType <> Line) and (DM = DrawLine) then
@@ -246,7 +252,7 @@ begin
   if dm = NoDraw then
   begin
     EM := getEditMode(DM, x,y,FigHead);
-    changeCursor(Self, EM); // Меняем курсор в зависимости от положения мыши
+    changeCursor(ScrollBox1, EM); // Меняем курсор в зависимости от положения мыши
 
     if ClickFigure <> nil then
     begin
@@ -332,14 +338,17 @@ begin
   if (key = VK_DELETE) and (ClickFigure <> nil) then
   begin
     removeFigure(FigHead, ClickFigure);
-    updateScreen(canv.Canvas, FigHead);
     ClickFigure := nil;
+    Self.clearScreen;
+    drawFigure(canv.canvas,FigHead);
   end;
   if (key = VK_RETURN) and (ClickFigure <> nil) and (ClickFigure.Info.tp <> Line) then
   begin
     ClickFigure.Info.Txt := ShortString(edtRectText.Text);
     Self.Resize;
   end;
+  if (GetKeyState(ord('S')) < 0) and (GetKeyState(VK_CONTROL) < 0) then
+    mniSave.Click;
 end;
 
 procedure TEditorForm.FormResize(Sender: TObject);
@@ -354,14 +363,14 @@ var
   i:integer;
 begin
   i:=Length(FileName);
-    if i<>0 then
-      begin
-        while (FileName[i]<>'\') and (i>0) do
-          begin
-            i:=i-1;
-            Result:=Copy(FileName,i+1,Length(FileName)-i);
-          end;
-      end;
+  if i<>0 then
+  begin
+    while (FileName[i]<>'\') and (i>0) do
+    begin
+      i:=i-1;
+      Result:=Copy(FileName,i+1,Length(FileName)-i);
+    end;
+  end;
 end;
 
 function TEditorForm.openFile(mode: TFileMode):string;
@@ -416,16 +425,26 @@ procedure TEditorForm.mniHolstSizeClick(Sender: TObject);
 var
   neww, newh : integer;
 begin
+  CanvasSettingsForm.showForm(canv.Width ,canv.Height);
   Self.Repaint;
+end;
+
+procedure TEditorForm.changeCanvasSize(w,h: Integer);
+begin
+  canv.width := w;
+  canv.height := h;
 end;
 
 procedure TEditorForm.mniNewClick(Sender: TObject);
 begin
-  Self.Caption := 'Новый файл - Syntax Diagrams';
-  removeAllList(FigHead);
-  currpath := '';
-  switchChangedStatus(false);
-  Repaint;
+  if MessageDlg('Вы уверены? Все несохраненные данные будут удалены. Продолжить?',mtCustom,[mbYes,mbAll], 0) = mrYes then
+  begin
+    Self.Caption := 'Новый файл - Syntax Diagrams';
+    removeAllList(FigHead);
+    currpath := '';
+    switchChangedStatus(false);
+    Repaint;
+  end;
 end;
 
 procedure TEditorForm.mniOpenClick(Sender: TObject);
@@ -515,6 +534,21 @@ end;
 procedure TEditorForm.mniToSVGClick(Sender: TObject);
 begin
   saveSVGFile;
+end;
+
+procedure TEditorForm.ScrollBox1MouseWheelDown(Sender: TObject;
+  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  with scrollBox1.VertScrollBar do
+   Position := Position + Increment;
+end;
+
+procedure TEditorForm.ScrollBox1MouseWheelUp(Sender: TObject;
+  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  with scrollBox1.VertScrollBar do
+   Position := Position - Increment;
+
 end;
 
 procedure TEditorForm.SD_Resize;

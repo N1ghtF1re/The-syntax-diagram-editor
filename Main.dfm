@@ -19,18 +19,6 @@ object EditorForm: TEditorForm
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
-  object canv: TPaintBox
-    Left = 0
-    Top = 41
-    Width = 737
-    Height = 366
-    Color = clWhite
-    ParentColor = False
-    OnMouseDown = canvMouseDown
-    OnMouseMove = canvMouseMove
-    OnMouseUp = canvMouseUp
-    OnPaint = canvPaint
-  end
   object pnlOptions: TPanel
     Left = 0
     Top = 0
@@ -100,6 +88,29 @@ object EditorForm: TEditorForm
       Caption = '\----/'
       TabOrder = 6
       OnClick = btnALineClick
+    end
+  end
+  object ScrollBox1: TScrollBox
+    Left = 0
+    Top = 41
+    Width = 737
+    Height = 362
+    Align = alClient
+    BorderStyle = bsNone
+    TabOrder = 1
+    OnMouseWheelDown = ScrollBox1MouseWheelDown
+    OnMouseWheelUp = ScrollBox1MouseWheelUp
+    object canv: TPaintBox
+      Left = 0
+      Top = -2
+      Width = 733
+      Height = 360
+      Color = clWhite
+      ParentColor = False
+      OnMouseDown = canvMouseDown
+      OnMouseMove = canvMouseMove
+      OnMouseUp = canvMouseUp
+      OnPaint = canvPaint
     end
   end
   object MainMenu: TMainMenu
