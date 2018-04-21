@@ -31,20 +31,6 @@ object EditorForm: TEditorForm
     ExplicitWidth = 105
     ExplicitHeight = 105
   end
-  object Label1: TLabel
-    Left = 504
-    Top = 24
-    Width = 31
-    Height = 13
-    Caption = 'Label1'
-  end
-  object Label2: TLabel
-    Left = 504
-    Top = 56
-    Width = 31
-    Height = 13
-    Caption = 'Label2'
-  end
   object pnlOptions: TPanel
     Left = 0
     Top = 0
@@ -116,12 +102,6 @@ object EditorForm: TEditorForm
       OnClick = btnALineClick
     end
   end
-  object Timer1: TTimer
-    Interval = 100
-    OnTimer = Timer1Timer
-    Left = 136
-    Top = 216
-  end
   object MainMenu: TMainMenu
     Left = 424
     Top = 200
@@ -134,6 +114,10 @@ object EditorForm: TEditorForm
       object mniOpen: TMenuItem
         Caption = #1054#1090#1082#1088#1099#1090#1100
         OnClick = mniOpenClick
+      end
+      object mniToSVG: TMenuItem
+        Caption = #1069#1082#1089#1087#1086#1088#1090' '#1074' SVG'
+        OnClick = mniToSVGClick
       end
     end
   end

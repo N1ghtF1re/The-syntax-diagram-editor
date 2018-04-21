@@ -103,6 +103,11 @@
             <Form>EditorForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="units\SD_Types.pas"/>
+        <DCCReference Include="units\SD_Model.pas"/>
+        <DCCReference Include="units\SD_View.pas"/>
+        <DCCReference Include="units\SD_InitData.pas"/>
+        <DCCReference Include="units\SVGUtils.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

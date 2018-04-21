@@ -5,13 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
-  Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model;
+  Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils;
 type
   TEditorForm = class(TForm)
     canv: TImage;
-    Label1: TLabel;
-    Timer1: TTimer;
-    Label2: TLabel;
     edtRectText: TEdit;
     btnDef: TButton;
     btnMV: TButton;
@@ -26,6 +23,7 @@ type
     mniOpen: TMenuItem;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
+    mniToSVG: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -33,7 +31,6 @@ type
     procedure canvMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure canvMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    procedure Timer1Timer(Sender: TObject);
     procedure btnDefClick(Sender: TObject);
     procedure btnMVClick(Sender: TObject);
     procedure btnMCClick(Sender: TObject);
@@ -45,6 +42,7 @@ type
     procedure btnALineClick(Sender: TObject);
     procedure mniSaveClick(Sender: TObject);
     procedure mniOpenClick(Sender: TObject);
+    procedure mniToSVGClick(Sender: TObject);
   private
   public
     procedure SD_Resize;
@@ -248,7 +246,7 @@ begin
     updateScreen(canv.Canvas, FigHead);
     ClickFigure := nil;
   end;
-  if (key = VK_RETURN) and (ClickFigure <> nil) then
+  if (key = VK_RETURN) and (ClickFigure <> nil) and (ClickFigure.Info.tp <> Line) then
   begin
     ClickFigure.Info.Txt := ShortString(edtRectText.Text);
     Self.Resize;
@@ -285,25 +283,12 @@ begin
 
 end;
 
-
-
-procedure TEditorForm.Timer1Timer(Sender: TObject);
+procedure TEditorForm.mniToSVGClick(Sender: TObject);
+var path: string;
 begin
-  case em of
-    NoEdit: Label1.Caption := 'NoEdit';
-    Move: Label1.Caption := 'Move' ;
-    TSide: Label1.Caption := 'TSide' ;
-    BSide: Label1.Caption := 'BSide' ;
-    RSide: Label1.Caption := 'RSide' ;
-    LSide: Label1.Caption := 'LSIde' ;
-    Vert1: Label1.Caption := 'Vert1' ;
-    Vert2: Label1.Caption := 'Vert2' ;
-    Vert3: Label1.Caption := 'Vert3' ;
-    Vert4: Label1.Caption := 'Vert4' ;
-  end;
-
+  
+  ExportTOSvg(FigHead, canv.Width, canv.Height, 'kek.svg', 'BrakhMen', 'brakhmen');
 end;
-
 
 procedure TEditorForm.SD_Resize;
 begin

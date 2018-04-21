@@ -12,6 +12,8 @@ procedure drawFigure(Canvas:TCanvas; head:PFigList);
 procedure drawSelectFigure(canvas:tcanvas; figure: TFigureInfo);
 procedure drawSelectLineVertex(canvas: TCanvas; Point: TPointsInfo);
 procedure updateScreen(canvas:tcanvas; FigHead: PFigList);
+function beginOfVertLine(tmp:PPointsList;firstP: TPointsInfo):boolean;
+function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 
 // ### VIEW PART CONSTANTS ###
 
@@ -126,6 +128,7 @@ var
   FirstP,PrevP: TPointsInfo; // First and Prev Point in list
   tmpx: integer;
   isFirstLine:boolean;
+  AddY: integer;
   isDegEnd: boolean;
   coef: -1..1;
 begin                  //\\
@@ -151,16 +154,21 @@ begin                  //\\
       drawOutBoundLine(canvas,FirstP, tmp);
       isFirstLine :=  true;
     end;
-
+    if LT =LAdditLine then
+    begin
+      AddY := tmp^.Info.y;
+    end;
+    // POTOM
     if (LT = LAdditLine) and isHorisontalIntersection(EditorForm.getFigureHead,tmp) then
     begin
       if (tmp^.Adr <> nil) and (FirstP.x - tmp^.adr^.Info.x < 0) then
         coef := 1
       else
         coef := -1;
-      canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-15);
-      canvas.LineTo(tmp^.Info.x+15*coef, tmp^.Info.y);
+      canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-Lines_DegLenght);
+      canvas.LineTo(tmp^.Info.x+Lines_Deg*coef, tmp^.Info.y);
     end;
+    // POTOM END;
 
     drawVertexRect(canvas, tmp^.Info);
 
@@ -169,11 +177,15 @@ begin                  //\\
     isDegEnd := false;
     while tmp <> nil do
     begin
+      if LT =LAdditLine then
+      begin
+        tmp^.Info.y := AddY;
+      end;
       if (tmp^.Adr = nil) and (LT = LAdditLine) and  isHorisontalIntersection(EditorForm.getFigureHead,tmp)  then
       begin
-        canvas.LineTo(tmp^.Info.x-15*coef, tmp^.Info.y);
-        canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-15);
-        canvas.LineTo(tmp^.Info.x-15*coef, tmp^.Info.y);
+        canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
+        canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-Lines_DegLenght);
+        canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
         canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
         tmp:=tmp^.Adr;
         continue;

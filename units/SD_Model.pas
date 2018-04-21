@@ -3,7 +3,7 @@ unit SD_Model;
 // responsible for processing information
 interface
 
-uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math;
+uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils;
 function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean;
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
  procedure removeFigure(head: PFigList; adr: PFigList);
@@ -471,7 +471,7 @@ end;
 
 
 procedure saveToFile(Head: PFigList; filedir: string);
-var f: file of TFigureInfo;
+var f: file of TFigureInFile;
   temp: PFigList;
   tmpPoints: PPointsList;
   tempRec: TFigureInFile;
@@ -479,7 +479,6 @@ var f: file of TFigureInfo;
 begin
   AssignFile(f, filedir);
   rewrite(f);
-  st := '';
   temp := head^.adr;
   while temp <> nil do
   begin
@@ -487,13 +486,16 @@ begin
     if tempRec.tp = Line then
     begin
       tmpPoints := temp^.Info.PointHead^.adr;
+      st := '';
       while tmpPoints <> nil do
       begin
-        st := st + ShortString('"' + IntToStr(tmpPoints.Info.x) + '"' + '"' + IntToStr(tmpPoints.Info.y) +'"');
+        st := st + ShortString('"' + IntToStr(tmpPoints.Info.x) + '/' + IntToStr(tmpPoints.Info.y) +'"');
         tmpPoints := tmpPoints^.Adr;
       end;
-      showMessage(String(st));
+      //showMessage(String(st));
       tempRec.Point := st;
+      tempRec.LT := temp^.Info.LT;
+      tempRec.tp := Line;
     end
     else
     begin
@@ -504,7 +506,7 @@ begin
       tempRec.y2 := temp^.Info.y2;
     end;
 
-    write(f, temp^.Info);
+    write(f, tempRec);
     temp:=temp^.adr;
   end;
   close(F);
@@ -526,13 +528,17 @@ end;
 
 procedure readFile(const head:PFigList; filedir:string);
 var
-  f: file of TFigureInfo;
+  f: file of TFigureInFile;
   OTemp: PFigList;
+  tmp: TFigureInFile;
+  ptemp: PPointsList;
+  xy: string;
 begin
   AssignFile(f, filedir);
   if fileExists(filedir) then
   begin
     Reset(f);
+
     //ShowMessage(objfile);
     //Writeln('Read file ' + ObjFile);
     OTemp := Head;
@@ -542,8 +548,46 @@ begin
       new(OTemp^.adr);
       OTemp:=OTemp^.adr;
       OTemp^.adr:=nil;
-
-      read(f, OTemp^.Info);
+      try
+        read(f, tmp);
+        if tmp.tp = line then
+        begin
+          //showMessage(tmp.Point);
+          OTemp^.Info.tp := line;
+          Otemp^.Info.LT := tmp.LT;
+          new(OTemp^.Info.PointHead);
+          ptemp := OTemp^.Info.PointHead;
+          ptemp^.Adr := nil;
+          if tmp.Point <> '' then
+          begin
+            Delete(tmp.Point,1,1);
+            tmp.Point := tmp.Point + '"';
+          end;
+          while (length(tmp.Point) <> 0) and (tmp.Point <> '"') do
+          begin
+            xy := copy(tmp.point,1, pos('"', tmp.Point)-1);
+            Delete(tmp.point,1, pos('"', tmp.Point)+1);
+            if (tmp.Point <> '') or (xy <> '') then
+            begin
+              new(ptemp^.Adr);
+              ptemp := ptemp^.Adr;
+              ptemp^.Adr := nil;
+              ptemp^.Info.x := strtoint(copy(xy, 1,pos('/', xy)-1));
+              ptemp^.Info.y := strtoint(copy(xy, pos('/', xy)+1, length(xy)));
+            end;
+          end;
+        end
+        else
+        begin
+          OTemp^.info.txt := tmp.Txt;
+          otemp^.info.x1 := tmp.x1;
+          otemp^.info.x2 := tmp.x2;
+          otemp^.info.y1 := tmp.y1;
+          otemp^.info.y2 := tmp.y2;
+        end;
+      except on E: Exception do
+        ShowMessage('Файл поврежден!');
+      end;
       //ShowMessage(otemp^.Info.obType);
       //OTemp^.Info
 
@@ -579,8 +623,26 @@ begin
   end;
 end;
 
+procedure MoveLine(head: PPointsList; oldp, newp: TPointsInfo);
+var
+  tmp: PPointsList;
+begin
+  tmp:=head^.adr;
+  while tmp <> nil do
+  begin
+    if tmp^.Info.y = oldp.y then
+      tmp^.Info.y := newp.y;
+    if tmp^.Info.x = oldp.x then
+      tmp^.Info.x := newp.x;
+
+    tmp := tmp^.Adr;
+  end;
+
+end;
 
 procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
+var
+  oldp: TPointsInfo;
 begin
   if F <> nil then
   case EM of
@@ -593,10 +655,11 @@ begin
     begin
       if F^.Info.tp = Line then
       begin
-
+        oldp:= currPointAdr^.Info;
         currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
         currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
-        checkLineCoords(CurrFigure^.Info.PointHead);
+        MoveLine(CurrFigure^.Info.PointHead, oldp, currPointAdr^.Info);
+        //checkLineCoords(CurrFigure^.Info.PointHead);
       end
       else
       begin
