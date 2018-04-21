@@ -1,8 +1,8 @@
 object EditorForm: TEditorForm
   Left = 0
   Top = 0
-  Caption = 'EditorForm'
-  ClientHeight = 324
+  Caption = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083' - Syntax Diagrams'
+  ClientHeight = 403
   ClientWidth = 737
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,6 +13,7 @@ object EditorForm: TEditorForm
   KeyPreview = True
   Menu = MainMenu
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnResize = FormResize
@@ -22,18 +23,13 @@ object EditorForm: TEditorForm
     Left = 0
     Top = 41
     Width = 737
-    Height = 283
-    Align = alClient
+    Height = 366
     Color = clWhite
     ParentColor = False
     OnMouseDown = canvMouseDown
     OnMouseMove = canvMouseMove
     OnMouseUp = canvMouseUp
     OnPaint = canvPaint
-    ExplicitLeft = 408
-    ExplicitTop = 136
-    ExplicitWidth = 105
-    ExplicitHeight = 105
   end
   object pnlOptions: TPanel
     Left = 0
@@ -111,17 +107,39 @@ object EditorForm: TEditorForm
     Top = 200
     object mnFile: TMenuItem
       Caption = #1060#1072#1081#1083
-      object mniSave: TMenuItem
-        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
-        OnClick = mniSaveClick
+      object mniNew: TMenuItem
+        Caption = #1053#1086#1074#1099#1081
+        OnClick = mniNewClick
       end
       object mniOpen: TMenuItem
         Caption = #1054#1090#1082#1088#1099#1090#1100
         OnClick = mniOpenClick
       end
-      object mniToSVG: TMenuItem
-        Caption = #1069#1082#1089#1087#1086#1088#1090' '#1074' SVG'
-        OnClick = mniToSVGClick
+      object mniSave: TMenuItem
+        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+        OnClick = mniSaveClick
+      end
+      object mniSaveAs: TMenuItem
+        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082
+        OnClick = mniSaveAsClick
+      end
+      object mniExport: TMenuItem
+        Caption = #1069#1082#1089#1087#1086#1088#1090
+        object mniExportToBMP: TMenuItem
+          Caption = #1069#1082#1089#1087#1086#1088#1090' '#1074' BMP'
+          OnClick = mniExportToBMPClick
+        end
+        object mniToSVG: TMenuItem
+          Caption = #1069#1082#1089#1087#1086#1088#1090' '#1074' SVG'
+          OnClick = mniToSVGClick
+        end
+      end
+    end
+    object mnSettings: TMenuItem
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      object mniHolstSize: TMenuItem
+        Caption = #1056#1072#1079#1084#1077#1088' '#1093#1086#1083#1089#1090#1072
+        OnClick = mniHolstSizeClick
       end
     end
   end

@@ -8,7 +8,7 @@ uses SD_Types, vcl.graphics, SD_InitData, vcl.dialogs;
 // ### VIEW PART PROCEDURES ###
 
 // A search of the list of figures and their drawing
-procedure drawFigure(Canvas:TCanvas; head:PFigList);
+procedure drawFigure(Canvas:TCanvas; head:PFigList; isVertex: boolean = true);
 procedure drawSelectFigure(canvas:tcanvas; figure: TFigureInfo);
 procedure drawSelectLineVertex(canvas: TCanvas; Point: TPointsInfo);
 procedure updateScreen(canvas:tcanvas; FigHead: PFigList);
@@ -32,8 +32,7 @@ uses main, SD_Model;
 
 procedure updateScreen(canvas:tcanvas; FigHead: PFigList);
 begin
-  EditorForm.clearScreen; // Чистим экран
-  drawFigure(Canvas, FigHead);
+  EditorForm.Repaint;
 end;
 
 procedure drawArrowVertical(Canvas:TCanvas; x,y : integer; coef: ShortInt);
@@ -95,7 +94,6 @@ begin
   canvas.lineto(point.x, point.y + (Lines_Deg*coef));
   canvas.moveto(point.x, point.y + (Lines_Deg*coef));
   canvas.lineto(point.x+Lines_DegLenght, point.y);
-  drawVertexRect(canvas, point);
   drawArrowVertical(canvas, point.x, point.y+Lines_DegLenght*coef, coef);
 end;
 
@@ -122,12 +120,13 @@ begin
         and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2)
 end;
 
-procedure drawLines(Canvas:TCanvas; head: PPointsList; LT: TLineType);
+procedure drawLines(Canvas:TCanvas; head: PPointsList; LT: TLineType; isVertex: boolean);
 var
   tmp: PPointsList; // Temp variable
   FirstP,PrevP: TPointsInfo; // First and Prev Point in list
   tmpx: integer;
   isFirstLine:boolean;
+  point1:TPointsInfo;
   AddY: integer;
   isDegEnd: boolean;
   coef: -1..1;
@@ -170,7 +169,8 @@ begin                  //\\
     end;
     // POTOM END;
 
-    drawVertexRect(canvas, tmp^.Info);
+    if isVertex then
+      drawVertexRect(canvas, tmp^.Info);
 
     // OTHER POINTS:
     tmp := tmp^.adr;
@@ -186,13 +186,19 @@ begin                  //\\
         canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
         canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-Lines_DegLenght);
         canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
-        canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
+        Point1 :=  tmp^.Info;
+        if isVertex then
+          drawVertexRect(canvas, point1);
+
+        //canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
         tmp:=tmp^.Adr;
         continue;
       end;
       if isDegEnd and (LT <> LAdditLine)  then
       begin
         drawIncomingLine(canvas, tmp^.Info, coef);
+        if isVertex then
+          drawVertexRect(canvas, tmp^.Info);
         tmp := tmp^.Adr;
         continue;
       end
@@ -200,7 +206,8 @@ begin                  //\\
         canvas.lineto(tmp^.Info.x, tmp^.Info.y);
 
       canvas.moveto(tmp^.Info.x, tmp^.Info.y);
-      drawVertexRect(canvas, tmp^.Info);
+      if isVertex then
+        drawVertexRect(canvas, tmp^.Info);
 
       // Рисуем стрелочку в конце линии
       if (tmp^.Adr = nil) and  (LT <> LAdditLine) then
@@ -243,7 +250,7 @@ begin                  //\\
 end;
 
 
-procedure drawFigure(Canvas:TCanvas; head:PFigList);
+procedure drawFigure(Canvas:TCanvas; head:PFigList; isVertex:boolean = true);
 var
   temp:PFigList;
   TextW: Integer;
@@ -265,7 +272,7 @@ begin
         MetaConst: ;
         line:
         begin
-          drawLines(Canvas, temp^.Info.PointHead, temp^.Info.LT);
+          drawLines(Canvas, temp^.Info.PointHead, temp^.Info.LT, isVertex);
           temp := temp^.adr;
           continue; // if figure - line => draw this line and skip ineration
         end;
@@ -290,19 +297,23 @@ begin
         y2 := y2 + textH div 2 + 10;
       end;
 
-      // Рисуем вершины
-      Point.x := x1;
-      Point.y := y1;
-      drawVertexRect(canvas, Point);
 
-      Point.y := y2;
-      drawVertexRect(canvas, Point);
+      if isVertex then
+      begin
+        // Рисуем вершины
+        Point.x := x1;
+        Point.y := y1;
+        drawVertexRect(canvas, Point);
 
-      Point.x := x2;
-      drawVertexRect(canvas, Point);
+        Point.y := y2;
+        drawVertexRect(canvas, Point);
 
-      Point.y := y1;
-      drawVertexRect(canvas, Point);
+        Point.x := x2;
+        drawVertexRect(canvas, Point);
+
+        Point.y := y1;
+        drawVertexRect(canvas, Point);
+      end;
 
       Canvas.TextOut(TX,TY, text);
     end;

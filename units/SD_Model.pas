@@ -629,17 +629,40 @@ end;
 procedure MoveLine(head: PPointsList; oldp, newp: TPointsInfo);
 var
   tmp: PPointsList;
+  Good: PPointsList;
+  isFound:Boolean;
 begin
   tmp:=head^.adr;
+  isFound := true;
+  Good := nil;
   while tmp <> nil do
+  begin
+    if (tmp^.Info.y = oldp.y) or (tmp^.Info.x = oldp.x) or ((tmp^.Info.x = newP.x) and (tmp^.Info.y = newP.y)) then
+    begin
+      if Good = nil then
+        Good:= tmp;
+      isFound:= true;
+      if (tmp^.Info.x = newP.x) and (tmp^.Info.y = newP.y) then
+        break;
+    end
+    else
+    begin
+      Good := nil;
+    end;
+    tmp := tmp^.Adr;
+  end;
+
+  tmp := good;
+  while (tmp<>nil) and isFound and ((tmp^.Info.y = oldp.y) or (tmp^.Info.x = oldp.x) or ((tmp^.Info.x = newP.x) and (tmp^.Info.y = newP.y) )) do
   begin
     if tmp^.Info.y = oldp.y then
       tmp^.Info.y := newp.y;
     if tmp^.Info.x = oldp.x then
       tmp^.Info.x := newp.x;
-
     tmp := tmp^.Adr;
   end;
+
+
 
 end;
 
