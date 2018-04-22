@@ -199,17 +199,9 @@ begin                  //\\
         tmp:=tmp^.Adr;
         continue;
       end;
-      {else if (tmp^.Adr = nil)  and (PrevP.y = tmp^.Info.y) then
-      begin
-        canvas.LineTo(tmp^.Info.x, tmp^.Info.y);
-        if PrevP.x - tmp^.Info.x > 0 then
-          drawArrow(canvas, tmp^.Info.x, tmp^.Info.y, -1)
-        else
-          drawArrow(canvas, tmp^.Info.x, tmp^.Info.y, 1);
-      end;}
 
 
-      if isDegEnd {and (LT <> LAdditLine)}  then
+      if isDegEnd then
       begin
         drawIncomingLine(canvas, tmp^.Info, coef);
         if isVertex then
@@ -225,7 +217,7 @@ begin                  //\\
         drawVertexRect(canvas, tmp^.Info);
 
       // Рисуем стрелочку в конце линии
-      if (tmp^.Adr = nil) { and  (LT <> LAdditLine)} then
+      if (tmp^.Adr = nil) then
       begin
         drawArrowAtEnd(canvas, tmp^.Info, prevP);
         //drawArrow(canvas,tmp^.Info.x, tmp^.Info.y);
@@ -233,7 +225,7 @@ begin                  //\\
 
 
 
-      if {(LT <> LAdditLine) and} needMiddleArrow(tmp, FirstP) then // if these is incoming and outgoing lines
+      if needMiddleArrow(tmp, FirstP) then // if these is incoming and outgoing lines
       begin
         if isFirstLine then
         begin
@@ -282,7 +274,7 @@ begin
       if tp <> Line then
         text := String(txt);
       case Tp of
-        Def: Text := Text + ' ::= ';
+        Def: Text := '< ' + Text + ' > ::= ';
         MetaVar: Text := '< ' + Text + ' >';
         MetaConst: ;
         line:

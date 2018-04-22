@@ -21,7 +21,7 @@
 <path d="M 560 140 L 540 150" fill="none" stroke="black" stroke-width="2" />
 <!-- BOUND LINE -->
 <path d="M 65 140 L 80 155" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
+<!-- Line After Bound -->
 <path d="M 80 155 L 80 200" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE: -->
 <path d="M 80 200 L 120 200" fill="none" stroke="black" stroke-width="2" />
@@ -44,7 +44,7 @@
 <text x = "568" y = "144" font-family = "Arial" font-size = "16"> &lt; ײטפנא &gt;  </text>
 <!-- BOUND LINE -->
 <path d="M 445 140 L 460 125" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
+<!-- Line After Bound -->
 <path d="M 460 125 L 460 60" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE: -->
 <path d="M 460 60 L 840 60" fill="none" stroke="black" stroke-width="2" />
@@ -92,7 +92,7 @@
 <path d="M 540 615 L 550 595" fill="none" stroke="black" stroke-width="2" />
 <!-- BOUND LINE -->
 <path d="M 505 140 L 520 155" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
+<!-- Line After Bound -->
 <path d="M 520 155 L 520 280" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE: -->
 <path d="M 520 280 L 560 280" fill="none" stroke="black" stroke-width="2" />

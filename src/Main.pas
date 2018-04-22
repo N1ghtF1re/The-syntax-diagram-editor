@@ -30,6 +30,7 @@ type
     mnSettings: TMenuItem;
     mniHolstSize: TMenuItem;
     ScrollBox1: TScrollBox;
+    mniHtml: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -63,6 +64,7 @@ type
     procedure ScrollBox1MouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure mniHtmlClick(Sender: TObject);
     
   private
     isChanged: Boolean;
@@ -97,7 +99,7 @@ var
 implementation
 {$R *.dfm}
 
-uses FCanvasSizeSettings;
+uses FCanvasSizeSettings, FHtmlView;
 
 procedure TEditorForm.changeEditorText(newtext: string);
 begin
@@ -298,13 +300,15 @@ begin
   canv.Canvas.Rectangle(0,0,canv.Width,canv.Height);
 end;
 
+
+
 procedure TEditorForm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
  answer: integer;
 begin
   if isChanged then
   begin
-    answer := MessageDlg('Вы внесли изменения.. А не хотите ли Вы сохраниться перед тем, как выйти?',mtCustom,
+    answer := MessageDlg(rsExitDlg,mtCustom,
                               [mbYes,mbNo,mbCancel], 0);
     case answer of
       mrYes:
@@ -438,6 +442,13 @@ begin
   Self.Repaint;
 end;
 
+procedure TEditorForm.mniHtmlClick(Sender: TObject);
+var
+  img: WideString;
+begin
+  FHTml.showHTML('Справка', '<html><head><title>Справка</title></head><body><img src="Bitmap_1">Справка</body></html>');
+end;
+
 procedure TEditorForm.changeCanvasSize(w,h: Integer);
 begin
   canv.width := w;
@@ -445,15 +456,19 @@ begin
 end;
 
 procedure TEditorForm.mniNewClick(Sender: TObject);
+var
+  answer: Integer;
 begin
-  if MessageDlg('Вы уверены? Все несохраненные данные будут удалены. Продолжить?',mtCustom,[mbYes,mbNo], 0) = mrYes then
+  answer := MessageDlg(rsNewFileDlg,mtCustom,[mbYes,mbNo], 0);
+  if  answer = mrYes then
   begin
-    Self.Caption := 'Новый файл - Syntax Diagrams';
+    Self.Caption := rsNewFile + ' - Syntax Diagrams';
     removeAllList(FigHead);
     currpath := '';
     switchChangedStatus(false);
-    Repaint;
+    canv.Repaint;
   end;
+
 end;
 
 procedure TEditorForm.changePath(path: string);
@@ -469,10 +484,27 @@ end;
 procedure TEditorForm.mniOpenClick(Sender: TObject);
 var
   path: string;
+  answer: integer;
 begin
+   if isChanged then
+  begin
+    answer := MessageDlg(rsExitDlg,mtCustom,
+                              [mbYes,mbNo,mbCancel], 0);
+    case answer of
+      mrYes:
+      begin
+        if not saveBrakhFile then
+          exit
+      end;
+      mrNo: ;
+      mrCancel: exit;
+    end;
+  end;
+
   path := openFile(FBrakh);
   if path <> '' then
   begin
+
     changePath(path);
     switchChangedStatus(False);
     removeAllList(FigHead);

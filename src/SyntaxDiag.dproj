@@ -84,6 +84,12 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=BrakhMen Corp;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=Syntax Diagrams Editor;LegalCopyright=;LegalTrademarks=;OriginalFilename=Syntax Diagrams Editor;ProgramID=info.brakhmen.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <Icon_MainIcon>SyntaxDiag_Icon1.ico</Icon_MainIcon>
+        <UWP_DelphiLogo44>D:\labs\Syntax diagrams\src\icons\icon.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>D:\labs\Syntax diagrams\src\icons\icon.png</UWP_DelphiLogo150>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -112,6 +118,18 @@
             <Form>CanvasSettingsForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="forms\FHtmlView.pas">
+            <Form>FHtml</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <RcItem Include="icons\icon.gif">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>ABOUTDP</ResourceId>
+        </RcItem>
+        <RcItem Include="..\examples\Идентификатор.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>Bitmap_1</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -132,8 +150,24 @@
                 <Source>
                     <Source Name="MainSource">SyntaxDiag.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
+                <DeployFile LocalName="..\examples\Идентификатор.bmp" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="icons\icon.gif" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\SyntaxDiag.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>SyntaxDiag.exe</RemoteName>

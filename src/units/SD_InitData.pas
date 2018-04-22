@@ -7,6 +7,10 @@ const
   step_round = 20;
   Default_LineSVG_Width = 2;
 
+resourcestring
+  rsNewFileDlg = 'Вы уверены? Все несохраненные данные будут удалены. Продолжить?';
+  rsNewFile = 'Новый файл';
+  rsExitDlg = 'Вы внесли изменения.. А не хотите ли Вы сохраниться перед тем, как выйти?';
 implementation
 
 

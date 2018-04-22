@@ -152,7 +152,9 @@ var
   isFirstLine,isDegEnd :Boolean;
   coef: ShortInt;
   text: string;
+  prev: TPointsInfo;
   curr:TPointsInfo;
+  isChanged: boolean;
 begin
   AssignFile(f, path);
   rewrite(f);
@@ -169,15 +171,20 @@ begin
     begin
       tmpP := tmp^.Info.PointHead^.adr;
       prevp := tmpP;
+      curr := tmpP^.Info;
       firstP := tmpP^.Info;
       isFirstLine := false;
       if beginOfVertLine(tmpP,firstP) then
       begin
+        prev := prevP^.Info;
         drawSVGBoundLine(f, firstp, tmpP, prevp);
-        tmpP^.Info := prevP^.Info;
+        writeln(f, '<!-- Line After Bound -->');
+        Writeln(f, writePatch(prevP^.Info, tmpP^.adr.Info));
+        prevP^.Info := prev;
+        tmpP := tmpP^.Adr;
         isFirstLine :=  true;
       end;
-
+      isChanged := false;
       if isHorisontalIntersection(EditorForm.getFigureHead,tmpP) then
       begin
         if (tmpP^.Adr <> nil) and (FirstP.x - tmpP^.adr^.Info.x < 0) then
@@ -190,12 +197,19 @@ begin
         point2.x := tmpP^.Info.x+Lines_Deg*coef;
         writeln(f, '<!-- Additional line Intersection: -->');
         writeln(f, writePatch(Point1,Point2,'black'));
-        tmpP^.Info.x := tmpP^.Info.x+Lines_Deg*coef;
+        curr := tmpP^.Info;
+
+        curr.x := tmpP^.Info.x+Lines_Deg*coef;
+        isChanged := true;
+
       end;
-    
+
       while (tmpP <> nil) and (tmpP^.Adr <> nil) do
       begin
-
+        if not isChanged then
+          prev := tmpP^.Info
+        else
+          prev := curr;
         prevp := tmpP;
         tmpP := tmpP^.Adr;
         curr := tmpP^.Info;
@@ -206,7 +220,7 @@ begin
           point2.y := curr.y;
           writeln(f, '<!-- Additional line: -->');
           writeln(f, writePatch(Point1,Point2,'black'));
-          if PrevP^.Info.x - curr.x > 0 then
+          if Prev.x - curr.x > 0 then
             drawSVGArrow(f, curr.x-Lines_Deg*coef, curr.y, -1)
           else
             drawSVGArrow(f, curr.x-Lines_Deg*coef, curr.y, 1);
@@ -218,37 +232,38 @@ begin
           writeln(f, writePatch(Point1,Point2,'black'));
           curr := point1;
           prevP := tmpP;
+          prev := tmpP^.Info;
           tmpP:=tmpp^.Adr;
           continue;
         end;
 
-        if (tmpP^.Adr = nil) {and (tmp^.info.LT <> LAdditLine)} and (prevP.Info.x = curr.x) then
+        if (tmpP^.Adr = nil) and (prevP.Info.x = curr.x) then
         begin
           writeln(f, '<!-- LAST VERTICAL: -->');
           curr.y := curr.y + 15*coef;
         end;
         writeln(f, '<!-- LINE: -->');
-        Writeln(f, writePatch( prevP^.Info, curr));
+        Writeln(f, writePatch( prev, curr));
         if (tmpP^.Adr = nil) and isDegEnd {and (tmp^.Info.LT <> LAdditLine)} and (prevP^.Info.x = curr.x)  then
         begin
-          
+
           drawIncomingLineSVG(f, curr, coef, tmpp);
           prevP := tmpP;
-
+          prev := tmpP^.Info;
           continue;
         end;
-      
-        if (tmpP^.Adr = nil) {and  (tmp^.Info.LT <> LAdditLine)} then
+
+        if (tmpP^.Adr = nil) then
         begin
-          drawArrowAtSVG(f, curr, prevP^.info);
+          drawArrowAtSVG(f, curr, prev);
             //drawArrow(canvas,tmp^.Info.x, tmp^.Info.y);
         end;
-      
-         if {(tmp^.Info.LT <> LAdditLine) and} needMiddleArrow(tmpp, FirstP) then // if these is incoming and outgoing lines
+
+         if needMiddleArrow(tmpp, FirstP) then // if these is incoming and outgoing lines
           begin
             if isFirstLine then
             begin
-              tmpx := curr.x - PrevP^.info.x;
+              tmpx := curr.x - Prev.x;
               if tmpx > 0 then
                 tmpx := 1
               else
@@ -272,7 +287,7 @@ begin
     begin // Other Figures
       text:= tmp^.Info.Txt;
       case tmp^.Info.tp of
-        Def: Text := Text + ' ::= ';
+        Def: Text := '< ' + Text + ' > ::= ';
         MetaVar: Text := '< ' + Text + ' >';
         MetaConst: ;
       end;
@@ -286,6 +301,6 @@ begin
 
   writeln(f, '</svg>');
   close(f);
-end;                          
+end;
 
 end.
