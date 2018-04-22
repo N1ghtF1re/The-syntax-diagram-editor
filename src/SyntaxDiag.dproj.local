@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.638,D:\labs\Syntax diagrams\SyntaxDiag.dproj=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.093,D:\labs\Syntax diagrams\Unit1.pas=D:\labs\Syntax diagrams\units\SVGUtils.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.524,=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.054,=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.965,=D:\labs\Syntax diagrams\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.106,D:\labs\Syntax diagrams\Main.dfm=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.105,D:\labs\Syntax diagrams\Main.pas=C:\Users\Win10\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.069,=D:\labs\Syntax diagrams\Unit1.pas</Transaction>
+    <Transaction>2018.04.21 22:08:22.758,=D:\labs\Syntax diagrams\Unit1.pas</Transaction>
+    <Transaction>2018.04.21 22:15:01.652,D:\labs\Syntax diagrams\forms\FCanvasSizeSettings.dfm=D:\labs\Syntax diagrams\Unit1.dfm</Transaction>
+    <Transaction>2018.04.21 22:15:01.652,D:\labs\Syntax diagrams\forms\FCanvasSizeSettings.pas=D:\labs\Syntax diagrams\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,40 +1,0 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="1106" height="454
-" viewBox="0 0 1106 454"
-xmlns="http://www.w3.org/2000/svg" version="1.1">
-<title>BrakhMen</title>
-<!-- LAST: -->
-<!-- LINE: -->
-<path d="M 260 200 L 360 200" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 360 200 L 340 190" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 360 200 L 340 210" fill="none" stroke="black" stroke-width="2" />
-<!-- BOUND LINE -->
-<path d="M 305 20 L 320 35" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 320 35 L 320 140" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 320 140 L 560 140" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 450 140 L 430 130" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 450 140 L 430 150" fill="none" stroke="black" stroke-width="2" />
-<!-- LAST: -->
-<!-- LINE: -->
-<path d="M 560 140 L 560 35" fill="none" stroke="black" stroke-width="2" />
-<!-- xa-xa-xa-->
-<path d="M 560 35 L 575 20" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 560 35 L 550 55" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 560 35 L 570 55" fill="none" stroke="black" stroke-width="2" />
-<!-- Additional line Intersection: -->
-<path d="M 560 85 L 545 100" fill="none" stroke="black" stroke-width="2" />
-<!-- Additional line: -->
-<path d="M 545 100 L 335 100" fill="none" stroke="black" stroke-width="2" />
-<!-- Additional line Intersect 2: -->
-<path d="M 320 85 L 335 100" fill="none" stroke="black" stroke-width="2" />
-</svg>
