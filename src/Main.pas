@@ -71,6 +71,7 @@ type
     currpath: string;
     procedure switchChangedStatus(flag: Boolean);
     procedure changePath(path: string);
+    procedure newFile;
   public
     procedure SD_Resize;
     function getFigureHead:PFigList;
@@ -78,6 +79,7 @@ type
     function openFile(mode: TFileMode):string;
     function saveFile(mode: TFileMode):string;
     procedure changeCanvasSize(w,h: Integer);
+    procedure getCanvasSIze(var w,h:Integer);
 
     
   end;
@@ -219,6 +221,12 @@ begin
     Vert3: ScrollBox.Cursor := crSizeNESW;
     Vert4: ScrollBox.Cursor := crSizeNWSE;
   end;
+end;
+
+procedure TEditorForm.getCanvasSIze(var w, h: Integer);
+begin
+  w := Self.canv.Width;
+  h := self.canv.Height;
 end;
 
 function TEditorForm.getFigureHead:PFigList;
@@ -455,6 +463,15 @@ begin
   canv.height := h;
 end;
 
+procedure TEditorForm.newFile;
+begin
+  Self.Caption := rsNewFile + ' - Syntax Diagrams';
+  removeAllList(FigHead);
+  currpath := '';
+  switchChangedStatus(false);
+  canv.Repaint;
+end;
+
 procedure TEditorForm.mniNewClick(Sender: TObject);
 var
   answer: Integer;
@@ -462,11 +479,7 @@ begin
   answer := MessageDlg(rsNewFileDlg,mtCustom,[mbYes,mbNo], 0);
   if  answer = mrYes then
   begin
-    Self.Caption := rsNewFile + ' - Syntax Diagrams';
-    removeAllList(FigHead);
-    currpath := '';
-    switchChangedStatus(false);
-    canv.Repaint;
+    newFile;
   end;
 
 end;
@@ -505,10 +518,14 @@ begin
   if path <> '' then
   begin
 
-    changePath(path);
-    switchChangedStatus(False);
     removeAllList(FigHead);
-    readFile(FigHead, path);
+    if readFile(FigHead, path) then
+    begin
+      changePath(path);
+      switchChangedStatus(False);
+    end
+    else
+      newFile;
   end;
 end;
 

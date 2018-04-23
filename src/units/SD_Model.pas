@@ -8,7 +8,7 @@ function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
  procedure removeFigure(head: PFigList; adr: PFigList);
  procedure selectFigure(canvas: TCanvas; head:PFigList);
- procedure readFile(const head:PFigList; filedir:string);
+ function readFile(const head:PFigList; filedir:string):boolean;
  procedure saveToFile(Head: PFigList; filedir: string);
  procedure removeAllList(head:PFigList);
  procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
@@ -24,7 +24,7 @@ function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean
  procedure checkFigureCoord(R: PFigList);
 
 implementation
-uses System.Sysutils, Main;
+uses System.Sysutils, main;
 
 function nearRound(x:integer):integer;
 begin
@@ -424,6 +424,7 @@ begin
   tmp := tmp^.adr;
   tmp^.Info.x := x;
   tmp^.Info.y := y;
+
   tmp^.Adr := nil;
 end;
 
@@ -478,6 +479,10 @@ var f: file of TFigureInFile;
 begin
   AssignFile(f, filedir);
   rewrite(f);
+  tempRec.tp := TTYPE(4);
+  EditorForm.getCanvasSIze(tempRec.Width,tempRec.Height);
+  tempRec.Check := 'BRAKH';
+  Write(f, tempRec);
   temp := head^.adr;
   while temp <> nil do
   begin
@@ -525,7 +530,7 @@ begin
   head.Adr := nil;
 end;
 
-procedure readFile(const head:PFigList; filedir:string);
+function readFile(const head:PFigList; filedir:string):boolean;
 var
   f: file of TFigureInFile;
   OTemp: PFigList;
@@ -533,6 +538,7 @@ var
   ptemp: PPointsList;
   xy: string;
 begin
+  Result := false;
   AssignFile(f, filedir);
   if fileExists(filedir) then
   begin
@@ -541,6 +547,13 @@ begin
     //ShowMessage(objfile);
     //Writeln('Read file ' + ObjFile);
     OTemp := Head;
+    read(f, tmp);
+    if tmp.Check <> 'BRAKH' then
+    begin
+      ShowMessage(rsInvalidFile);
+      exit;
+    end;
+    EditorForm.changeCanvasSize(tmp.Width,tmp.Height);
     head^.Adr := nil;
     while not EOF(f) do
     begin
@@ -576,6 +589,7 @@ begin
               ptemp^.Info.y := strtoint(copy(xy, pos('/', xy)+1, length(xy)));
             end;
           end;
+          result := true;
         end
         else
         begin
@@ -599,6 +613,7 @@ begin
     Rewrite(f);
     //Writeln('Create File');
     close(f);
+    result := true;
   end;
   EditorForm.SD_Resize;
 end;

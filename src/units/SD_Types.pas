@@ -23,8 +23,9 @@ type
   // ÑÏÈÑÎÊ  ÎÁÚÅÊÒÎÂ ÍÀ×ÀËÎ
   TFigureInfo = record
     case tp:TType of
-    Def, MetaConst, MetaVar: (Txt: string[255];x1,x2,y1,y2: integer);
+    Def, MetaConst, MetaVar: (x1,x2,y1,y2: integer;Txt: string[255];);
     Line: (PointHead: PPointsList; LT: TLineType);
+    None: (Check:string[5];Width, Height: Integer;);
   end;
   PFigList = ^FigList;
   FigList = record
@@ -38,6 +39,7 @@ type
     case tp:TType of
     Def, MetaConst, MetaVar: (Txt: string[255];x1,x2,y1,y2: integer);
     Line: (Point:String[255]; LT: TLineType);
+    None: (Check:string[5];Width, Height: Integer;);
   end;
 
 implementation

@@ -2,7 +2,7 @@ object EditorForm: TEditorForm
   Left = 0
   Top = 0
   Caption = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083' - Syntax Diagrams'
-  ClientHeight = 343
+  ClientHeight = 372
   ClientWidth = 737
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -88,8 +88,7 @@ object EditorForm: TEditorForm
     Left = 0
     Top = 41
     Width = 737
-    Height = 302
-    VertScrollBar.Position = 57
+    Height = 331
     Align = alClient
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -99,9 +98,9 @@ object EditorForm: TEditorForm
     OnMouseWheelUp = ScrollBox1MouseWheelUp
     object canv: TPaintBox
       Left = 0
-      Top = -59
-      Width = 737
-      Height = 344
+      Top = 0
+      Width = 729
+      Height = 329
       Color = clWhite
       ParentColor = False
       OnMouseDown = canvMouseDown

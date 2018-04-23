@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="windows-1251" standalone="no"?>
+<?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
 "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="1106" height="516
-" viewBox="0 0 1106 516"
+<svg width="1106" height="517
+" viewBox="0 0 1106 517"
 xmlns="http://www.w3.org/2000/svg" version="1.1">
 <title>Syntax Diagram Project</title>
-<text x = "78" y = "63" font-family = "Arial" font-size = "16"> &lt; Оператор_Case &gt; ::=   </text>
+<text x = "78" y = "63" font-family = "Arial" font-size = "16"> &lt; РћРїРµСЂР°С‚РѕСЂ_Case &gt; ::=   </text>
 <!-- LINE: -->
 <path d="M 40 120 L 120 120" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
@@ -19,7 +19,7 @@
 <path d="M 260 120 L 240 110" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 260 120 L 240 130" fill="none" stroke="black" stroke-width="2" />
-<text x = "280" y = "124" font-family = "Arial" font-size = "16"> &lt; Выражение &gt;  </text>
+<text x = "280" y = "124" font-family = "Arial" font-size = "16"> &lt; Р’С‹СЂР°Р¶РµРЅРёРµ &gt;  </text>
 <text x = "472" y = "124" font-family = "Arial" font-size = "16"> of  </text>
 <!-- LINE: -->
 <path d="M 420 120 L 460 120" fill="none" stroke="black" stroke-width="2" />
@@ -33,14 +33,14 @@
 <path d="M 600 120 L 580 110" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 600 120 L 580 130" fill="none" stroke="black" stroke-width="2" />
-<text x = "617" y = "123" font-family = "Arial" font-size = "16"> &lt; Диапазон &gt;  </text>
+<text x = "617" y = "123" font-family = "Arial" font-size = "16"> &lt; Р”РёР°РїР°Р·РѕРЅ &gt;  </text>
 <!-- LINE: -->
 <path d="M 740 120 L 800 120" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
 <path d="M 800 120 L 780 110" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 800 120 L 780 130" fill="none" stroke="black" stroke-width="2" />
-<text x = "819" y = "126" font-family = "Arial" font-size = "16"> &lt; Оператор &gt;  </text>
+<text x = "819" y = "126" font-family = "Arial" font-size = "16"> &lt; РћРїРµСЂР°С‚РѕСЂ &gt;  </text>
 <!-- BOUND LINE -->
 <path d="M 765 120 L 780 135" fill="none" stroke="black" stroke-width="2" />
 <!-- Line After Bound -->
@@ -99,7 +99,7 @@
 <!-- ARROW RIGHT -->
 <path d="M 520 135 L 530 155" fill="none" stroke="black" stroke-width="2" />
 <text x = "718" y = "245" font-family = "Arial" font-size = "16"> ;  </text>
-<text x = "336" y = "343" font-family = "Arial" font-size = "16"> &lt; Оператор &gt;  </text>
+<text x = "336" y = "343" font-family = "Arial" font-size = "16"> &lt; РћРїРµСЂР°С‚РѕСЂ &gt;  </text>
 <text x = "204" y = "345" font-family = "Arial" font-size = "16"> Else  </text>
 <!-- LINE: -->
 <path d="M 240 340 L 320 340" fill="none" stroke="black" stroke-width="2" />

@@ -2,22 +2,22 @@ unit SVGUtils;
 
 interface
 uses SD_Types, SD_InitData;
-procedure exportToSVG(head: PFigList; w,h: Integer; path:string; title: string; desc: string);
+procedure exportToSVG(head: PFigList; w,h: Integer; path:UTF8String; title: UTF8String; desc: UTF8String);
 
 implementation
 uses SysUtils, vcl.dialogs, vcl.graphics, SD_Model, SD_View, main;
-const svg_head = '<?xml version="1.0" encoding="windows-1251" standalone="no"?>' + #10#13
+const svg_head = '<?xml version="1.0" standalone="no"?>' + #10#13
                  + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"'+ #10#13
                 + '"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
 
-function getSVGOpenTag(h,w: integer):string;
+function getSVGOpenTag(h,w: integer):UTF8String;
 begin
   result := '<svg width="' + IntToStr(W) + '" height="' + IntToStr(H) + #10#13
         + '" viewBox="0 0 ' + IntToStr(W) + ' ' + IntToStr(h) + '"' + #10#13
         + 'xmlns="http://www.w3.org/2000/svg" version="1.1">'
 end;
 
-function writePatch(Point1, Point2: TPointsInfo; color: string = 'black'; width:Integer = Default_LineSVG_Width):string;
+function writePatch(Point1, Point2: TPointsInfo; color: UTF8String = 'black'; width:Integer = Default_LineSVG_Width):UTF8String;
 begin
   Result := '<path d="M ' + IntToStr(Point1.x) + ' '
   + IntToStr(Point1.y) +   ' L ' + IntToStr(Point2.x)
@@ -26,7 +26,7 @@ begin
   + IntToStr(width) + '" />'
 end;
 
-function writeSVGText(Figure: TFigureInfo; text: string; family:string = 'Arial'; size:integer = 16):string;
+function writeSVGText(Figure: TFigureInfo; text: UTF8String; family:UTF8String = 'Arial'; size:integer = 16):UTF8String;
 var TH, TW, TX,TY: integer;
 begin
   EditorForm.getTextWH(TW,TH, Text, size, family);
@@ -35,7 +35,7 @@ begin
     TX := x1 + (x2 - x1) div 2 - TW div 3; //+ TW;
     TY := y1 + (y2 - y1) div 2 + 5;
   end;
-  Result:= '<text x = "'+ IntToStr(TX) + '" y = "'+ IntToStr(TY) 
+  Result:= '<text x = "'+ IntToStr(TX) + '" y = "'+ IntToStr(TY)
     + '" font-family = "'+ family +'" font-size = "' + IntToStr(size) + '">'
     +' ' + text + '  </text>';
 end;
@@ -53,9 +53,9 @@ begin
   p1.y := tmp^.Info.y;
   p2.x :=  tmp^.Info.x;
   p2.y := tmp^.Info.y+coef*Lines_Deg;
-  
+
   writeln(f, '<!-- BOUND LINE -->');
-  writeln(f, writePatch(p1, p2)); 
+  writeln(f, writePatch(p1, p2));
   lastp^.Info := p2;
   // canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15*coef-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15*coef+VertRad);
 end;
@@ -71,7 +71,7 @@ begin
   P2.y:= y+Arrow_Width*coef;
   writeln(f, '<!-- ARROS LEFT -->');
   writeln(f, writePatch(p1,p2));
-  
+
   p2.x := x+Arrow_Height;
   p2.y := y+Arrow_Width*coef;
   writeln(f, '<!-- ARROW RIGHT -->');
@@ -79,7 +79,7 @@ begin
 end;
 
 procedure drawSVGArrow(var F: TextFile; x,y : integer; coef: ShortInt);
-var 
+var
   p1, p2: TPointsInfo;
 begin
   P1.x := x;
@@ -88,14 +88,14 @@ begin
   P2.y:= y-Arrow_Height;
   writeln(f, '<!-- ARROS LEFT -->');
   writeln(f, writePatch(p1,p2));
-  
+
   p2.x :=  x-Arrow_Width*coef;
   p2.y := y+ +Arrow_Height;
   writeln(f, '<!-- ARROW RIGHT -->');
   writeln(f, writePatch(p1,p2));
 end;
 
-function htmlspecialchars(s: string):string;
+function htmlspecialchars(s: UTF8String):UTF8String;
 begin
  s:=StringReplace(s,'&','&amp;',[rfReplaceAll, rfIgnoreCase]);
  s:=StringReplace(s,'<','&lt;',[rfReplaceAll, rfIgnoreCase]);
@@ -122,26 +122,26 @@ begin
 end;
 
 procedure drawIncomingLineSVG(var f: textfile; point: TPointsInfo; coef: ShortInt; var d: PPointsList);
-var 
+var
   p1,p2: TPointsInfo;
 begin
   point.y := point.y - coef*Lines_DegLenght;
   p1 := point;
   p2:= point;
   p2.y := p2.y + (Lines_Deg*coef);
-  
-  
+
+
   p1 := p2;
 
   p2.x := point.x+Lines_DegLenght;
   p2.y := point.y;
-  writeln(f, '<!-- xa-xa-xa-->');
+  writeln(f, '<!-- Incoming Line -->');
   writeln(f, writePatch(p1,p2));
   drawSVGArrowVertical(f, point.x, point.y+Lines_DegLenght*coef, coef);
   {point.y := point.y + 2*coef*Lines_DegLenght;}
 end;
 
-procedure exportToSVG(head: PFigList; w,h: Integer; path:string; title: string; desc: string);
+procedure exportToSVG(head: PFigList; w,h: Integer; path:UTF8String; title: UTF8String; desc: UTF8String);
 var
   f: TextFile;
   Point1, Point2: TPointsInfo;
@@ -151,22 +151,22 @@ var
   firstP: TPointsInfo;
   isFirstLine,isDegEnd :Boolean;
   coef: ShortInt;
-  text: string;
+  text: UTF8String;
   prev: TPointsInfo;
   curr:TPointsInfo;
   isChanged: boolean;
 begin
-  AssignFile(f, path);
+  AssignFile(f, path,CP_UTF8);
   rewrite(f);
   writeln(f, svg_head);
   writeln(f, getSVGOpenTag(h,w));
   writeln(f, '<title>' + title + '</title>');
- 
+
 
   tmp := head^.adr;
   while tmp <> nil do
   begin
-    
+
     if tmp^.Info.tp = line then
     begin
       tmpP := tmp^.Info.PointHead^.adr;
@@ -285,7 +285,7 @@ begin
     end
     else
     begin // Other Figures
-      text:= tmp^.Info.Txt;
+      text:= AnsiToUtf8( tmp^.Info.Txt );
       case tmp^.Info.tp of
         Def: Text := '< ' + Text + ' > ::= ';
         MetaVar: Text := '< ' + Text + ' >';
