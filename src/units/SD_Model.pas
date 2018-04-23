@@ -332,7 +332,6 @@ begin
   tmp^.Info.tp := line;
   new(tmp^.Info.PointHead);
   tmp^.Info.PointHead^.Adr := nil;
-  tmp^.Info.PointHead^.Info.id := 0;
   tmp^.Info.LT := CurrLineType;
   addNewPoint(tmp^.Info.PointHead, x,y);
 
@@ -407,7 +406,6 @@ begin
   tmp := head;
   while tmp^.adr <> nil do
     tmp := tmp^.Adr;
-  id := tmp^.Info.id + 1;
   if tmp <> head then
   begin
     px := tmp^.Info.x;
@@ -426,7 +424,6 @@ begin
   tmp := tmp^.adr;
   tmp^.Info.x := x;
   tmp^.Info.y := y;
-  tmp^.Info.id := id;
   tmp^.Adr := nil;
 end;
 

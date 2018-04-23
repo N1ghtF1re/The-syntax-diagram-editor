@@ -89,14 +89,17 @@ object EditorForm: TEditorForm
     Top = 41
     Width = 737
     Height = 302
+    VertScrollBar.Position = 57
     Align = alClient
     BorderStyle = bsNone
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
     TabOrder = 1
     OnMouseWheelDown = ScrollBox1MouseWheelDown
     OnMouseWheelUp = ScrollBox1MouseWheelUp
     object canv: TPaintBox
       Left = 0
-      Top = -2
+      Top = -59
       Width = 737
       Height = 344
       Color = clWhite
@@ -108,8 +111,8 @@ object EditorForm: TEditorForm
     end
   end
   object MainMenu: TMainMenu
-    Left = 424
-    Top = 200
+    Left = 56
+    Top = 120
     object mnFile: TMenuItem
       Caption = #1060#1072#1081#1083
       object mniNew: TMenuItem
@@ -153,11 +156,11 @@ object EditorForm: TEditorForm
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 640
-    Top = 160
+    Left = 56
+    Top = 72
   end
   object SaveDialog1: TSaveDialog
     Left = 56
-    Top = 168
+    Top = 184
   end
 end

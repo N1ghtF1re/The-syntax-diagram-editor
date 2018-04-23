@@ -11,7 +11,7 @@ type
 
   // ÑÏÈÑÎÊ ÒÎ×ÅÊ ÍÀ×ÀËÎ
   TPointsInfo = record
-    id,x,y: integer;
+    x,y: integer;
   end;
   PPointsList = ^TPointsList;
   TPointsList = record
