@@ -31,6 +31,7 @@ type
     mniHolstSize: TMenuItem;
     ScrollBox1: TScrollBox;
     mniHtml: TMenuItem;
+    mniWhatIsSD: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -64,7 +65,7 @@ type
     procedure ScrollBox1MouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure mniHtmlClick(Sender: TObject);
+    procedure mniWhatIsSDClick(Sender: TObject);
     
   private
     isChanged: Boolean;
@@ -100,6 +101,7 @@ var
 
 implementation
 {$R *.dfm}
+{$R HTML.RES}
 
 uses FCanvasSizeSettings, FHtmlView;
 
@@ -170,7 +172,7 @@ begin
   end
   else
     DM := Draw; // Начинаем рисование
-  
+
   //Label2.Caption := IntToStr(x) + ' ' + IntToStr(y);
 
   if (EM = NoEdit) and (CurrType <> None) then
@@ -194,7 +196,7 @@ begin
   end;
 
   ClickFigure := getClickFigure(x0,y0, FigHead);
-  if (ClickFigure <> nil) and (ClickFigure^.Info.tp <> line) 
+  if (ClickFigure <> nil) and (ClickFigure^.Info.tp <> line)
         and (CurrFigure^.Info.tp <> line) then
   begin
     changeEditorText(String(ClickFigure^.Info.Txt));
@@ -254,6 +256,8 @@ end;
 
 procedure TEditorForm.canvMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
+{var          // LOGS
+  f:TextFile;}
 begin
   if clickfigure = nil then
     prevText:= edtRectText.Text;
@@ -272,8 +276,12 @@ begin
   if (DM = draw) and (currfigure <> nil)  then
   begin
     switchChangedStatus(TRUE);
-    if CurrFigure.Info.tp = Line then
+    {if CurrFigure.Info.tp = Line then
       roundCoords(x,y);
+    AssignFile(f,'log.txt');
+    Append(f);
+    writeln(f, Ord(em));
+    closefile(f);          }
     ChangeCoords(CurrFigure, EM, x,y, tempX, tempY);
     TempX:= X; // Обновляем прошлые координаты
     TempY:= Y;
@@ -281,6 +289,8 @@ begin
     //clearScreen; // Чистим экран
     //drawFigure(canv.Canvas, FigHead);
   end;
+
+
 end;
 
 procedure TEditorForm.canvMouseUp(Sender: TObject; Button: TMouseButton;
@@ -450,13 +460,6 @@ begin
   Self.Repaint;
 end;
 
-procedure TEditorForm.mniHtmlClick(Sender: TObject);
-var
-  img: WideString;
-begin
-  FHTml.showHTML('Справка', '<html><head><title>Справка</title></head><body><img src="Bitmap_1">Справка</body></html>');
-end;
-
 procedure TEditorForm.changeCanvasSize(w,h: Integer);
 begin
   canv.width := w;
@@ -600,6 +603,11 @@ end;
 procedure TEditorForm.mniToSVGClick(Sender: TObject);
 begin
   saveSVGFile;
+end;
+
+procedure TEditorForm.mniWhatIsSDClick(Sender: TObject);
+begin
+  FHTml.showHTML('Справка', 'help1');
 end;
 
 procedure TEditorForm.ScrollBox1MouseWheelDown(Sender: TObject;

@@ -2,7 +2,7 @@ object EditorForm: TEditorForm
   Left = 0
   Top = 0
   Caption = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083' - Syntax Diagrams'
-  ClientHeight = 372
+  ClientHeight = 352
   ClientWidth = 737
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -88,7 +88,7 @@ object EditorForm: TEditorForm
     Left = 0
     Top = 41
     Width = 737
-    Height = 331
+    Height = 311
     Align = alClient
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -151,7 +151,10 @@ object EditorForm: TEditorForm
     end
     object mniHtml: TMenuItem
       Caption = #1055#1086#1084#1086#1097#1100
-      OnClick = mniHtmlClick
+      object mniWhatIsSD: TMenuItem
+        Caption = #1063#1090#1086' '#1090#1072#1082#1086#1077' '#1089#1080#1085#1090#1072#1082#1089#1080#1095#1077#1089#1082#1080#1077' '#1076#1080#1072#1075#1088#1072#1084#1084#1099'?'
+        OnClick = mniWhatIsSDClick
+      end
     end
   end
   object OpenDialog1: TOpenDialog

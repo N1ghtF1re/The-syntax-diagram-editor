@@ -12,7 +12,7 @@ type
   private
     { Private declarations }
   public
-    procedure showHTML(title, html: WideString);
+    procedure showHTML(title, htmlres: WideString);
   end;
 
 var
@@ -23,12 +23,17 @@ implementation
 
 {$R *.dfm}
 
-procedure TFHtml.showHTML(title, html: WideString);
+procedure TFHtml.showHTML(title, htmlres: WideString);
 var
- s: WideString;
+  s: WideString;
+  Flags, TargetFrameName, PostData, Headers: OleVariant;
 begin
   Self.Caption := title;
-  WebBrowser1.Navigate('about:'+html);
+  WebBrowser1.Navigate('res://' + Application.ExeName + '/' + htmlres,
+  Flags, TargetFrameName, PostData, Headers);
+
+  //WebBrowser1.Navigate('about:'+html);
+  //WebBrowser1.Navigate ('res://SyntaxDiag.exe/HTMLPage');
   Self.ShowModal;
 end;
 

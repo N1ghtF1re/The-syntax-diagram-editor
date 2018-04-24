@@ -283,6 +283,8 @@ begin
           temp := temp^.adr;
           continue; // if figure - line => draw this line and skip ineration
         end;
+        else
+        ;
       end;
 
       TextW := canvas.TextWidth(text);

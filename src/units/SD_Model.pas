@@ -44,6 +44,8 @@ begin
   begin
     if tmp^.Info.tp = Line then
     begin
+      if tmp^.info.PointHead = nil then exit;
+      
       tmpP := tmp^.Info.PointHead^.adr;
       while (tmpP <> nil) and (tmpP^.adr <> nil) do
       begin
@@ -550,6 +552,7 @@ begin
     read(f, tmp);
     if tmp.Check <> 'BRAKH' then
     begin
+      close(f);
       ShowMessage(rsInvalidFile);
       exit;
     end;
@@ -604,9 +607,9 @@ begin
       end;
       //ShowMessage(otemp^.Info.obType);
       //OTemp^.Info
-
+      close(f);
     end;
-    close(f);
+
   end
   else
   begin
@@ -686,8 +689,8 @@ begin
   case EM of
     NoEdit:
     begin
-      F^.Info.x2 := x;
-      F^.Info.y2 := y;
+      {F^.Info.x2 := x;
+            F^.Info.y2 := y;}
     end;
     Move: // Перемещаем объект :)
     begin
