@@ -20,7 +20,7 @@ function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 const
   VertRad = 3; // Verts Radius
 
-  Arrow_Width = 20; // length of dowel arrows
+  Arrow_Width = 30; // length of dowel arrows
   Arrow_Height = 10;
 
   Lines_Width = 2;
@@ -62,9 +62,9 @@ begin
     coef := 1
   else
     coef := -1;
-  canvas.moveTo(tmp^.Info.x-15, tmp^.Info.y);
-  canvas.LineTo(tmp^.Info.x, tmp^.Info.y+coef*15);
-  canvas.moveTo(tmp^.Info.x, tmp^.Info.y+coef*15);
+  canvas.moveTo(tmp^.Info.x- Lines_DegLenght, tmp^.Info.y);
+  canvas.LineTo(tmp^.Info.x, tmp^.Info.y+coef*Lines_Deg);
+  canvas.moveTo(tmp^.Info.x, tmp^.Info.y+coef*Lines_Deg);
   // canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15*coef-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15*coef+VertRad);
 end;
 

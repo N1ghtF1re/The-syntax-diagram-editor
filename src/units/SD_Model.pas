@@ -45,7 +45,7 @@ begin
     if tmp^.Info.tp = Line then
     begin
       if tmp^.info.PointHead = nil then exit;
-      
+
       tmpP := tmp^.Info.PointHead^.adr;
       while (tmpP <> nil) and (tmpP^.adr <> nil) do
       begin
@@ -90,6 +90,7 @@ begin
     end;
   end;
 end;
+
 
 function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList) :TEditMode;
 var
@@ -168,6 +169,14 @@ begin
           Result := Move;
           exit;
         end;
+        { ToDo: KEK }
+        if (searchNearFigure(FigHead, x,y) <> nil) then
+        begin
+          CurrFigure := temp;
+          Result := LineMove;
+          Exit;
+        end;
+
         tmpPoint := tmpPoint^.Adr;
       end;
     end;
@@ -678,6 +687,19 @@ begin
 
 end;
 
+procedure moveALlLinePoint(head: PPointsList; dx, dy: integer);
+var
+  tmp: PPointsList;
+begin
+  tmp := head^.Adr;
+  while tmp <> nil do
+  begin
+    tmp^.Info.x := tmp^.Info.x - dx;
+    tmp^.Info.y := tmp^.Info.y - dy;
+    tmp := tmp^.Adr;
+  end;
+end;
+
 procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
 var
   oldp: TPointsInfo;
@@ -708,6 +730,10 @@ begin
       F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
       F^.Info.y2 := F^.Info.y2 - (TmpY - y);
       end;
+    end;
+    LineMove:
+    begin
+      moveALlLinePoint(CurrFigure^.Info.PointHead, (TmpX - x), (Tmpy - y));
     end;
     TSide:
     begin

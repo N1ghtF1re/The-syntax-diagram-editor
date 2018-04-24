@@ -5,7 +5,7 @@ type
   TDrawMode = (Draw, NoDraw, DrawLine);
   TFileMode = (FSvg, FBrakh, FBmp);
   TLineType = (LLine);
-  TEditMode = (NoEdit, Move, TSide, BSide, RSide, LSide, Vert1, Vert2, Vert3, Vert4);
+  TEditMode = (NoEdit, Move, TSide, BSide, RSide, LSide, Vert1, Vert2, Vert3, Vert4, LineMove);
   TType = (Def,MetaVar,MetaConst, Line, None);
   //TFigureType = (rect, line);
 

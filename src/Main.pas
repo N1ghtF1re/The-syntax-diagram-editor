@@ -222,6 +222,7 @@ begin
     Vert2: ScrollBox.Cursor := crSizeNESW;
     Vert3: ScrollBox.Cursor := crSizeNESW;
     Vert4: ScrollBox.Cursor := crSizeNWSE;
+    LineMove: ScrollBox.Cursor := crHandPoint;
   end;
 end;
 
@@ -286,8 +287,6 @@ begin
     TempX:= X; // Обновляем прошлые координаты
     TempY:= Y;
     canv.Repaint;
-    //clearScreen; // Чистим экран
-    //drawFigure(canv.Canvas, FigHead);
   end;
 
 
@@ -607,7 +606,7 @@ end;
 
 procedure TEditorForm.mniWhatIsSDClick(Sender: TObject);
 begin
-  FHTml.showHTML('Справка', 'help1');
+  FHTml.showHTML(rsHelpHowIsSD_Caption,rsHelpHowIsSD_ResName);
 end;
 
 procedure TEditorForm.ScrollBox1MouseWheelDown(Sender: TObject;

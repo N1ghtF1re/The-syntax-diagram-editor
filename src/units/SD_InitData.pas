@@ -12,6 +12,12 @@ resourcestring
   rsNewFile = 'Новый файл';
   rsExitDlg = 'Вы внесли изменения.. А не хотите ли Вы сохраниться перед тем, как выйти?';
   rsInvalidFile = 'Вы пытаетесь открыть какой-то непонятный файл. Пожалуйста, используйте только файлы, созданные этой программой!';
+
+resourcestring
+  rsHelpHowIsSD_Caption = 'Что такое синтаксическая диаграмма?';
+const
+  rsHelpHowIsSD_ResName = 'help1';
+
 implementation
 
 

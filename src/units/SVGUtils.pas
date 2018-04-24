@@ -268,7 +268,7 @@ begin
                 tmpx := 1
               else
                 tmpx := -1;
-              drawSVGArrow(f,curr.x + 10 - (curr.x - PrevP^.info.x) div 2, curr.y, tmpx);
+              drawSVGArrow(f,curr.x + Arrow_Height - (curr.x - PrevP^.info.x) div 2, curr.y, tmpx);
 
             end;
             if curr.y - tmpP^.adr^.Info.y < 0 then
