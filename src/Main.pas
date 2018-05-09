@@ -722,7 +722,6 @@ procedure TEditorForm.ScrollBox1MouseWheelUp(Sender: TObject;
 begin
   with scrollBox1.VertScrollBar do
    Position := Position - Increment;
-
 end;
 
 procedure TEditorForm.SD_Resize;
