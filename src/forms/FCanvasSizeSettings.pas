@@ -20,12 +20,10 @@ type
     Label2: TLabel;
     procedure btnCancelClick(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
-    { Private declarations }
+    procedure ControlsToItem(var w,h: integer);
   public
-    procedure showForm(w,h: integer);
+    function showForm(var w,h: integer):TModalResult;
   end;
 
 var
@@ -39,41 +37,38 @@ procedure TCanvasSettingsForm.btnOkClick(Sender: TObject);
 var
 w,h:integer;
 begin
-  try
+  {try
     w := StrToInt( edtWidth.Text );
     h := StrToInt( edtHeight.Text );
     EditorForm.changeCanvasSize(w,h);
     Self.Close;
   except on E:Exception  do
     ShowMessage('Ошибка ввода');
+  end;     }
+end;
+
+procedure TCanvasSettingsForm.ControlsToItem(var w, h: integer);
+begin
+  try
+    w := StrToInt( edtWidth.Text );
+    h := StrToInt( edtHeight.Text );
+  except on E: EConvertError   do
+    ShowMessage('Ошибка ввода');
   end;
 end;
 
-procedure TCanvasSettingsForm.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if key = VK_RETURN then
-  begin
-    btnOk.Click;
-  end;
-
-end;
-
-procedure TCanvasSettingsForm.FormKeyPress(Sender: TObject; var Key: Char);
-begin
-  if Key = #13 then Key := #0;
-end;
-
-procedure TCanvasSettingsForm.showForm(w,h: integer);
+function TCanvasSettingsForm.showForm(var w,h: integer):TModalResult;
 begin
   edtWidth.Text := IntToStr(w);
-  edtHeight.Text := IntToStr( h );
-  Self.ShowModal;
+  edtHeight.Text := IntToStr(h);
+  Result := Self.ShowModal;
+  if Result = mrOk then
+    ControlsToItem(w,h);
 end;
 
 procedure TCanvasSettingsForm.btnCancelClick(Sender: TObject);
 begin
-  Self.Close;
+//  Self.Close;
 end;
 
 end.

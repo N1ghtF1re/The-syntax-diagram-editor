@@ -24,6 +24,7 @@ uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils;
  procedure checkFigureCoord(R: PFigList);
  procedure removeTrashLines(head: PFigList; curr: PFigList);
  procedure copyFigure(head: PFigList; copyfigure:PFigList);
+ procedure MagnetizeLines(head: PFigList);
 
 implementation
 uses System.Sysutils, main;
@@ -139,6 +140,7 @@ var
 begin
   
   new(Result);
+  Result^.adr := nil;
   tmp := cf;
   if tmp = nil then exit;
   tmp := tmp^.Adr;
@@ -888,6 +890,41 @@ begin
       F^.Info.x2 := F^.Info.x2 - (TmpX - x);
       F^.Info.y2 := F^.Info.y2 - (Tmpy - y);
     end;
+  end;
+end;
+
+procedure MagnetizeLines(head: PFigList);
+var
+  tmp: PFigList;
+  tmpP: PPointsList;
+  NearP: PPointsList;
+begin
+
+  tmp := head^.adr;
+  while tmp <> nil do
+  begin
+    if tmp^.Info.tp <> Line then
+    begin
+      tmp := tmp^.Adr;
+      continue;
+    end;
+
+    tmpP:= tmP^.Info.PointHead^.Adr;
+    while tmpP <> nil do
+    begin
+      NearP := searchNearFigure(head, tmpP^.Info.x, tmpP^.Info.y);
+      if NearP <> nil then
+      begin
+        if nearRound(tmpP^.Info.x) = nearRound(nearP.Info.x) then
+          tmpP^.Info.x := nearP.Info.x;
+        if nearRound(tmpP^.Info.y) = nearRound(nearP.Info.y) then
+          tmpP^.Info.y := nearP.Info.y;
+      end;
+      tmpP := tmpP^.Adr;
+    end;
+
+
+    tmp := tmp^.Adr;
   end;
 end;
 

@@ -12,8 +12,6 @@ object CanvasSettingsForm: TCanvasSettingsForm
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
-  OnKeyDown = FormKeyDown
-  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -31,10 +29,6 @@ object CanvasSettingsForm: TCanvasSettingsForm
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitLeft = 8
-    ExplicitTop = 40
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object Label1: TLabel
       Left = 24
       Top = 16
@@ -105,6 +99,7 @@ object CanvasSettingsForm: TCanvasSettingsForm
       Top = 85
       Width = 145
       Height = 22
+      NumbersOnly = True
       TabOrder = 0
       Text = 'edtWidth'
     end
@@ -113,6 +108,7 @@ object CanvasSettingsForm: TCanvasSettingsForm
       Top = 144
       Width = 145
       Height = 22
+      NumbersOnly = True
       TabOrder = 1
       Text = 'edtHeight'
     end
@@ -122,6 +118,8 @@ object CanvasSettingsForm: TCanvasSettingsForm
       Width = 75
       Height = 25
       Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
+      Default = True
+      ModalResult = 1
       TabOrder = 2
       OnClick = btnOkClick
     end
@@ -131,6 +129,7 @@ object CanvasSettingsForm: TCanvasSettingsForm
       Width = 75
       Height = 25
       Caption = #1054#1090#1084#1077#1085#1072
+      ModalResult = 2
       TabOrder = 3
       OnClick = btnCancelClick
     end

@@ -7,16 +7,10 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
   Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils, Vcl.Buttons,
   System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.ToolWin;
 type
   TEditorForm = class(TForm)
     edtRectText: TEdit;
-    btnDef: TButton;
-    btnMV: TButton;
-    btnMC: TButton;
-    btnLine: TButton;
-    pnlOptions: TPanel;
-    btnNone: TButton;
     MainMenu: TMainMenu;
     mnFile: TMenuItem;
     mniSave: TMenuItem;
@@ -34,7 +28,7 @@ type
     mniHtml: TMenuItem;
     mniWhatIsSD: TMenuItem;
     mniNew: TMenuItem;
-    alMain: TActionList;
+    alMenu: TActionList;
     actNew: TAction;
     actOpen: TAction;
     actSave: TAction;
@@ -46,6 +40,34 @@ type
     mniCopy: TMenuItem;
     actPast: TAction;
     mniPast: TMenuItem;
+    ilMenu: TImageList;
+    actCanvasSize: TAction;
+    actAboutSB: TAction;
+    tbarMenu: TToolBar;
+    tbNew: TToolButton;
+    tbOpen: TToolButton;
+    tbSave: TToolButton;
+    tbSaveAs: TToolButton;
+    ToolButton5: TToolButton;
+    tbCopy: TToolButton;
+    tbPast: TToolButton;
+    ToolButton1: TToolButton;
+    tbBMP: TToolButton;
+    tbSVG: TToolButton;
+    tbSelectFigType: TToolBar;
+    tbFigDef: TToolButton;
+    tbFigMV: TToolButton;
+    tbFigConst: TToolButton;
+    tbFigLine: TToolButton;
+    tbFigNone: TToolButton;
+    ilFigures: TImageList;
+    alSelectFigure: TActionList;
+    actFigNone: TAction;
+    actFigLine: TAction;
+    actFigDef: TAction;
+    actFigMetaVar: TAction;
+    actFigMetaConst: TAction;
+    lblEnterText: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -53,12 +75,7 @@ type
     procedure pbMainMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure pbMainMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
-    procedure btnDefClick(Sender: TObject);
-    procedure btnMVClick(Sender: TObject);
-    procedure btnMCClick(Sender: TObject);
-    procedure btnLineClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure btnNoneClick(Sender: TObject);
     procedure changeEditorText(newtext: string);
     procedure FormResize(Sender: TObject);
     procedure btnALineClick(Sender: TObject);
@@ -68,25 +85,28 @@ type
     procedure saveBMPFile;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure mniNewClick(Sender: TObject);
-    procedure mniHolstSizeClick(Sender: TObject);
     procedure ScrollBox1MouseWheelDown(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure ScrollBox1MouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure mniWhatIsSDClick(Sender: TObject);
     procedure actNewExecute(Sender: TObject);
     procedure actOpenExecute(Sender: TObject);
     procedure actSaveExecute(Sender: TObject);
     procedure actSaveAsExecute(Sender: TObject);
     procedure actExportBMPExecute(Sender: TObject);
     procedure actExportSVGExecute(Sender: TObject);
-    procedure mniNewDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect;
-      Selected: Boolean);
     procedure mnFileDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect;
       Selected: Boolean);
     procedure actCopyExecute(Sender: TObject);
     procedure actPastExecute(Sender: TObject);
+    procedure actCanvasSizeExecute(Sender: TObject);
+    procedure actAboutSBExecute(Sender: TObject);
+    procedure actFigNoneExecute(Sender: TObject);
+    procedure actFigLineExecute(Sender: TObject);
+    procedure actFigDefExecute(Sender: TObject);
+    procedure actFigMetaVarExecute(Sender: TObject);
+    procedure actFigMetaConstExecute(Sender: TObject);
 
     
   private
@@ -95,6 +115,7 @@ type
     procedure switchChangedStatus(flag: Boolean);
     procedure changePath(path: string);
     procedure newFile;
+
   public
     procedure SD_Resize;
     function getFigureHead:PFigList;
@@ -103,6 +124,7 @@ type
     function saveFile(mode: TFileMode):string;
     procedure changeCanvasSize(w,h: Integer);
     procedure getCanvasSIze(var w,h:Integer);
+
 
     
   end;
@@ -136,6 +158,22 @@ begin
 end;
 
 
+procedure TEditorForm.actAboutSBExecute(Sender: TObject);
+begin
+  FHTml.showHTML(rsHelpHowIsSD_Caption,rsHelpHowIsSD_ResName);
+end;
+
+procedure TEditorForm.actCanvasSizeExecute(Sender: TObject);
+var
+  neww, newh : integer;
+begin
+  neww:= pbMain.Width;
+  newh := pbMain.Height;
+  CanvasSettingsForm.showForm(neww, newh);
+  changeCanvasSize(neww, newh);
+  Self.Repaint;
+end;
+
 procedure TEditorForm.actCopyExecute(Sender: TObject);
 begin
   CoppyFigure := ClickFigure;
@@ -150,6 +188,32 @@ end;
 procedure TEditorForm.actExportSVGExecute(Sender: TObject);
 begin
   saveSVGFile;
+end;
+
+procedure TEditorForm.actFigDefExecute(Sender: TObject);
+begin
+  CurrType := def;
+end;
+
+procedure TEditorForm.actFigLineExecute(Sender: TObject);
+begin
+  CurrType := Line;
+  CurrLineType := LLine;
+end;
+
+procedure TEditorForm.actFigMetaConstExecute(Sender: TObject);
+begin
+  CurrType := MetaConst;
+end;
+
+procedure TEditorForm.actFigMetaVarExecute(Sender: TObject);
+begin
+  CurrType := MetaVar;
+end;
+
+procedure TEditorForm.actFigNoneExecute(Sender: TObject);
+begin
+  CurrType := None;
 end;
 
 procedure TEditorForm.actNewExecute(Sender: TObject);
@@ -228,38 +292,10 @@ begin
   CurrType := Line;
 end;
 
-procedure TEditorForm.btnDefClick(Sender: TObject);
-begin
-  CurrType := def;
-end;
-
 procedure TEditorForm.switchChangedStatus(flag: Boolean);
 begin
   isChanged := flag;
 end;
-
-procedure TEditorForm.btnLineClick(Sender: TObject);
-begin
-  CurrType := Line;
-  CurrLineType := LLine;
-end;
-
-procedure TEditorForm.btnMCClick(Sender: TObject);
-begin
-  CurrType := MetaConst;
-end;
-
-procedure TEditorForm.btnMVClick(Sender: TObject);
-begin
-  CurrType := MetaVar;
-end;
-
-procedure TEditorForm.btnNoneClick(Sender: TObject);
-begin
-  CurrType := None;
-end;
-
-
 
 procedure TEditorForm.pbMainMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
@@ -406,6 +442,7 @@ begin
     DM := NoDraw; // Заканчиваем рисование
     checkFigureCoord(CurrFigure);
   end;
+  MagnetizeLines(FigHead);
   {if CurrType = Line then
     clearScreen;}
   pbMain.Repaint;
@@ -454,6 +491,7 @@ end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);
 begin
+  tbFigNone.Down := true;
   actPast.Enabled := false;
   currpath := '';
   Self.DoubleBuffered := true;
@@ -579,14 +617,6 @@ begin
 
 end;
 
-procedure TEditorForm.mniHolstSizeClick(Sender: TObject);
-var
-  neww, newh : integer;
-begin
-  CanvasSettingsForm.showForm(pbMain.Width ,pbMain.Height);
-  Self.Repaint;
-end;
-
 procedure TEditorForm.changeCanvasSize(w,h: Integer);
 begin
   pbMain.width := w;
@@ -615,26 +645,6 @@ begin
 end;
 
 
-
-procedure TEditorForm.mniNewDrawItem(Sender: TObject; ACanvas: TCanvas;
-  ARect: TRect; Selected: Boolean);
-begin
-  {with ACanvas do
-  begin
-   if Selected then
-    begin
-     Font.Size   := 10;
-    end
-    else
-    begin
-       Font.Size   := 10;
-    end;
-   FillRect( ARect );
-   TextOut( ARect.Left+40, Arect.Top, ( Sender as TMenuItem ).Caption );
-
-  end;
-  ilMain.Draw(Acanvas,ARect.Left+10, Arect.Top+7,( Sender as TMenuItem ).ImageIndex);
-}end;
 
 procedure TEditorForm.changePath(path: string);
 var
@@ -698,11 +708,6 @@ begin
   path := saveFile(FSvg);
   if path <> '' then
     ExportTOSvg(FigHead, pbMain.Width, pbMain.Height, path, 'Syntax Diagram Project', 'Create by BrakhMen.info');
-end;
-
-procedure TEditorForm.mniWhatIsSDClick(Sender: TObject);
-begin
-  FHTml.showHTML(rsHelpHowIsSD_Caption,rsHelpHowIsSD_ResName);
 end;
 
 procedure TEditorForm.ScrollBox1MouseWheelDown(Sender: TObject;
