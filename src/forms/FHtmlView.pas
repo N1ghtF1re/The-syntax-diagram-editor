@@ -26,9 +26,11 @@ implementation
 procedure TFHtml.showHTML(title, htmlres: WideString);
 var
   s: WideString;
+  Flags, TargetFrameName, PostData, Headers: OleVariant;
 begin
   Self.Caption := title;
-  WebBrowser1.Navigate('res://' + Application.ExeName + '/' + htmlres);
+  WebBrowser1.Navigate('res://' + Application.ExeName + '/' + htmlres,
+  Flags, TargetFrameName, PostData, Headers);
 
   //WebBrowser1.Navigate('about:'+html);
   //WebBrowser1.Navigate ('res://SyntaxDiag.exe/HTMLPage');

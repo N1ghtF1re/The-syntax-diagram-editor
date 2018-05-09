@@ -4,8 +4,6 @@ src/__recovery/
 src/__history/
 src/units/__recovery/
 src/units/__history/
-src/forms/__recovery/
-src/forms/__history/
 src/Win32/Debug/
 src/test/
 *~
