@@ -2,7 +2,7 @@ program SyntaxDiag;
 
 
 
-{$R *.dres}
+
 
 uses
   Vcl.Forms,

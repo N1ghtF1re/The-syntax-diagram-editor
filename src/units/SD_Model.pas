@@ -4,7 +4,7 @@ unit SD_Model;
 interface
 
 uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils;
-function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean;
+ function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean;
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
  procedure removeFigure(head: PFigList; adr: PFigList);
  procedure selectFigure(canvas: TCanvas; head:PFigList);
@@ -20,8 +20,10 @@ function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean
  function addFigure(head: PFigList; x,y: integer; ftype: TType; Text:String = 'Kek'):PFigList;
  function nearRound(x:integer):integer;
  procedure roundCoords(var x,y:integer);
- function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList) :TEditMode;
+ function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList; CT: TType) :TEditMode;
  procedure checkFigureCoord(R: PFigList);
+ procedure removeTrashLines(head: PFigList; curr: PFigList);
+ procedure copyFigure(head: PFigList; copyfigure:PFigList);
 
 implementation
 uses System.Sysutils, main;
@@ -44,7 +46,11 @@ begin
   begin
     if tmp^.Info.tp = Line then
     begin
-      if tmp^.info.PointHead = nil then exit;
+      if tmp^.info.PointHead = nil then
+      begin
+        tmp := tmp^.adr;
+        continue;
+      end;
 
       tmpP := tmp^.Info.PointHead^.adr;
       while (tmpP <> nil) and (tmpP^.adr <> nil) do
@@ -59,6 +65,7 @@ begin
         and (tmpP <> blocked) and (tmpP^.adr <> blocked)
         then
         begin
+          //blocked^.Info.x := tmpP^.adr^.Info.x;
           Result := true;
           exit;
         end;
@@ -73,7 +80,7 @@ procedure checkFigureCoord(R: PFigList);
 var
   temp:integer;
 begin
-  if R<>nil then
+  if (R<>nil) and (R^.Info.tp <> Line) then
   with R^.Info do
   begin
     if x1 > x2 then
@@ -92,7 +99,79 @@ begin
 end;
 
 
-function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList) :TEditMode;
+function isBelongsLine(head: PPointsList; x,y: integer): Boolean;
+var
+  tmp, tmp2 : PPointsList;
+begin
+  if (head = nil) or (head^.Adr = nil) or (head^.Adr^.Adr = nil) then exit;
+  tmp := head^.adr;
+  tmp2 := tmp^.Adr;
+  Result := false;
+  while (tmp <> nil) and (tmp2 <> nil) do
+  begin
+    if (tmp^.Info.x = tmp2^.Info.x) and (abs(tmp^.Info.x - x) < Tolerance) then
+    begin
+      if (y > min(tmp^.Info.y, tmp2^.Info.y)) and (y < max(tmp^.Info.y, tmp2^.Info.y)) then
+      begin
+        Result := true;
+        exit
+      end;
+    end;
+     if (tmp^.Info.y = tmp2^.Info.y) and  (abs(tmp^.Info.y - y) < Tolerance) then
+    begin
+      if (x > min(tmp^.Info.x, tmp2^.Info.x)) and (x < max(tmp^.Info.x, tmp2^.Info.x)) then
+      begin
+        Result := true;
+        exit
+      end;
+    end;
+    tmp := tmp^.Adr;
+    tmp2 := tmp2^.adr;
+
+  end;
+
+
+end;
+
+function copyPointList(cf: PPointsList):PPointsList;
+var
+  tmp: PPointsList;
+begin
+  
+  new(Result);
+  tmp := cf;
+  if tmp = nil then exit;
+  tmp := tmp^.Adr;
+  while tmp <> nil do
+  begin
+    addNewPoint(Result, tmp^.Info.x, tmp^.Info.y);
+    tmp := tmp^.Adr;
+  end;
+  
+end;
+
+procedure copyFigure(head: PFigList; copyfigure:PFigList);
+var
+  newfigure: TFigureInfo;
+  tmp: PFigList;
+begin
+  newfigure := copyfigure^.Info;
+  if copyfigure^.Info.tp = Line then
+    newfigure.PointHead := copyPointList(copyfigure^.Info.PointHead);
+  if head = nil then exit;
+  tmp := head;
+  while tmp^.Adr <> nil do
+  begin 
+    tmp := tmp^.Adr;
+  end;
+  new(tmp^.adr);
+  tmp := tmp^.Adr;
+  tmp^.Adr := nil;
+  tmp^.Info := newfigure;
+      
+end;
+
+function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList; CT: TType) :TEditMode;
 var
   r:TFigureInfo;
   temp: PFigList;
@@ -170,14 +249,13 @@ begin
           exit;
         end;
         { ToDo: KEK }
-        if (searchNearFigure(FigHead, x,y) <> nil) then
-        begin
-          CurrFigure := temp;
-          Result := LineMove;
-          Exit;
-        end;
-
         tmpPoint := tmpPoint^.Adr;
+      end;
+      if (CT =  TType(4)) and (isBelongsLine(temp^.Info.PointHead, x,y)) then
+      begin
+        CurrFigure := temp;
+        Result := LineMove;
+        Exit;
       end;
     end;
     temp := temp^.Adr;
@@ -235,6 +313,12 @@ begin
   begin
     if temp^.Info.tp = line then
     begin
+      if temp^.Info.PointHead = nil then
+      begin
+        temp := temp^.adr;
+        Continue;
+      end;
+
       tmpP:= temp^.Info.PointHead^.adr;
       lastP:=tmpP;
       if tmpP^.Adr <> nil then
@@ -349,6 +433,29 @@ begin
   result := tmp;
 end;
 
+procedure removeTrashLines(head: PFigList; curr: PFigList);
+var
+  tmp: PFigList;
+begin
+  if head = nil then exit;
+
+  tmp := head^.adr;
+  while tmp <> nil do
+  begin
+    if tmp^.Info.tp = Line then
+    begin
+      if (tmp^.Info.PointHead = nil) or (tmp^.Info.PointHead^.Adr = nil) then continue;
+      
+      if (tmp^.Info.PointHead^.Adr^.Adr = nil) and (tmp <> curr) then
+        removeFigure(head,tmp);
+    end;
+     tmp := tmp^.Adr;
+  end;
+  
+
+
+end;
+
 // ¬озвращает фигуру, по которой был клик
 function getClickFigure(x,y:integer; head: PFigList):PFigList;
 var
@@ -377,6 +484,11 @@ begin
     end
     else
     begin
+      if (tmp^.Info.PointHead = nil) or (tmp^.Info.PointHead^.Adr = nil) then
+      begin
+        tmp := tmp^.adr;
+       continue;
+      end;
       tmpP := tmp^.Info.PointHead^.Adr;
       while tmpP <> nil do
       begin
@@ -427,8 +539,8 @@ begin
         y:=py
       else
         x:=px;
-    except on E: Exception do
-
+    except on EZeroDivide do
+      // kek
     end;
   end;
   new(tmp^.adr);
@@ -471,6 +583,7 @@ begin
   else
   begin
     //showmessage('kek');
+    if head^.Info.PointHead = nil then exit;
     tmp := head^.Info.PointHead^.adr;
     while tmp <> nil do
     begin
@@ -640,7 +753,7 @@ begin
           tmp^.Info.y := tmp^.adr^.Info.y
       else
          tmp^.Info.x := tmp^.adr^.Info.x;
-      except on E: Exception do
+      except on E: EZeroDivide do
 
     end;
     tmp := tmp^.Adr;

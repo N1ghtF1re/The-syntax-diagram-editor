@@ -102,6 +102,7 @@ var
   tmpx, tmpy:integer;
 begin
   tmpx := point.x - PrevPoint.x;
+
   if tmpx > 0 then
     drawArrow(canvas,point.x, point.y,1)
   else if tmpx < 0 then
@@ -135,7 +136,8 @@ begin                  //\\
   canvas.Pen.Width := Lines_Width; // Width For Line
   isFirstLine := false;
   tmp := head;
-  if tmp^.Adr <> nil then
+
+  if (tmp <> nil) and (tmp^.Adr <> nil) then
   begin
     FirstP.X := tmp^.Adr^.Info.x; // Initialise First Points
     FirstP.y := tmp^.Adr^.Info.y;
@@ -148,7 +150,7 @@ begin                  //\\
     canvas.MoveTo(tmp^.Info.x, tmp^.Info.y); // Move to first point in list
 
     // FIRST POINT:
-    if beginOfVertLine(tmp,firstP) then
+    if beginOfVertLine(tmp,firstP) and (PrevP.y = tmp^.Info.y) then
     begin
       drawOutBoundLine(canvas,FirstP, tmp);
       isFirstLine :=  true;
@@ -158,7 +160,7 @@ begin                  //\\
       AddY := tmp^.Info.y;
     end;}
     // POTOM
-    if (PrevP.y = tmp^.Info.y) and isHorisontalIntersection(EditorForm.getFigureHead,tmp) then
+    if (tmp^.Adr <> nil) and (PrevP.y = tmp^.adr^.Info.y) and isHorisontalIntersection(EditorForm.getFigureHead,tmp) then
     begin
       if (tmp^.Adr <> nil) and (FirstP.x - tmp^.adr^.Info.x < 0) then
         coef := 1
@@ -185,9 +187,9 @@ begin                  //\\
       begin
         canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
         // Перед \ - стрелочка
-        if PrevP.x - tmp^.Info.x > 0 then
+        if (PrevP.x - tmp^.Info.x > 0) and (PrevP.y = tmp^.Info.y) then
           drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, -1)
-        else
+        else if (PrevP.y = tmp^.Info.y) then
           drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, 1);
         canvas.MoveTo(tmp^.Info.x, tmp^.Info.y+Lines_DegLenght);
         canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
@@ -266,7 +268,7 @@ var
   Point: TPointsInfo;
   text:string;
 begin
-  temp := head;
+  temp := head^.adr;
   while temp <> nil do
   begin
     with temp^.Info do

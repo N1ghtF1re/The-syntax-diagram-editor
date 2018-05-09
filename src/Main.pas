@@ -5,7 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
-  Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils, Vcl.Buttons;
+  Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils, Vcl.Buttons,
+  System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
+  Vcl.Imaging.pngimage;
 type
   TEditorForm = class(TForm)
     edtRectText: TEdit;
@@ -22,23 +24,35 @@ type
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
     mniToSVG: TMenuItem;
-    canv: TPaintBox;
+    pbMain: TPaintBox;
     mniExportToBMP: TMenuItem;
     mniExport: TMenuItem;
     mniSaveAs: TMenuItem;
-    mniNew: TMenuItem;
     mnSettings: TMenuItem;
     mniHolstSize: TMenuItem;
     ScrollBox1: TScrollBox;
     mniHtml: TMenuItem;
     mniWhatIsSD: TMenuItem;
+    mniNew: TMenuItem;
+    alMain: TActionList;
+    actNew: TAction;
+    actOpen: TAction;
+    actSave: TAction;
+    actSaveAs: TAction;
+    actExportBMP: TAction;
+    actExportSVG: TAction;
+    actCopy: TAction;
+    mniEdit: TMenuItem;
+    mniCopy: TMenuItem;
+    actPast: TAction;
+    mniPast: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
-    procedure canvMouseUp(Sender: TObject; Button: TMouseButton;
+    procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure canvMouseDown(Sender: TObject; Button: TMouseButton;
+    procedure pbMainMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure canvMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure pbMainMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure btnDefClick(Sender: TObject);
     procedure btnMVClick(Sender: TObject);
     procedure btnMCClick(Sender: TObject);
@@ -48,16 +62,11 @@ type
     procedure changeEditorText(newtext: string);
     procedure FormResize(Sender: TObject);
     procedure btnALineClick(Sender: TObject);
-    procedure mniSaveClick(Sender: TObject);
-    procedure mniOpenClick(Sender: TObject);
-    procedure mniToSVGClick(Sender: TObject);
     function  saveBrakhFile:boolean;
     procedure saveSVGFile;
-    procedure canvPaint(Sender: TObject);
+    procedure pbMainPaint(Sender: TObject);
     procedure saveBMPFile;
-    procedure mniExportToBMPClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure mniSaveAsClick(Sender: TObject);
     procedure mniNewClick(Sender: TObject);
     procedure mniHolstSizeClick(Sender: TObject);
     procedure ScrollBox1MouseWheelDown(Sender: TObject; Shift: TShiftState;
@@ -66,6 +75,19 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure mniWhatIsSDClick(Sender: TObject);
+    procedure actNewExecute(Sender: TObject);
+    procedure actOpenExecute(Sender: TObject);
+    procedure actSaveExecute(Sender: TObject);
+    procedure actSaveAsExecute(Sender: TObject);
+    procedure actExportBMPExecute(Sender: TObject);
+    procedure actExportSVGExecute(Sender: TObject);
+    procedure mniNewDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect;
+      Selected: Boolean);
+    procedure mnFileDrawItem(Sender: TObject; ACanvas: TCanvas; ARect: TRect;
+      Selected: Boolean);
+    procedure actCopyExecute(Sender: TObject);
+    procedure actPastExecute(Sender: TObject);
+
     
   private
     isChanged: Boolean;
@@ -96,12 +118,15 @@ var
   EM: TEditMode;
   prevText:String;
   currPointAdr: PPointsList;
+  CoppyFigure: PFigList;
   //FT: TFigureType;
 
 
 implementation
 {$R *.dfm}
 {$R HTML.RES}
+{$R+}
+{$R-}
 
 uses FCanvasSizeSettings, FHtmlView;
 
@@ -110,6 +135,93 @@ begin
   edtRectText.text := newtext;
 end;
 
+
+procedure TEditorForm.actCopyExecute(Sender: TObject);
+begin
+  CoppyFigure := ClickFigure;
+  actPast.Enabled := true;
+end;
+
+procedure TEditorForm.actExportBMPExecute(Sender: TObject);
+begin
+saveBMPFile;
+end;
+
+procedure TEditorForm.actExportSVGExecute(Sender: TObject);
+begin
+  saveSVGFile;
+end;
+
+procedure TEditorForm.actNewExecute(Sender: TObject);
+var
+  answer: Integer;
+begin
+  answer := MessageDlg(rsNewFileDlg,mtCustom,[mbYes,mbNo], 0);
+  if  answer = mrYes then
+  begin
+    newFile;
+  end;
+end;
+
+procedure TEditorForm.actOpenExecute(Sender: TObject);
+var
+  path: string;
+  answer: integer;
+begin
+  if isChanged then
+  begin
+    answer := MessageDlg(rsExitDlg,mtCustom,
+                              [mbYes,mbNo,mbCancel], 0);
+    case answer of
+      mrYes:
+      begin
+        if not saveBrakhFile then
+          exit
+      end;
+      mrNo: ;
+      mrCancel: exit;
+    end;
+  end;
+
+  path := openFile(FBrakh);
+  if path <> '' then
+  begin
+
+    removeAllList(FigHead);
+    if readFile(FigHead, path) then
+    begin
+      changePath(path);
+      switchChangedStatus(False);
+    end
+    else
+      newFile;
+  end;
+end;
+
+procedure TEditorForm.actPastExecute(Sender: TObject);
+begin
+
+  actPast.Enabled := false;
+  if CoppyFigure = nil then exit;
+  
+  CopyFigure(FigHead, CoppyFigure);
+end;
+
+procedure TEditorForm.actSaveAsExecute(Sender: TObject);
+begin
+  saveBrakhFile;
+end;
+
+procedure TEditorForm.actSaveExecute(Sender: TObject);
+begin
+ if currpath <> '' then
+  begin
+    saveToFile(FigHead, currpath);
+    switchChangedStatus(False);
+  end
+  else
+    saveBrakhFile;
+end;
 
 procedure TEditorForm.btnALineClick(Sender: TObject);
 begin
@@ -149,7 +261,7 @@ end;
 
 
 
-procedure TEditorForm.canvMouseDown(Sender: TObject; Button: TMouseButton;
+procedure TEditorForm.pbMainMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var x0, y0: Integer;
 begin
@@ -206,7 +318,7 @@ begin
     changeEditorText(prevText);
   end;
 
-
+  removeTrashLines(FigHead, CurrFigure);
 end;
 
 procedure changeCursor(ScrollBox:TScrollBox; Mode: TEditMode);
@@ -228,8 +340,8 @@ end;
 
 procedure TEditorForm.getCanvasSIze(var w, h: Integer);
 begin
-  w := Self.canv.Width;
-  h := self.canv.Height;
+  w := Self.pbMain.Width;
+  h := self.pbMain.Height;
 end;
 
 function TEditorForm.getFigureHead:PFigList;
@@ -242,7 +354,7 @@ var
   PrevF: string;
   prevSize:integer;
 begin
-  with canv do
+  with pbMain do
   begin
     prevSize := Canvas.Font.Size;
 
@@ -255,7 +367,7 @@ begin
 
 end;
 
-procedure TEditorForm.canvMouseMove(Sender: TObject; Shift: TShiftState; X,
+procedure TEditorForm.pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 {var          // LOGS
   f:TextFile;}
@@ -266,33 +378,27 @@ begin
     DM := nodraw;
   if dm = NoDraw then
   begin
-    EM := getEditMode(DM, x,y,FigHead);
+    EM := getEditMode(DM, x,y,FigHead, CurrType);
     changeCursor(ScrollBox1, EM); // Меняем курсор в зависимости от положения мыши
 
     if ClickFigure <> nil then
     begin
-      selectFigure(canv.Canvas, ClickFigure);
+      selectFigure(pbMain.Canvas, ClickFigure);
     end;
   end;
   if (DM = draw) and (currfigure <> nil)  then
   begin
     switchChangedStatus(TRUE);
-    {if CurrFigure.Info.tp = Line then
-      roundCoords(x,y);
-    AssignFile(f,'log.txt');
-    Append(f);
-    writeln(f, Ord(em));
-    closefile(f);          }
     ChangeCoords(CurrFigure, EM, x,y, tempX, tempY);
     TempX:= X; // Обновляем прошлые координаты
     TempY:= Y;
-    canv.Repaint;
+    pbMain.Repaint;
   end;
 
 
 end;
 
-procedure TEditorForm.canvMouseUp(Sender: TObject; Button: TMouseButton;
+procedure TEditorForm.pbMainMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if DM <> DrawLine then
@@ -302,20 +408,24 @@ begin
   end;
   {if CurrType = Line then
     clearScreen;}
-  canv.Repaint;
+  pbMain.Repaint;
 end;
 
-procedure TEditorForm.canvPaint(Sender: TObject);
+procedure TEditorForm.pbMainPaint(Sender: TObject);
 begin
-  clearScreen;
-  drawFigure(canv.Canvas, FigHead);
+  with (Sender as TPaintBox) do
+  begin
+    clearScreen;
+    drawFigure(Canvas, FigHead);
+  end;
 end;
 
 procedure TEditorForm.clearScreen;
 begin
-  Canv.Canvas.Pen.Width := 1;
-  canv.Canvas.Rectangle(0,0,canv.Width,canv.Height);
+  pbMain.Canvas.Pen.Width := 1;
+  pbMain.Canvas.Rectangle(0,0,pbMain.Width,pbMain.Height);
 end;
+
 
 
 
@@ -344,6 +454,7 @@ end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);
 begin
+  actPast.Enabled := false;
   currpath := '';
   Self.DoubleBuffered := true;
   switchChangedStatus(false);
@@ -352,6 +463,7 @@ begin
   EM := NoEdit;
   CurrFigure := nil;
   clearScreen;
+  CoppyFigure := nil;
 end;
 
 procedure TEditorForm.FormKeyDown(Sender: TObject; var Key: Word;
@@ -363,15 +475,15 @@ begin
     switchChangedStatus(true);
     ClickFigure := nil;
     Self.clearScreen;
-    drawFigure(canv.canvas,FigHead);
+    drawFigure(pbMain.canvas,FigHead);
   end;
   if (key = VK_RETURN) and (ClickFigure <> nil) and (ClickFigure.Info.tp <> Line) then
   begin
     ClickFigure.Info.Txt := ShortString(edtRectText.Text);
-    canv.Repaint;
+    pbMain.Repaint;
   end;
-  if (GetKeyState(ord('S')) < 0) and (GetKeyState(VK_CONTROL) < 0) then
-    mniSave.Click;
+
+  
 end;
 
 procedure TEditorForm.FormKeyPress(Sender: TObject; var Key: Char);
@@ -384,7 +496,7 @@ end;
 
 procedure TEditorForm.FormResize(Sender: TObject);
 begin
-  canv.Repaint;
+  pbMain.Repaint;
 end;
 
 function ExtractFileNameEx(FileName:string):string;
@@ -432,37 +544,53 @@ begin
   if path <> '' then
   begin
     ClickFigure := nil;
-    clearScreen;
-    drawFigure(canv.Canvas, FigHead,false);
-
     with TBitMap.Create do begin
-      width := canv.Width;
-      height := canv.Height;
-      bitblt(canvas.Handle,0,0,width,height,canv.Canvas.Handle,0,0,srcCopy);
+      width := pbMain.Width;
+      height := pbMain.Height;
+      drawFigure(Canvas, FigHead,false);
       SaveToFile(path);
     end;
-
-    canv.Repaint;
   end;
 end;
 
-procedure TEditorForm.mniExportToBMPClick(Sender: TObject);
+procedure TEditorForm.mnFileDrawItem(Sender: TObject; ACanvas: TCanvas;
+  ARect: TRect; Selected: Boolean);
+var
+  w,h: integer;
 begin
-  saveBMPFile;
+  with ACanvas do
+  begin
+   if Selected then
+    begin
+      Font.Size   := 10;
+    end
+    else
+    begin
+      Font.Size   := 10;
+    end;
+   Arect.Left := Arect.Left - 20*( Sender as TMenuItem ).tag;
+   Arect.Right := Arect.Right - 40*( Sender as TMenuItem ).tag;
+   w := ACanvas.TextWidth((Sender as TMenuItem ).Caption );
+   ARect.width := w+10;
+   FillRect( ARect );
+   TextOut( ARect.Left + 10, Arect.Top, ( Sender as TMenuItem ).Caption );
+
+  end;
+
 end;
 
 procedure TEditorForm.mniHolstSizeClick(Sender: TObject);
 var
   neww, newh : integer;
 begin
-  CanvasSettingsForm.showForm(canv.Width ,canv.Height);
+  CanvasSettingsForm.showForm(pbMain.Width ,pbMain.Height);
   Self.Repaint;
 end;
 
 procedure TEditorForm.changeCanvasSize(w,h: Integer);
 begin
-  canv.width := w;
-  canv.height := h;
+  pbMain.width := w;
+  pbMain.height := h;
 end;
 
 procedure TEditorForm.newFile;
@@ -471,7 +599,7 @@ begin
   removeAllList(FigHead);
   currpath := '';
   switchChangedStatus(false);
-  canv.Repaint;
+  pbMain.Repaint;
 end;
 
 procedure TEditorForm.mniNewClick(Sender: TObject);
@@ -486,6 +614,28 @@ begin
 
 end;
 
+
+
+procedure TEditorForm.mniNewDrawItem(Sender: TObject; ACanvas: TCanvas;
+  ARect: TRect; Selected: Boolean);
+begin
+  {with ACanvas do
+  begin
+   if Selected then
+    begin
+     Font.Size   := 10;
+    end
+    else
+    begin
+       Font.Size   := 10;
+    end;
+   FillRect( ARect );
+   TextOut( ARect.Left+40, Arect.Top, ( Sender as TMenuItem ).Caption );
+
+  end;
+  ilMain.Draw(Acanvas,ARect.Left+10, Arect.Top+7,( Sender as TMenuItem ).ImageIndex);
+}end;
+
 procedure TEditorForm.changePath(path: string);
 var
     FileName: string;
@@ -496,58 +646,25 @@ begin
 
 end;
 
-procedure TEditorForm.mniOpenClick(Sender: TObject);
-var
-  path: string;
-  answer: integer;
-begin
-   if isChanged then
-  begin
-    answer := MessageDlg(rsExitDlg,mtCustom,
-                              [mbYes,mbNo,mbCancel], 0);
-    case answer of
-      mrYes:
-      begin
-        if not saveBrakhFile then
-          exit
-      end;
-      mrNo: ;
-      mrCancel: exit;
-    end;
-  end;
-
-  path := openFile(FBrakh);
-  if path <> '' then
-  begin
-
-    removeAllList(FigHead);
-    if readFile(FigHead, path) then
-    begin
-      changePath(path);
-      switchChangedStatus(False);
-    end
-    else
-      newFile;
-  end;
-end;
-
 function TEditorForm.saveFile(mode: TFileMode):string;
 begin
   Result := '';
   case mode of
     FSvg:
     begin
+      saveDialog1.FileName := 'SyntaxDiagrams.svg';
       saveDialog1.Filter := 'SVG|*.svg';
       saveDialog1.DefaultExt := 'svg';
     end;
     FBrakh:
     begin
+      saveDialog1.FileName := 'SyntaxDiagrams.brakh';
       saveDialog1.Filter := 'Source-File|*.brakh';
       saveDialog1.DefaultExt := 'brakh';
     end;
     FBmp:
     begin
-
+      saveDialog1.FileName := 'SyntaxDiagrams.bmp';
       saveDialog1.Filter := 'Bitmap Picture|*.bmp';
       saveDialog1.DefaultExt := 'bmp';
     end;
@@ -580,28 +697,7 @@ var
 begin
   path := saveFile(FSvg);
   if path <> '' then
-    ExportTOSvg(FigHead, canv.Width, canv.Height, path, 'Syntax Diagram Project', 'Create by BrakhMen.info');
-end;
-
-procedure TEditorForm.mniSaveAsClick(Sender: TObject);
-begin
-  saveBrakhFile;
-end;
-
-procedure TEditorForm.mniSaveClick(Sender: TObject);
-begin
-  if currpath <> '' then
-  begin
-    saveToFile(FigHead, currpath);
-    switchChangedStatus(False);
-  end
-  else
-    saveBrakhFile;
-end;
-
-procedure TEditorForm.mniToSVGClick(Sender: TObject);
-begin
-  saveSVGFile;
+    ExportTOSvg(FigHead, pbMain.Width, pbMain.Height, path, 'Syntax Diagram Project', 'Create by BrakhMen.info');
 end;
 
 procedure TEditorForm.mniWhatIsSDClick(Sender: TObject);

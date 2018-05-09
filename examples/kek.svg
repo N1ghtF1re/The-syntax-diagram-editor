@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="1145" height="515
+" viewBox="0 0 1145 515"
+xmlns="http://www.w3.org/2000/svg" version="1.1">
+<title>Syntax Diagram Project</title>
+<!-- LINE: -->
+<path d="M 180 200 L 520 200" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 520 200 L 490 190" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 520 200 L 490 210" fill="none" stroke="black" stroke-width="2" />
+<!-- BOUND LINE -->
+<path d="M 227 199 L 242 214" fill="none" stroke="black" stroke-width="2" />
+<!-- Line After Bound -->
+<path d="M 242 214 L 242 279" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 242 279 L 422 279" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 342 279 L 312 269" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 342 279 L 312 289" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 422 279 L 422 214" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 422 214 L 437 199" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 422 214 L 412 244" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 422 214 L 432 244" fill="none" stroke="black" stroke-width="2" />
+<!-- Additional line Intersection: -->
+<path d="M 240 225 L 255 240" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 255 240 L 420 240" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 420 240 L 390 230" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 420 240 L 390 250" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 520 260 L 680 260" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 680 260 L 680 285" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 680 285 L 695 300" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 680 285 L 670 255" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 680 285 L 690 255" fill="none" stroke="black" stroke-width="2" />
+<!-- BOUND LINE -->
+<path d="M 585 260 L 600 245" fill="none" stroke="black" stroke-width="2" />
+<!-- Line After Bound -->
+<path d="M 600 245 L 600 120" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 600 120 L 720 120" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 670 120 L 640 110" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 670 120 L 640 130" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 720 120 L 720 145" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 720 145 L 735 160" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 720 145 L 710 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 720 145 L 730 115" fill="none" stroke="black" stroke-width="2" />
+<!-- BOUND LINE -->
+<path d="M 272 200 L 287 185" fill="none" stroke="black" stroke-width="2" />
+<!-- Line After Bound -->
+<path d="M 287 185 L 287 113" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 287 113 L 353 113" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 330 113 L 300 103" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 330 113 L 300 123" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 353 113 L 353 185" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 353 185 L 368 200" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 353 185 L 343 155" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 353 185 L 363 155" fill="none" stroke="black" stroke-width="2" />
+</svg>
