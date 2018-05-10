@@ -25,6 +25,7 @@ uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils;
  procedure removeTrashLines(head: PFigList; curr: PFigList);
  procedure copyFigure(head: PFigList; copyfigure:PFigList);
  procedure MagnetizeLines(head: PFigList);
+ function ScaleRound(scale: real; x: integer): integer;
 
 implementation
 uses System.Sysutils, main;
@@ -133,6 +134,12 @@ begin
 
 
 end;
+
+function ScaleRound(scale: real; x: integer):integer;
+begin
+  Result := Round(X*Scale);
+end;
+
 
 function copyPointList(cf: PPointsList):PPointsList;
 var
@@ -670,8 +677,6 @@ begin
   begin
     Reset(f);
 
-    //ShowMessage(objfile);
-    //Writeln('Read file ' + ObjFile);
     OTemp := Head;
     read(f, tmp);
     if tmp.Check <> 'BRAKH' then
@@ -731,7 +736,6 @@ begin
       end;
       //ShowMessage(otemp^.Info.obType);
       //OTemp^.Info
-      close(f);
     end;
 
   end
@@ -739,9 +743,9 @@ begin
   begin
     Rewrite(f);
     //Writeln('Create File');
-    close(f);
     result := true;
   end;
+  close(f);
   EditorForm.SD_Resize;
 end;
 

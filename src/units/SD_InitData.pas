@@ -6,6 +6,7 @@ const
   NearFigure = 40; // Количество пикселей, при котором идет "присоединение" фигуры;
   step_round = 20;
   Default_LineSVG_Width = 2;
+  Font_Size = 8;
 
 resourcestring
   rsNewFileDlg = 'Вы уверены? Все несохраненные данные будут удалены. Продолжить?';

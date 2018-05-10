@@ -2,8 +2,8 @@ object EditorForm: TEditorForm
   Left = 0
   Top = 0
   Caption = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083' - Syntax Diagrams'
-  ClientHeight = 395
-  ClientWidth = 770
+  ClientHeight = 399
+  ClientWidth = 775
   Color = clBtnFace
   Constraints.MinHeight = 454
   Constraints.MinWidth = 786
@@ -25,8 +25,8 @@ object EditorForm: TEditorForm
   object ScrollBox1: TScrollBox
     Left = 0
     Top = 49
-    Width = 770
-    Height = 346
+    Width = 775
+    Height = 350
     Align = alClient
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -34,9 +34,6 @@ object EditorForm: TEditorForm
     TabOrder = 0
     OnMouseWheelDown = ScrollBox1MouseWheelDown
     OnMouseWheelUp = ScrollBox1MouseWheelUp
-    ExplicitTop = 43
-    ExplicitWidth = 774
-    ExplicitHeight = 363
     object pbMain: TPaintBox
       Left = 0
       Top = 0
@@ -54,7 +51,7 @@ object EditorForm: TEditorForm
   object tbarMenu: TToolBar
     Left = 0
     Top = 0
-    Width = 770
+    Width = 775
     Height = 21
     Caption = 'tbarMenu'
     Color = clBtnFace
@@ -67,7 +64,6 @@ object EditorForm: TEditorForm
     ShowHint = True
     TabOrder = 1
     Transparent = False
-    ExplicitWidth = 766
     object tbNew: TToolButton
       Left = 0
       Top = 0
@@ -125,11 +121,40 @@ object EditorForm: TEditorForm
       Top = 0
       Action = actExportSVG
     end
+    object lblScale: TLabel
+      Left = 200
+      Top = 0
+      Width = 97
+      Height = 22
+      Alignment = taRightJustify
+      Caption = '            '#1052#1072#1089#1096#1090#1072#1073':    '
+      Layout = tlCenter
+    end
+    object tbSelectScale: TTrackBar
+      Left = 297
+      Top = 0
+      Width = 150
+      Height = 22
+      LineSize = 0
+      Min = 1
+      Position = 5
+      TabOrder = 0
+      OnChange = tbSelectScaleChange
+    end
+    object lblScaleView: TLabel
+      Left = 447
+      Top = 0
+      Width = 38
+      Height = 22
+      Alignment = taRightJustify
+      Caption = '   100%'
+      Layout = tlCenter
+    end
   end
   object tbSelectFigType: TToolBar
     Left = 0
     Top = 21
-    Width = 770
+    Width = 775
     Height = 28
     BorderWidth = 1
     Caption = 'tbSelectFigType'
@@ -141,7 +166,6 @@ object EditorForm: TEditorForm
     ParentColor = False
     TabOrder = 2
     Transparent = False
-    ExplicitWidth = 771
     object tbFigDef: TToolButton
       Left = 0
       Top = 0
@@ -224,7 +248,7 @@ object EditorForm: TEditorForm
     Images = ilMenu
     ParentBiDiMode = False
     Left = 56
-    Top = 120
+    Top = 216
     object mnFile: TMenuItem
       Caption = #1060#1072#1081#1083
       object mniNew: TMenuItem
@@ -279,13 +303,13 @@ object EditorForm: TEditorForm
     Top = 72
   end
   object SaveDialog1: TSaveDialog
-    Left = 56
-    Top = 168
+    Left = 96
+    Top = 72
   end
   object alMenu: TActionList
     Images = ilMenu
     Left = 56
-    Top = 216
+    Top = 120
     object actNew: TAction
       Category = 'ctgFile'
       Caption = #1053#1086#1074#1099#1081
@@ -361,9 +385,9 @@ object EditorForm: TEditorForm
   end
   object ilMenu: TImageList
     Left = 56
-    Top = 272
+    Top = 176
     Bitmap = {
-      494C01010C00C0009C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010C00C000A00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -899,10 +923,10 @@ object EditorForm: TEditorForm
       000000000000}
   end
   object ilFigures: TImageList
-    Left = 112
-    Top = 272
+    Left = 96
+    Top = 176
     Bitmap = {
-      494C010105000800440010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000800480010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1175,8 +1199,8 @@ object EditorForm: TEditorForm
   end
   object alSelectFigure: TActionList
     Images = ilFigures
-    Left = 112
-    Top = 216
+    Left = 96
+    Top = 120
     object actFigNone: TAction
       Caption = #1050#1091#1088#1089#1086#1088
       Hint = #1050#1091#1088#1089#1086#1088

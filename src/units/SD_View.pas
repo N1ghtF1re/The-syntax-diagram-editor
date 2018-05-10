@@ -8,7 +8,7 @@ uses SD_Types, vcl.graphics, SD_InitData, vcl.dialogs;
 // ### VIEW PART PROCEDURES ###
 
 // A search of the list of figures and their drawing
-procedure drawFigure(Canvas:TCanvas; head:PFigList; isVertex: boolean = true);
+procedure drawFigure(Canvas:TCanvas; head:PFigList; scale: real; isVertex:boolean = true);
 procedure drawSelectFigure(canvas:tcanvas; figure: TFigureInfo);
 procedure drawSelectLineVertex(canvas: TCanvas; Point: TPointsInfo);
 procedure updateScreen(canvas:tcanvas; FigHead: PFigList);
@@ -30,6 +30,19 @@ const
 implementation
 uses main, SD_Model;
 
+procedure ScaleMoveTo(canvas:TCanvas; x,y: integer);
+var scale : real;
+begin
+  scale := EditorForm.FScale;
+  canvas.MoveTo( ScaleRound(scale,x), ScaleRound(scale, y) );
+end;
+
+procedure ScaleLineTo(canvas:TCanvas; x,y: integer);
+var scale : real;
+begin
+  scale := EditorForm.FScale;
+  canvas.LineTo( ScaleRound(scale,x), ScaleRound(scale, y) );
+end;
 procedure updateScreen(canvas:tcanvas; FigHead: PFigList);
 begin
   EditorForm.Repaint;
@@ -38,20 +51,20 @@ end;
 procedure drawArrowVertical(Canvas:TCanvas; x,y : integer; coef: ShortInt);
 begin
   // Draw Vertical Arrow
-  canvas.MoveTo(x,y);
-  canvas.LineTo(x-Arrow_Height,y+Arrow_Width*coef);
-  canvas.MoveTo(x,y);
-  canvas.LineTo(x+Arrow_Height,y+Arrow_Width*coef);
-  canvas.MoveTo(x,y);
+  ScaleMoveTo(Canvas,x,y);
+  ScaleLineTo(Canvas,x-Arrow_Height,y+Arrow_Width*coef);
+  ScaleMoveTo(Canvas,x,y);
+  ScaleLineTo(Canvas,x+Arrow_Height,y+Arrow_Width*coef);
+  ScaleMoveTo(Canvas,x,y);
 end;
 
 procedure drawArrow(Canvas:TCanvas; x,y : integer; coef: ShortInt);
 begin
-  canvas.MoveTo(x,y);
-  canvas.LineTo(x-Arrow_Width*coef,y-Arrow_Height);
-  canvas.MoveTo(x,y);
-  canvas.LineTo(x-Arrow_Width*coef,y+Arrow_Height);
-  canvas.MoveTo(x,y);
+  ScaleMoveTo(Canvas,x,y);
+  ScaleLineTo(Canvas,x-Arrow_Width*coef,y-Arrow_Height);
+  ScaleMoveTo(Canvas,x,y);
+  ScaleLineTo(Canvas,x-Arrow_Width*coef,y+Arrow_Height);
+  ScaleMoveTo(Canvas,x,y);
 end;
 
 procedure drawOutBoundLine(canvas: TCanvas; FirstP: TPointsInfo; tmp:PPointsList);
@@ -62,9 +75,9 @@ begin
     coef := 1
   else
     coef := -1;
-  canvas.moveTo(tmp^.Info.x- Lines_DegLenght, tmp^.Info.y);
-  canvas.LineTo(tmp^.Info.x, tmp^.Info.y+coef*Lines_Deg);
-  canvas.moveTo(tmp^.Info.x, tmp^.Info.y+coef*Lines_Deg);
+  ScaleMoveTo(Canvas,tmp^.Info.x- Lines_DegLenght, tmp^.Info.y);
+  ScaleLineTo(Canvas,tmp^.Info.x, tmp^.Info.y+coef*Lines_Deg);
+  ScaleMoveTo(Canvas,tmp^.Info.x, tmp^.Info.y+coef*Lines_Deg);
   // canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15*coef-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15*coef+VertRad);
 end;
 
@@ -76,14 +89,18 @@ begin
 end;
 
 procedure drawVertexRect(canvas:TCanvas; point: TPointsInfo; color:TColor = clBlack);
+var
+  ScaleVertRad: integer;
 begin
   canvas.Pen.Color := color;
   if color <> clBlack then
     Canvas.Brush.Color := color;
 
   canvas.Pen.Width := 1;
-  canvas.Rectangle(point.x-VertRad,point.y-VertRad, point.x+VertRad, point.y+VertRad);
-  canvas.Pen.Width := Lines_Width;
+  EditorForm.useScale(Point.x, point.y);
+  ScaleVertRad := ScaleRound(EditorForm.FScale, VertRad);
+  canvas.Rectangle(point.x-ScaleVertRad,point.y-ScaleVertRad, point.x+ScaleVertRad, point.y+ScaleVertRad);
+  canvas.Pen.Width := Round(Lines_Width*EditorForm.FScale);
   canvas.Pen.Color := clBlack;
   canvas.Brush.Color := clwhite;
 
@@ -91,9 +108,9 @@ end;
 
 procedure drawIncomingLine(canvas: tcanvas; point: TPointsInfo; coef: ShortInt);
 begin
-  canvas.lineto(point.x, point.y + (Lines_Deg*coef));
-  canvas.moveto(point.x, point.y + (Lines_Deg*coef));
-  canvas.lineto(point.x+Lines_DegLenght, point.y);
+  ScaleLineTo(Canvas,point.x, point.y + (Lines_Deg*coef));
+  ScaleMoveTo(Canvas,point.x, point.y + (Lines_Deg*coef));
+  ScaleLineTo(Canvas,point.x+Lines_DegLenght, point.y);
   drawArrowVertical(canvas, point.x, point.y+Lines_DegLenght*coef, coef);
 end;
 
@@ -115,13 +132,14 @@ begin
   drawArrowVertical(canvas,point.x, point.y,1);
 end;
 
+
 function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 begin
   Result := (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x)
         and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2)
 end;
 
-procedure drawLines(Canvas:TCanvas; head: PPointsList; LT: TLineType; isVertex: boolean);
+procedure drawLines(Canvas:TCanvas; head: PPointsList; LT: TLineType; isVertex: boolean; scale: Real);
 var
   tmp: PPointsList; // Temp variable
   FirstP,PrevP: TPointsInfo; // First and Prev Point in list
@@ -133,7 +151,7 @@ var
   coef: -1..1;
 begin                  //\\
   coef := 1;
-  canvas.Pen.Width := Lines_Width; // Width For Line
+  canvas.Pen.Width := Trunc(Lines_Width*scale); // Width For Line
   isFirstLine := false;
   tmp := head;
 
@@ -147,7 +165,7 @@ begin                  //\\
 
     tmp := tmp^.Adr;
 
-    canvas.MoveTo(tmp^.Info.x, tmp^.Info.y); // Move to first point in list
+    ScaleMoveTo(Canvas,tmp^.Info.x, tmp^.Info.y); // Move to first point in list
 
     // FIRST POINT:
     if beginOfVertLine(tmp,firstP) and (PrevP.y = tmp^.Info.y) then
@@ -166,8 +184,8 @@ begin                  //\\
         coef := 1
       else
         coef := -1;
-      canvas.MoveTo(tmp^.Info.x, tmp^.Info.y-Lines_DegLenght);
-      canvas.LineTo(tmp^.Info.x+Lines_Deg*coef, tmp^.Info.y);
+      ScaleMoveTo(Canvas,tmp^.Info.x, tmp^.Info.y-Lines_DegLenght);
+      ScaleLineTo(Canvas,tmp^.Info.x+Lines_Deg*coef, tmp^.Info.y);
     end;
     // POTOM END;
 
@@ -185,14 +203,14 @@ begin                  //\\
       end;}
       if (PrevP.y = tmp^.Info.y) and (tmp^.Adr = nil) and  isHorisontalIntersection(EditorForm.getFigureHead,tmp)  then
       begin
-        canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
+        ScaleLineTo(Canvas,tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
         // Перед \ - стрелочка
         if (PrevP.x - tmp^.Info.x > 0) and (PrevP.y = tmp^.Info.y) then
           drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, -1)
         else if (PrevP.y = tmp^.Info.y) then
           drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, 1);
-        canvas.MoveTo(tmp^.Info.x, tmp^.Info.y+Lines_DegLenght);
-        canvas.LineTo(tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
+        ScaleMoveTo(Canvas,tmp^.Info.x, tmp^.Info.y+Lines_DegLenght);
+        ScaleLineTo(Canvas,tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
         Point1 :=  tmp^.Info;
         if isVertex then
           drawVertexRect(canvas, point1);
@@ -212,9 +230,9 @@ begin                  //\\
         continue;
       end
       else
-        canvas.lineto(tmp^.Info.x, tmp^.Info.y);
+        ScaleLineTo(Canvas,tmp^.Info.x, tmp^.Info.y);
 
-      canvas.moveto(tmp^.Info.x, tmp^.Info.y);
+      ScaleMoveTo(Canvas,tmp^.Info.x, tmp^.Info.y);
       if isVertex then
         drawVertexRect(canvas, tmp^.Info);
 
@@ -237,7 +255,7 @@ begin                  //\\
           else
             tmpx := -1;
           drawArrow(Canvas,tmp^.Info.x + 10 - (tmp^.Info.x - PrevP.x) div 2, tmp^.Info.y, tmpx);
-          canvas.moveto(tmp^.Info.x , tmp^.Info.y)
+          ScaleMoveTo(Canvas,tmp^.Info.x , tmp^.Info.y)
         end;
         if tmp^.Info.y - tmp^.adr^.Info.y < 0 then
           coef := -1
@@ -259,7 +277,7 @@ begin                  //\\
 end;
 
 
-procedure drawFigure(Canvas:TCanvas; head:PFigList; isVertex:boolean = true);
+procedure drawFigure(Canvas:TCanvas; head:PFigList; scale: real; isVertex:boolean = true);
 var
   temp:PFigList;
   TextW: Integer;
@@ -281,21 +299,20 @@ begin
         MetaConst: ;
         line:
         begin
-          drawLines(Canvas, temp^.Info.PointHead, temp^.Info.LT, isVertex);
+          drawLines(Canvas, temp^.Info.PointHead, temp^.Info.LT, isVertex, scale);
           temp := temp^.adr;
           continue; // if figure - line => draw this line and skip ineration
         end;
         else
         ;
       end;
-
+      Canvas.Font.Size := Font_Size;
       TextW := canvas.TextWidth(text);
       textH := Canvas.TextHeight(text);
-
       // Расчитываем координаты, чтобы текст был по середине
       TX := x1 + (x2 - x1) div 2 - TextW div 2;
       TY := y1 + (y2 - y1) div 2 - TextH div 2;
-
+      Canvas.Font.Size := ScaleRound(Scale, Font_Size);
       // Если ширина или высота блока меньше, чем текста, то подгоняем под размер текста
       if (abs(x2 - x1) < TextW) then
       begin
@@ -314,6 +331,7 @@ begin
         // Рисуем вершины
         Point.x := x1;
         Point.y := y1;
+
         drawVertexRect(canvas, Point);
 
         Point.y := y2;
@@ -325,8 +343,8 @@ begin
         Point.y := y1;
         drawVertexRect(canvas, Point);
       end;
-
-      Canvas.TextOut(TX,TY, text);
+      Canvas.Font.Size := ScaleRound(Scale, Font_Size);
+      Canvas.TextOut(ScaleRound(Scale, TX),ScaleRound(Scale, TY), text);
     end;
 
     temp := temp^.Adr;
@@ -336,7 +354,9 @@ end;
 procedure drawSelectFigure(canvas:tcanvas; figure: TFigureInfo);
 var x1,x2,y1,y2: integer;
 point: TPointsInfo;
+Scale: Real;
 begin
+  Scale := EditorForm.FScale;
   x1 := figure.x1;
   x2 := figure.x2;
   y1 := figure.y1;

@@ -68,6 +68,9 @@ type
     actFigMetaVar: TAction;
     actFigMetaConst: TAction;
     lblEnterText: TLabel;
+    tbSelectScale: TTrackBar;
+    lblScale: TLabel;
+    lblScaleView: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -107,6 +110,7 @@ type
     procedure actFigDefExecute(Sender: TObject);
     procedure actFigMetaVarExecute(Sender: TObject);
     procedure actFigMetaConstExecute(Sender: TObject);
+    procedure tbSelectScaleChange(Sender: TObject);
 
     
   private
@@ -117,6 +121,10 @@ type
     procedure newFile;
 
   public
+    PBW, PBH: integer;
+    FScale: Real;
+    procedure useScale(var x,y: integer);
+    procedure DiscardScale(var x,y: integer);
     procedure SD_Resize;
     function getFigureHead:PFigList;
     procedure getTextWH(var TW, TH: Integer; text: string; size: integer; family: string);
@@ -124,9 +132,6 @@ type
     function saveFile(mode: TFileMode):string;
     procedure changeCanvasSize(w,h: Integer);
     procedure getCanvasSIze(var w,h:Integer);
-
-
-    
   end;
 
 var
@@ -167,8 +172,8 @@ procedure TEditorForm.actCanvasSizeExecute(Sender: TObject);
 var
   neww, newh : integer;
 begin
-  neww:= pbMain.Width;
-  newh := pbMain.Height;
+  neww:= PBW;
+  newh := PBH;
   CanvasSettingsForm.showForm(neww, newh);
   changeCanvasSize(neww, newh);
   Self.Repaint;
@@ -297,6 +302,31 @@ begin
   isChanged := flag;
 end;
 
+procedure TEditorForm.tbSelectScaleChange(Sender: TObject);
+begin
+  case (Sender as TTrackBar).Position of
+    1: FScale := 0.1;
+    2: FScale := 0.3;
+    3: FScale := 0.5;
+    4: FScale := 0.8;
+    5: FScale := 1;
+    6: FScale := 1.2;
+    7: FScale := 1.5;
+    8: FScale := 1.7;
+    9: FScale := 2;
+    10: FScale := 4;
+  end;
+  lblScaleView.Caption := '  ' + IntToStr( Round(FScale*100) ) + '%';
+  changeCanvasSize(PBW, PBH);
+  Self.Invalidate;
+end;
+
+procedure TEditorForm.useScale(var x, y: integer);
+begin
+  x := Round(FScale*x);
+  y := Round(FScale*y);
+end;
+
 procedure TEditorForm.pbMainMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var x0, y0: Integer;
@@ -310,7 +340,7 @@ begin
     case button of
       TMouseButton.mbLeft:
       begin
-        addNewPoint( CurrFigure^.Info.PointHead, x,y);
+        addNewPoint( CurrFigure^.Info.PointHead, Round(x / FScale),Round(y / FScale));
         isChanged := true;
       end;
       TMouseButton.mbRight: dm:=NoDraw;
@@ -328,12 +358,12 @@ begin
     isChanged := true;
     if CurrType <> Line then
     begin
-      CurrFigure := addFigure(FigHead, x,y, CurrType, edtRectText.Text);
+      CurrFigure := addFigure(FigHead, Round(x/FScale),Round(y/FSCale), CurrType, edtRectText.Text);
       CurrFigure.Info.y1 := y - abs(CurrFigure.Info.y1 - CurrFigure.Info.y2) div 2
     end
     else if (DM <> DrawLine) and (Button = mbLeft) then
     begin
-      CurrFigure := addLine(FigHead, x,y);
+      CurrFigure := addLine(FigHead, Round(x/FScale),Round(y/FScale));
       DM := DrawLine;
     end;
   end
@@ -343,7 +373,7 @@ begin
     tempy:= y;
   end;
 
-  ClickFigure := getClickFigure(x0,y0, FigHead);
+  ClickFigure := getClickFigure(Round(x0/FScale) ,Round(y0/FScale), FigHead);
   if (ClickFigure <> nil) and (ClickFigure^.Info.tp <> line)
         and (CurrFigure^.Info.tp <> line) then
   begin
@@ -414,7 +444,7 @@ begin
     DM := nodraw;
   if dm = NoDraw then
   begin
-    EM := getEditMode(DM, x,y,FigHead, CurrType);
+    EM := getEditMode(DM, Round(x/FScale),Round(y/FScale),FigHead, CurrType);
     changeCursor(ScrollBox1, EM); // Меняем курсор в зависимости от положения мыши
 
     if ClickFigure <> nil then
@@ -433,6 +463,8 @@ begin
 
 
 end;
+
+
 
 procedure TEditorForm.pbMainMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
@@ -453,7 +485,7 @@ begin
   with (Sender as TPaintBox) do
   begin
     clearScreen;
-    drawFigure(Canvas, FigHead);
+    drawFigure(Canvas, FigHead, FScale);
   end;
 end;
 
@@ -465,6 +497,12 @@ end;
 
 
 
+
+procedure TEditorForm.DiscardScale(var x, y: integer);
+begin
+  x := Round(x/FScale);
+  y := Round(y/FScale);
+end;
 
 procedure TEditorForm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
@@ -491,13 +529,18 @@ end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);
 begin
+  FScale := 1;
+  PBH := pbMain.height;
+  PBW := pbMain.Width;
+  pbMain.Width := round(pbMain.Width*Fscale);
+  pbMain.Height := round(pbMain.height*Fscale);
   tbFigNone.Down := true;
   actPast.Enabled := false;
   currpath := '';
   Self.DoubleBuffered := true;
   switchChangedStatus(false);
   createFigList(FigHead);
-  CurrType := Def;
+  CurrType := None;
   EM := NoEdit;
   CurrFigure := nil;
   clearScreen;
@@ -513,7 +556,7 @@ begin
     switchChangedStatus(true);
     ClickFigure := nil;
     Self.clearScreen;
-    drawFigure(pbMain.canvas,FigHead);
+    drawFigure(pbMain.canvas,FigHead, FScale);
   end;
   if (key = VK_RETURN) and (ClickFigure <> nil) and (ClickFigure.Info.tp <> Line) then
   begin
@@ -585,7 +628,7 @@ begin
     with TBitMap.Create do begin
       width := pbMain.Width;
       height := pbMain.Height;
-      drawFigure(Canvas, FigHead,false);
+      drawFigure(Canvas, FigHead,FScale, false);
       SaveToFile(path);
     end;
   end;
@@ -619,6 +662,9 @@ end;
 
 procedure TEditorForm.changeCanvasSize(w,h: Integer);
 begin
+  PBH := h;
+  PBW := w;
+  useScale(W, H);
   pbMain.width := w;
   pbMain.height := h;
 end;
