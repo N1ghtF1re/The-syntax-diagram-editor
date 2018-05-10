@@ -3,17 +3,15 @@ unit SD_Model;
 // responsible for processing information
 interface
 
-uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils;
+uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils, Model.FilesUtil;
  function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean;
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
- procedure removeFigure(head: PFigList; adr: PFigList);
+ function removeFigure(head: PFigList; adr: PFigList):PFigList;
  procedure selectFigure(canvas: TCanvas; head:PFigList);
- function readFile(const head:PFigList; filedir:string):boolean;
- procedure saveToFile(Head: PFigList; filedir: string);
  procedure removeAllList(head:PFigList);
  procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
  procedure checkLineCoords(head: PPointsList);
- procedure addNewPoint(var head: PPointsList; x,y:integer);
+ function addNewPoint(var head: PPointsList; x,y:integer):PPointsList;
  procedure createFigList(var head: PFigList);
  function addLine(head: PFigList; x,y: integer):PFigList;
  function searchNearFigure(head: PFigList; var x,y: integer):PPointsList;
@@ -26,6 +24,7 @@ uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils;
  procedure copyFigure(head: PFigList; copyfigure:PFigList);
  procedure MagnetizeLines(head: PFigList);
  function ScaleRound(scale: real; x: integer): integer;
+ procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
 
 implementation
 uses System.Sysutils, main;
@@ -281,6 +280,7 @@ begin
   //ShowMessage( IntToStr(x) + ' ' + IntToStr(y) );
 end;
 
+
 // Добавляем новый прямоугольный объект и возвращаем ссылку на него!
 function addFigure(head: PFigList; x,y: integer; ftype: TType; Text:String = 'Kek'):PFigList;
 var
@@ -529,7 +529,7 @@ begin
   Result := nil;
 end;
 
-procedure addNewPoint(var head: PPointsList; x,y:integer);
+function addNewPoint(var head: PPointsList; x,y:integer):PPointsList;
 var
   tmp :PPointsList;
   id :integer;
@@ -553,14 +553,16 @@ begin
     end;
   end;
   new(tmp^.adr);
+  Result := tmp;
   tmp := tmp^.adr;
   tmp^.Info.x := x;
   tmp^.Info.y := y;
-
   tmp^.Adr := nil;
 end;
 
-procedure removeFigure(head: PFigList; adr: PFigList);
+// Функция выполняет логическое удаление фигуры и возвращает ссылку
+// На предшествующую удаленной фигуру фигуру.
+function removeFigure(head: PFigList; adr: PFigList):PFigList;
 var
   temp,temp2:PFigList;
 begin
@@ -571,7 +573,8 @@ begin
     if temp2 = adr then
     begin
       temp^.adr := temp2^.adr;
-      dispose(temp2);
+      Result := temp;
+      //dispose(temp2);
     end
     else
       temp:= temp^.adr;
@@ -603,51 +606,7 @@ begin
 end;
 
 
-procedure saveToFile(Head: PFigList; filedir: string);
-var f: file of TFigureInFile;
-  temp: PFigList;
-  tmpPoints: PPointsList;
-  tempRec: TFigureInFile;
-  st: string[255];
-begin
-  AssignFile(f, filedir);
-  rewrite(f);
-  tempRec.tp := TTYPE(4);
-  EditorForm.getCanvasSIze(tempRec.Width,tempRec.Height);
-  tempRec.Check := 'BRAKH';
-  Write(f, tempRec);
-  temp := head^.adr;
-  while temp <> nil do
-  begin
-    tempRec.tp := temp^.Info.tp;
-    if tempRec.tp = Line then
-    begin
-      tmpPoints := temp^.Info.PointHead^.adr;
-      st := '';
-      while tmpPoints <> nil do
-      begin
-        st := st + ShortString('"' + IntToStr(tmpPoints.Info.x) + '/' + IntToStr(tmpPoints.Info.y) +'"');
-        tmpPoints := tmpPoints^.Adr;
-      end;
-      //showMessage(String(st));
-      tempRec.Point := st;
-      tempRec.LT := temp^.Info.LT;
-      tempRec.tp := Line;
-    end
-    else
-    begin
-      tempRec.txt := temp^.Info.Txt;
-      tempRec.x1 := temp^.Info.x1;
-      tempRec.x2 := temp^.Info.x2;
-      tempRec.y1 := temp^.Info.y1;
-      tempRec.y2 := temp^.Info.y2;
-    end;
 
-    write(f, tempRec);
-    temp:=temp^.adr;
-  end;
-  close(F);
-end;
 
 procedure removeAllList(head:PFigList);
 var
@@ -663,91 +622,6 @@ begin
   head.Adr := nil;
 end;
 
-function readFile(const head:PFigList; filedir:string):boolean;
-var
-  f: file of TFigureInFile;
-  OTemp: PFigList;
-  tmp: TFigureInFile;
-  ptemp: PPointsList;
-  xy: string;
-begin
-  Result := false;
-  AssignFile(f, filedir);
-  if fileExists(filedir) then
-  begin
-    Reset(f);
-
-    OTemp := Head;
-    read(f, tmp);
-    if tmp.Check <> 'BRAKH' then
-    begin
-      close(f);
-      ShowMessage(rsInvalidFile);
-      exit;
-    end;
-    EditorForm.changeCanvasSize(tmp.Width,tmp.Height);
-    head^.Adr := nil;
-    while not EOF(f) do
-    begin
-      new(OTemp^.adr);
-      OTemp:=OTemp^.adr;
-      OTemp^.adr:=nil;
-      try
-        read(f, tmp);
-        OTemp^.Info.tp := tmp.tp;
-        if tmp.tp = line then
-        begin
-          //showMessage(tmp.Point);
-          OTemp^.Info.tp := line;
-          Otemp^.Info.LT := tmp.LT;
-          new(OTemp^.Info.PointHead);
-          ptemp := OTemp^.Info.PointHead;
-          ptemp^.Adr := nil;
-          if tmp.Point <> '' then
-          begin
-            Delete(tmp.Point,1,1);
-            tmp.Point := tmp.Point + '"';
-          end;
-          while (length(tmp.Point) <> 0) and (tmp.Point <> '"') do
-          begin
-            xy := copy(tmp.point,1, pos('"', tmp.Point)-1);
-            Delete(tmp.point,1, pos('"', tmp.Point)+1);
-            if (tmp.Point <> '') or (xy <> '') then
-            begin
-              new(ptemp^.Adr);
-              ptemp := ptemp^.Adr;
-              ptemp^.Adr := nil;
-              ptemp^.Info.x := strtoint(copy(xy, 1,pos('/', xy)-1));
-              ptemp^.Info.y := strtoint(copy(xy, pos('/', xy)+1, length(xy)));
-            end;
-          end;
-          result := true;
-        end
-        else
-        begin
-          OTemp^.info.txt := tmp.Txt;
-          otemp^.info.x1 := tmp.x1;
-          otemp^.info.x2 := tmp.x2;
-          otemp^.info.y1 := tmp.y1;
-          otemp^.info.y2 := tmp.y2;
-        end;
-      except on E: Exception do
-        ShowMessage('Файл поврежден!');
-      end;
-      //ShowMessage(otemp^.Info.obType);
-      //OTemp^.Info
-    end;
-
-  end
-  else
-  begin
-    Rewrite(f);
-    //Writeln('Create File');
-    result := true;
-  end;
-  close(f);
-  EditorForm.SD_Resize;
-end;
 
 procedure checkLineCoords(head: PPointsList);
 var
@@ -934,5 +808,82 @@ begin
     tmp := tmp^.Adr;
   end;
 end;
+
+
+procedure changeListCoords(head: PPointsList; st:string);
+var
+  tmp: PPointsList;
+  xy: string;
+begin
+  tmp:= head^.Adr;
+  if st <> '' then
+  begin
+    Delete(st,1,1);
+    st := st + '"';
+  end;
+  while (length(st) <> 0) and (st <> '"') do
+  begin
+    xy := copy(st, 1, pos('"', st)-1);
+    Delete(st,1, pos('"', st)+1);
+    if (st <> '') or (xy <> '') then
+    begin
+      if tmp <> nil then
+      begin
+        tmp^.Info.x := strtoint(copy(xy, 1,pos('/', xy)-1));
+        tmp^.Info.y :=  strtoint(copy(xy, pos('/', xy)+1, length(xy)));
+        tmp := tmp^.Adr;
+      end
+      else
+      begin
+        ShowMessage('Error (small)');
+        Exit;
+      end;
+
+    end;
+  end;
+end;
+
+procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
+var
+  tmp: PFigList;
+  tmpP: PPointsList;
+begin
+  case UndoRec.ChangeType of
+    chDelete:
+    begin
+      tmp := UndoRec.adr;
+      tmp.Adr := UndoRec.PrevFigure^.Adr;
+      undoRec.PrevFigure^.Adr := tmp;
+    end;
+    chAddPoint:
+    begin
+      tmpP:= UndoRec.PrevPointAdr^.adr;
+      UndoRec.PrevPointAdr^.Adr := nil;
+      Dispose(tmpP);
+    end;
+    chInsert:
+    begin
+      removeFigure(EditorForm.getFigureHead, UndoRec.adr)
+    end;
+    chFigMove:
+    begin
+      UndoRec.adr^.Info := UndoRec.PrevInfo;
+    end;
+    chPointMove:
+    begin
+      changeListCoords(UndoRec.adr^.Info.PointHead, UndoRec.st);
+    end;
+    chChangeText:
+    begin
+      UndoRec.adr^.Info.Txt := UndoRec.text;
+    end;
+    NonDeleted: ;
+  end;
+
+
+end;
+
+
+
 
 end.

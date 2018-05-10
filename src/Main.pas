@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
   Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils, Vcl.Buttons,
   System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
-  Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.ToolWin;
+  Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.ToolWin, Model.UndoStack;
 type
   TEditorForm = class(TForm)
     edtRectText: TEdit;
@@ -71,6 +71,11 @@ type
     tbSelectScale: TTrackBar;
     lblScale: TLabel;
     lblScaleView: TLabel;
+    actUndo: TAction;
+    mniUndo: TMenuItem;
+    ToolButton2: TToolButton;
+    actHelp: TAction;
+    mniProgramHelp: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -111,15 +116,18 @@ type
     procedure actFigMetaVarExecute(Sender: TObject);
     procedure actFigMetaConstExecute(Sender: TObject);
     procedure tbSelectScaleChange(Sender: TObject);
+    procedure actUndoExecute(Sender: TObject);
+    procedure actHelpExecute(Sender: TObject);
 
     
   private
     isChanged: Boolean;
     currpath: string;
+    isMoveFigure: Boolean;
+    USVertex: PUndoStack; // US - Undo Stack
     procedure switchChangedStatus(flag: Boolean);
     procedure changePath(path: string);
     procedure newFile;
-
   public
     PBW, PBH: integer;
     FScale: Real;
@@ -155,7 +163,7 @@ implementation
 {$R+}
 {$R-}
 
-uses FCanvasSizeSettings, FHtmlView;
+uses FCanvasSizeSettings, FHtmlView, Model.FilesUtil;
 
 procedure TEditorForm.changeEditorText(newtext: string);
 begin
@@ -187,7 +195,7 @@ end;
 
 procedure TEditorForm.actExportBMPExecute(Sender: TObject);
 begin
-saveBMPFile;
+  saveBMPFile;
 end;
 
 procedure TEditorForm.actExportSVGExecute(Sender: TObject);
@@ -221,15 +229,24 @@ begin
   CurrType := None;
 end;
 
+procedure TEditorForm.actHelpExecute(Sender: TObject);
+begin
+  FHTml.showHTML(rsHelp_Caption,rsHelp_ResName);
+end;
+
 procedure TEditorForm.actNewExecute(Sender: TObject);
 var
   answer: Integer;
 begin
+
   answer := MessageDlg(rsNewFileDlg,mtCustom,[mbYes,mbNo], 0);
   if  answer = mrYes then
   begin
     newFile;
+    actUndo.Enabled := false;
+    UndoStackClear(USVertex);
   end;
+
 end;
 
 procedure TEditorForm.actOpenExecute(Sender: TObject);
@@ -257,6 +274,8 @@ begin
   begin
 
     removeAllList(FigHead);
+    actUndo.Enabled := false;
+    UndoStackClear(USVertex);
     if readFile(FigHead, path) then
     begin
       changePath(path);
@@ -290,6 +309,20 @@ begin
   end
   else
     saveBrakhFile;
+end;
+
+procedure TEditorForm.actUndoExecute(Sender: TObject);
+  var
+    undoRec: TUndoStackInfo;
+begin
+  if undoStackPop(USVertex, undoRec) then
+  begin
+    undoChanges(undoRec, Canvas);
+  end;
+
+  if isStackEmpty(USVertex) then (Sender as TAction).Enabled := false;
+  ClickFigure := nil;
+  pbMain.Repaint;
 end;
 
 procedure TEditorForm.btnALineClick(Sender: TObject);
@@ -330,6 +363,7 @@ end;
 procedure TEditorForm.pbMainMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var x0, y0: Integer;
+  UndoRec: TUndoStackInfo;
 begin
   x0 := x;
   y0 := y;
@@ -340,8 +374,12 @@ begin
     case button of
       TMouseButton.mbLeft:
       begin
-        addNewPoint( CurrFigure^.Info.PointHead, Round(x / FScale),Round(y / FScale));
+        UndoRec.PrevPointAdr := addNewPoint( CurrFigure^.Info.PointHead, Round(x / FScale),Round(y / FScale));
+        UndoRec.ChangeType := chAddPoint;
+        UndoRec.adr := CurrFigure;
+        UndoStackPush(USVertex, UndoRec);
         isChanged := true;
+        actUndo.Enabled := true;
       end;
       TMouseButton.mbRight: dm:=NoDraw;
       TMouseButton.mbMiddle: dm:=NoDraw;
@@ -358,13 +396,21 @@ begin
     isChanged := true;
     if CurrType <> Line then
     begin
+      UndoRec.ChangeType := chInsert;
       CurrFigure := addFigure(FigHead, Round(x/FScale),Round(y/FSCale), CurrType, edtRectText.Text);
-      CurrFigure.Info.y1 := y - abs(CurrFigure.Info.y1 - CurrFigure.Info.y2) div 2
+      UndoRec.adr := Currfigure;
+      CurrFigure.Info.y1 := y - abs(CurrFigure.Info.y1 - CurrFigure.Info.y2) div 2;
+      UndoStackPush(USVertex, UndoRec);
+      actUndo.Enabled := true;
     end
     else if (DM <> DrawLine) and (Button = mbLeft) then
     begin
+      UndoRec.ChangeType := chInsert;
       CurrFigure := addLine(FigHead, Round(x/FScale),Round(y/FScale));
+      UndoRec.adr := Currfigure;
       DM := DrawLine;
+      UndoStackPush(USVertex, UndoRec);
+      actUndo.Enabled := true;
     end;
   end
   else
@@ -437,6 +483,8 @@ procedure TEditorForm.pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 {var          // LOGS
   f:TextFile;}
+var
+  undorec: TUndoStackInfo;
 begin
   if clickfigure = nil then
     prevText:= edtRectText.Text;
@@ -454,6 +502,24 @@ begin
   end;
   if (DM = draw) and (currfigure <> nil)  then
   begin
+    if not isMoveFigure then
+    begin
+      isMoveFigure := true;
+      undorec.adr := CurrFigure;
+      if CurrFigure^.Info.tp <> Line then
+      begin
+        undorec.ChangeType := chFigMove;
+        undorec.PrevInfo := CurrFigure^.Info;
+      end
+      else
+      begin
+        undorec.ChangeType := chPointMove;
+        undorec.st := pointsToStr(CurrFigure^.Info.PointHead^.adr);
+      end;
+      UndoStackPush(USVertex, undorec);
+      actUndo.Enabled := true;
+    end;
+
     switchChangedStatus(TRUE);
     ChangeCoords(CurrFigure, EM, x,y, tempX, tempY);
     TempX:= X; // Обновляем прошлые координаты
@@ -474,6 +540,11 @@ begin
     DM := NoDraw; // Заканчиваем рисование
     checkFigureCoord(CurrFigure);
   end;
+  if isMoveFigure then
+  begin
+    isMoveFigure := false;
+  end;
+
   MagnetizeLines(FigHead);
   {if CurrType = Line then
     clearScreen;}
@@ -528,6 +599,9 @@ begin
 end;
 
 procedure TEditorForm.FormCreate(Sender: TObject);
+{var}
+  {tmp: TUndoStackInfo;
+  i: byte;}
 begin
   FScale := 1;
   PBH := pbMain.height;
@@ -545,14 +619,33 @@ begin
   CurrFigure := nil;
   clearScreen;
   CoppyFigure := nil;
+
+  // UNDO STACK
+  CreateStack(USVertex);
+{  tmp.ChangeType := chDelete;
+  for i := 1 to 4 do
+    begin
+        tmp.changetype := TChangeType(i-1);
+            UndoStackPush(USVertex, tmp);
+              end;
+                for i := 1 to 6 do
+                    if not undoStackPop(USVertex, tmp) then ShowMessage('Stack is not filled');
+
+                      tmp.ChangeType := chInsert;}
 end;
 
 procedure TEditorForm.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+var
+  UndoRec: TUndoStackInfo;
 begin
   if (key = VK_DELETE) and (ClickFigure <> nil) then
   begin
-    removeFigure(FigHead, ClickFigure);
+    UndoRec.adr := ClickFigure;
+    UndoRec.PrevFigure := removeFigure(FigHead, ClickFigure);
+    UndoRec.ChangeType :=chDelete;
+    actUndo.Enabled := true;
+    UndoStackPush(USVertex, UndoRec);
     switchChangedStatus(true);
     ClickFigure := nil;
     Self.clearScreen;
@@ -560,6 +653,11 @@ begin
   end;
   if (key = VK_RETURN) and (ClickFigure <> nil) and (ClickFigure.Info.tp <> Line) then
   begin
+    UndoRec.adr := ClickFigure;
+    UndoRec.text := ClickFigure.Info.Txt;
+    UndoRec.ChangeType := chChangeText;
+    UndoStackPush(USVertex, UndoRec);
+    actUndo.Enabled := true;
     ClickFigure.Info.Txt := ShortString(edtRectText.Text);
     pbMain.Repaint;
   end;
@@ -620,15 +718,21 @@ end;
 procedure TEditorForm.saveBMPFile;
 var
   path: string;
+  oldScale: real;
+const
+  ExportScale = 4;
 begin
+  oldScale := FScale;
   path := saveFile(FBmp);
   if path <> '' then
   begin
     ClickFigure := nil;
     with TBitMap.Create do begin
-      width := pbMain.Width;
-      height := pbMain.Height;
-      drawFigure(Canvas, FigHead,FScale, false);
+      width := pbMain.Width*ExportScale;
+      height := pbMain.Height*ExportScale;
+      FScale := ExportScale;
+      drawFigure(Canvas, FigHead,ExportScale, false);
+      FScale := oldScale;
       SaveToFile(path);
     end;
   end;

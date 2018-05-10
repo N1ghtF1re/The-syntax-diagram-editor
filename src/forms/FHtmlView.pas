@@ -32,6 +32,7 @@ begin
   WebBrowser1.Navigate('res://' + Application.ExeName + '/' + htmlres,
   Flags, TargetFrameName, PostData, Headers);
 
+
   //WebBrowser1.Navigate('about:'+html);
   //WebBrowser1.Navigate ('res://SyntaxDiag.exe/HTMLPage');
   Self.ShowModal;

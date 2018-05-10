@@ -16,8 +16,10 @@ resourcestring
 
 resourcestring
   rsHelpHowIsSD_Caption = 'Что такое синтаксическая диаграмма?';
+  rsHelp_Caption = 'Помощь';
 const
   rsHelpHowIsSD_ResName = 'help1';
+  rsHelp_ResName = 'help2';
 
 implementation
 

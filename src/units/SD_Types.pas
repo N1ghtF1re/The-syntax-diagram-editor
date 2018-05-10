@@ -42,6 +42,26 @@ type
     None: (Check:string[5];Width, Height: Integer;);
   end;
 
+  // UNDO STACK
+  TChangeType = (chDelete, chInsert, chAddPoint,  chFigMove, chPointMove, chChangeText, NonDeleted);
+  TUndoStackInfo = record
+    adr: PFigList;
+  Case ChangeType : TChangeType of
+    chDelete: (PrevFigure: PFigList); // Удаление фигуры
+    chAddPoint: (PrevPointAdr: PPointsList); // Добавление точки в линии
+    chInsert: (); // Добавление фигуры
+    chFigMove: (PrevInfo: TFigureInfo); // Перемещение/изменение размеров фигур. PrevInfo - координаты "бэкапа"
+    chPointMove: (st: string[255]);
+    chChangeText: (text: string[255]);
+    NonDeleted: (); // Используется для обозначения последний записи стека, которую нельзя pop
+  end;
+
+  PUndoStack = ^TUndoStack;
+  TUndoStack = record
+    Inf: TUndoStackInfo;
+    Prev: PUndoStack;
+  end;
+
 implementation
 
 end.
