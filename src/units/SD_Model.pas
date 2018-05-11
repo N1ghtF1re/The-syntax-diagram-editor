@@ -774,6 +774,44 @@ begin
   end;
 end;
 
+function magnetizeWithFigures(head: PFigList; Point: PPointsList):boolean;
+var
+  temp: PFigList;
+begin
+  temp := head^.adr;
+  Result := false;
+  while temp <> nil do
+  begin
+    if temp^.Info.tp <> Line then
+    begin
+      if (abs( Point^.Info.x - temp^.Info.x1) < NearFigure*2)
+        and
+        ( Point^.Info.y < temp^.Info.y2 )
+        and
+        ( Point^.Info.y > temp^.Info.y1 )
+      then
+      begin
+        Result := true;
+        Point^.info.x := temp^.Info.x1;
+        point^.Info.y := (temp^.Info.y1 + temp^.Info.y2) div 2;
+      end;
+
+      if (abs( Point^.Info.x - temp^.Info.x2) < NearFigure*2)
+        and
+        ( Point^.Info.y < temp^.Info.y2 )
+        and
+        ( Point^.Info.y > temp^.Info.y1 )
+      then
+      begin
+        Result := true;
+        Point^.info.x := temp^.Info.x2;
+        point^.Info.y := (temp^.Info.y1 + temp^.Info.y2) div 2;
+      end;
+    end;
+    temp := temp^.Adr;
+  end;
+end;
+
 procedure MagnetizeLines(head: PFigList);
 var
   tmp: PFigList;
@@ -782,7 +820,6 @@ var
   x,y : integer;
   oldP, newP: TPointsInfo;
 begin
-
   tmp := head^.adr;
   while tmp <> nil do
   begin
@@ -797,7 +834,12 @@ begin
     begin
       x := tmpP^.Info.x;
       y := tmpP^.Info.y;
-
+      if magnetizeWithFigures(head, tmpP) then
+      begin
+        oldp.x := x;
+        oldp.y := y;
+        MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+      end;
       NearP := searchNearFigure(head, x,y);
       if NearP <> nil then
       begin
@@ -805,12 +847,21 @@ begin
         oldp.y := tmpP^.Info.y;
         newP.x := nearP.Info.x;
         newP.y := tmpP^.Info.y;
+        {currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
+        currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
+        MoveLine(CurrFigure^.Info.PointHead, oldp, currPointAdr^.Info);}
         if abs(tmpP^.Info.x  - nearP.Info.x) < nearFigure then
-          MoveLine(tmp^.Info.PointHead,oldP, newP);
+        begin
+          tmpP^.Info := newP;
+          MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+        end;
         newP.x := tmpP^.Info.x;
         newP.y := nearP.Info.y;
         if abs(tmpP^.Info.y - nearP.Info.y) < nearFigure then
-          MoveLine(tmp^.Info.PointHead,oldP, newP);
+        begin
+          tmpP^.Info := newP;
+          MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+        end;
       end;
       tmpP := tmpP^.Adr;
     end;
@@ -893,7 +944,6 @@ begin
 
 
 end;
-
 
 
 

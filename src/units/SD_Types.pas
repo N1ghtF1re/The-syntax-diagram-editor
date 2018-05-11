@@ -62,6 +62,8 @@ type
     Prev: PUndoStack;
   end;
 
+  // VIRTUAL KEYS:
+
 implementation
 
 end.

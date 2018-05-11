@@ -20,19 +20,21 @@ function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 implementation
 uses main, SD_Model;
 
+// MoveTo with using scale
 procedure ScaleMoveTo(canvas:TCanvas; x,y: integer);
 var scale : real;
 begin
   scale := EditorForm.FScale;
   canvas.MoveTo( ScaleRound(scale,x), ScaleRound(scale, y) );
 end;
-
+// LineTo with using scale
 procedure ScaleLineTo(canvas:TCanvas; x,y: integer);
 var scale : real;
 begin
   scale := EditorForm.FScale;
   canvas.LineTo( ScaleRound(scale,x), ScaleRound(scale, y) );
 end;
+
 procedure updateScreen(canvas:tcanvas; FigHead: PFigList);
 begin
   EditorForm.Repaint;
@@ -48,6 +50,7 @@ begin
   ScaleMoveTo(Canvas,x,y);
 end;
 
+// Draw horisontal arrow
 procedure drawArrow(Canvas:TCanvas; x,y : integer; coef: ShortInt);
 begin
   ScaleMoveTo(Canvas,x,y);
@@ -57,6 +60,7 @@ begin
   ScaleMoveTo(Canvas,x,y);
 end;
 
+// Draw out bound line ( |\----- )
 procedure drawOutBoundLine(canvas: TCanvas; FirstP: TPointsInfo; tmp:PPointsList);
 var
   coef: -1..1;
@@ -71,6 +75,7 @@ begin
   // canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15*coef-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15*coef+VertRad);
 end;
 
+// Return true if this is vegin of vertical line
 function beginOfVertLine(tmp:PPointsList;firstP: TPointsInfo):boolean;
 begin
   result := (tmp^.Adr <> nil) and
@@ -78,6 +83,7 @@ begin
       (FirstP.y <> tmp^.adr^.Info.y);
 end;
 
+// Draw rectangles at vertex of figures
 procedure drawVertexRect(canvas:TCanvas; point: TPointsInfo; color:TColor = clBlack);
 var
   ScaleVertRad: integer;
@@ -93,9 +99,9 @@ begin
   canvas.Pen.Width := Round(Lines_Width*EditorForm.FScale);
   canvas.Pen.Color := clBlack;
   canvas.Brush.Color := clwhite;
-
 end;
 
+// Draw Incoming line ( -----/| )
 procedure drawIncomingLine(canvas: tcanvas; point: TPointsInfo; coef: ShortInt);
 begin
   ScaleLineTo(Canvas,point.x, point.y + (Lines_Deg*coef));
@@ -104,6 +110,7 @@ begin
   drawArrowVertical(canvas, point.x, point.y+Lines_DegLenght*coef, coef);
 end;
 
+// Draw arrow at end of line
 procedure drawArrowAtEnd(canvas:TCanvas; point, PrevPoint:TPointsInfo);
 var
   tmpx, tmpy:integer;
@@ -123,12 +130,14 @@ begin
 end;
 
 
+// Return true if need middle arrow
 function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 begin
   Result := (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x)
         and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2)
 end;
 
+// Draw lines
 procedure drawLines(Canvas:TCanvas; head: PPointsList; LT: TLineType; isVertex: boolean; scale: Real);
 var
   tmp: PPointsList; // Temp variable
@@ -136,7 +145,6 @@ var
   tmpx: integer;
   isFirstLine:boolean;
   point1:TPointsInfo;
-  AddY: integer;
   isDegEnd: boolean;
   coef: -1..1;
 begin                  //\\
@@ -344,9 +352,7 @@ end;
 procedure drawSelectFigure(canvas:tcanvas; figure: TFigureInfo);
 var x1,x2,y1,y2: integer;
 point: TPointsInfo;
-Scale: Real;
 begin
-  Scale := EditorForm.FScale;
   x1 := figure.x1;
   x2 := figure.x2;
   y1 := figure.y1;

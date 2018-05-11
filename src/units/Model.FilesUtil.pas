@@ -33,57 +33,58 @@ begin
     end;
     EditorForm.changeCanvasSize(tmp.Width,tmp.Height);
     head^.Adr := nil;
-    while not EOF(f) do
-    begin
-      new(OTemp^.adr);
-      OTemp:=OTemp^.adr;
-      OTemp^.adr:=nil;
-      try
-        read(f, tmp);
-        OTemp^.Info.tp := tmp.tp;
-        if tmp.tp = line then
-        begin
-          //showMessage(tmp.Point);
-          OTemp^.Info.tp := line;
-          Otemp^.Info.LT := tmp.LT;
-          new(OTemp^.Info.PointHead);
-          ptemp := OTemp^.Info.PointHead;
-          ptemp^.Adr := nil;
-          if tmp.Point <> '' then
+    try
+      while not EOF(f) do
+      begin
+        new(OTemp^.adr);
+        OTemp:=OTemp^.adr;
+        OTemp^.adr:=nil;
+
+          read(f, tmp);
+          OTemp^.Info.tp := tmp.tp;
+          if tmp.tp = line then
           begin
-            Delete(tmp.Point,1,1);
-            tmp.Point := tmp.Point + '"';
-          end;
-          while (length(tmp.Point) <> 0) and (tmp.Point <> '"') do
-          begin
-            xy := copy(tmp.point,1, pos('"', tmp.Point)-1);
-            Delete(tmp.point,1, pos('"', tmp.Point)+1);
-            if (tmp.Point <> '') or (xy <> '') then
+            //showMessage(tmp.Point);
+            OTemp^.Info.tp := line;
+            Otemp^.Info.LT := tmp.LT;
+            new(OTemp^.Info.PointHead);
+            ptemp := OTemp^.Info.PointHead;
+            ptemp^.Adr := nil;
+            if tmp.Point <> '' then
             begin
-              new(ptemp^.Adr);
-              ptemp := ptemp^.Adr;
-              ptemp^.Adr := nil;
-              ptemp^.Info.x := strtoint(copy(xy, 1,pos('/', xy)-1));
-              ptemp^.Info.y := strtoint(copy(xy, pos('/', xy)+1, length(xy)));
+              Delete(tmp.Point,1,1);
+              tmp.Point := tmp.Point + '"';
             end;
+            while (length(tmp.Point) <> 0) and (tmp.Point <> '"') do
+            begin
+              xy := copy(tmp.point,1, pos('"', tmp.Point)-1);
+              Delete(tmp.point,1, pos('"', tmp.Point)+1);
+              if (tmp.Point <> '') or (xy <> '') then
+              begin
+                new(ptemp^.Adr);
+                ptemp := ptemp^.Adr;
+                ptemp^.Adr := nil;
+                ptemp^.Info.x := strtoint(copy(xy, 1,pos('/', xy)-1));
+                ptemp^.Info.y := strtoint(copy(xy, pos('/', xy)+1, length(xy)));
+              end;
+            end;
+            result := true;
+          end
+          else
+          begin
+            OTemp^.info.txt := tmp.Txt;
+            otemp^.info.x1 := tmp.x1;
+            otemp^.info.x2 := tmp.x2;
+            otemp^.info.y1 := tmp.y1;
+            otemp^.info.y2 := tmp.y2;
           end;
-          result := true;
-        end
-        else
-        begin
-          OTemp^.info.txt := tmp.Txt;
-          otemp^.info.x1 := tmp.x1;
-          otemp^.info.x2 := tmp.x2;
-          otemp^.info.y1 := tmp.y1;
-          otemp^.info.y2 := tmp.y2;
-        end;
+
+        //ShowMessage(otemp^.Info.obType);
+        //OTemp^.Info
+      end;
       except on E: Exception do
         ShowMessage('Файл поврежден!');
       end;
-      //ShowMessage(otemp^.Info.obType);
-      //OTemp^.Info
-    end;
-
   end
   else
   begin
