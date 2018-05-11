@@ -59,10 +59,10 @@ begin
 
         ti1 := tmpP^.Info;
         ti2 := tmpP^.adr.Info;
-        if (nearRound(ti1.x) = nearRound( blocked.Info.x ))
-        and (nearRound(ti2.x) = nearRound( blocked.Info.x ))
-        and (nearRound( blocked.Info.y ) < max(nearRound(ti1.y), nearRound(ti2.y)))
-        and (nearRound( blocked.Info.y ) > min(nearRound(ti1.y), nearRound(ti2.y)))
+        if (abs(ti1.x- blocked.Info.x) < NearFigure)
+        and (abs(ti2.x - blocked.Info.x) < NearFigure)
+        and (blocked.Info.y < max(ti1.y, ti2.y))
+        and (blocked.Info.y > min(ti1.y, ti2.y))
         and (tmpP <> blocked) and (tmpP^.adr <> blocked)
         then
         begin
@@ -338,11 +338,11 @@ begin
         minY := min(tmpP.Info.y, lastP.Info.y);
         maxX := max(tmpP.Info.x, lastP.Info.x);
         minX := min(tmpP.Info.x, lastP.Info.x);
-        if (nearRound(MaxX) = nearRound(x))
+        if (abs(MaxX - x) < NearFigure)
             and
-           (nearRound(y) > nearRound(minY))
+           (y > minY)
             and
-           (nearRound(y) < nearRound(maxY)) then
+           (y < maxY) then
         begin
           x := MaxX;
           Result := tmpP;
@@ -350,11 +350,11 @@ begin
 
         end;
 
-        if (nearRound(MinX) = nearRound(x))
+        if (abs(MinX - x) < NearFigure)
             and
-           (nearRound(y) > nearRound(minY))
+           (y > minY)
             and
-           (nearRound(y) < nearRound(maxY)) then
+           (y < maxY) then
         begin
           x := MinX;
           Result := tmpP;
@@ -362,22 +362,22 @@ begin
           exit;
         end;
 
-        if (nearRound(MaxY) = nearRound(y))
+        if (abs(MaxY - y) < nearFigure)
             and
-           (nearRound(x) > nearRound(minx))
+           (x > minx)
             and
-           (nearRound(x) < nearRound(maxx)) then
+           (x < maxx) then
         begin
           y := MaxY;
           Result := tmpP;
           exit;
         end;
 
-        if (nearRound(MinY) = nearRound(Y))
+        if (abs(MinY - Y) < NearFigure)
             and
-           (nearRound(X) > nearRound(minX))
+           (X > minX)
             and
-           (nearRound(X) < nearRound(maxX)) then
+           (X < maxX) then
         begin
           Y := MinY;
           Result := tmpP;
@@ -779,6 +779,8 @@ var
   tmp: PFigList;
   tmpP: PPointsList;
   NearP: PPointsList;
+  x,y : integer;
+  oldP, newP: TPointsInfo;
 begin
 
   tmp := head^.adr;
@@ -793,13 +795,22 @@ begin
     tmpP:= tmP^.Info.PointHead^.Adr;
     while tmpP <> nil do
     begin
-      NearP := searchNearFigure(head, tmpP^.Info.x, tmpP^.Info.y);
+      x := tmpP^.Info.x;
+      y := tmpP^.Info.y;
+
+      NearP := searchNearFigure(head, x,y);
       if NearP <> nil then
       begin
-        if nearRound(tmpP^.Info.x) = nearRound(nearP.Info.x) then
-          tmpP^.Info.x := nearP.Info.x;
-        if nearRound(tmpP^.Info.y) = nearRound(nearP.Info.y) then
-          tmpP^.Info.y := nearP.Info.y;
+        oldp.x := tmpP^.Info.x;
+        oldp.y := tmpP^.Info.y;
+        newP.x := nearP.Info.x;
+        newP.y := tmpP^.Info.y;
+        if abs(tmpP^.Info.x  - nearP.Info.x) < nearFigure then
+          MoveLine(tmp^.Info.PointHead,oldP, newP);
+        newP.x := tmpP^.Info.x;
+        newP.y := nearP.Info.y;
+        if abs(tmpP^.Info.y - nearP.Info.y) < nearFigure then
+          MoveLine(tmp^.Info.PointHead,oldP, newP);
       end;
       tmpP := tmpP^.Adr;
     end;

@@ -76,6 +76,9 @@ type
     ToolButton2: TToolButton;
     actHelp: TAction;
     mniProgramHelp: TMenuItem;
+    actPNG: TAction;
+    mniPNGExport: TMenuItem;
+    tbPNG: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -91,6 +94,7 @@ type
     procedure saveSVGFile;
     procedure pbMainPaint(Sender: TObject);
     procedure saveBMPFile;
+    procedure savePNGFile;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure mniNewClick(Sender: TObject);
     procedure ScrollBox1MouseWheelDown(Sender: TObject; Shift: TShiftState;
@@ -118,6 +122,7 @@ type
     procedure tbSelectScaleChange(Sender: TObject);
     procedure actUndoExecute(Sender: TObject);
     procedure actHelpExecute(Sender: TObject);
+    procedure actPNGExecute(Sender: TObject);
 
     
   private
@@ -293,6 +298,11 @@ begin
   if CoppyFigure = nil then exit;
   
   CopyFigure(FigHead, CoppyFigure);
+end;
+
+procedure TEditorForm.actPNGExecute(Sender: TObject);
+begin
+  savePNGFile;
 end;
 
 procedure TEditorForm.actSaveAsExecute(Sender: TObject);
@@ -598,11 +608,28 @@ begin
 
 end;
 
+function analyseParams: string;
+var
+  params: string;
+  i: integer;
+begin
+  params:='';
+  if ParamCount>0 then
+  for i := 1 to ParamCount do
+  begin
+  params := params + ParamStr(i);
+  if i<>ParamCount then params := params + ' ';
+  end;
+  result := params;
+end;
+
 procedure TEditorForm.FormCreate(Sender: TObject);
 {var}
   {tmp: TUndoStackInfo;
   i: byte;}
+var path : string;
 begin
+
   FScale := 1;
   PBH := pbMain.height;
   PBW := pbMain.Width;
@@ -622,16 +649,14 @@ begin
 
   // UNDO STACK
   CreateStack(USVertex);
-{  tmp.ChangeType := chDelete;
-  for i := 1 to 4 do
-    begin
-        tmp.changetype := TChangeType(i-1);
-            UndoStackPush(USVertex, tmp);
-              end;
-                for i := 1 to 6 do
-                    if not undoStackPop(USVertex, tmp) then ShowMessage('Stack is not filled');
-
-                      tmp.ChangeType := chInsert;}
+  path := analyseParams; // Анализируем входные параметры, открыта ли программа
+  // открытием .brakh-файла
+  if path <> '' then
+  begin
+    Caption := 'kel';
+    changePath(path);
+    readFile(FigHead, path);
+  end;
 end;
 
 procedure TEditorForm.FormKeyDown(Sender: TObject; var Key: Word;
@@ -734,6 +759,7 @@ begin
       drawFigure(Canvas, FigHead,ExportScale, false);
       FScale := oldScale;
       SaveToFile(path);
+      free;
     end;
   end;
 end;
@@ -828,6 +854,12 @@ begin
       saveDialog1.Filter := 'Bitmap Picture|*.bmp';
       saveDialog1.DefaultExt := 'bmp';
     end;
+    FPng:
+     begin
+      saveDialog1.FileName := 'SyntaxDiagrams.png';
+      saveDialog1.Filter := 'PNG|*.png';
+      saveDialog1.DefaultExt := 'png';
+    end;
   end;
   if SaveDialog1.Execute then
   begin
@@ -836,8 +868,43 @@ begin
 
 end;
 
+procedure TEditorForm.savePNGFile;
+var
+  path: string;
+  oldScale: real;
+  png : TPngImage;
+  bitmap: TBitmap;
+const
+  ExportScale = 4;
+begin
+  oldScale := FScale;
+  path := saveFile(FPng);
+  if path <> '' then
+  begin
+    ClickFigure := nil;
+    try
+      bitmap := TBitMap.Create;
+      with bitmap do
+      begin
+        png := TPNGImage.Create;
+        width := pbMain.Width*ExportScale;
+        height := pbMain.Height*ExportScale;
+        FScale := ExportScale;
+        drawFigure(Canvas, FigHead,ExportScale, false);
+        FScale := oldScale;
+      end;
+        png.Assign(bitmap);
+        png.Draw(bitmap.Canvas, Rect(0, 0, bitmap.Width, bitmap.Height));
+        png.SaveToFile(path)
+     finally
+        bitmap.free;
+        png.free;
+    end;
+  end;
+end;
+
 function TEditorForm.saveBrakhFile:boolean;
-  var
+var
   path: string;
 begin
   Result:=false;

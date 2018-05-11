@@ -11,7 +11,7 @@
 <path d="M 180 140 L 160 130" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 180 140 L 160 150" fill="none" stroke="black" stroke-width="2" />
-<text x = "195" y = "142" font-family = "Arial" font-size = "16"> &lt; Буква &gt;  </text>
+<text x = "196" y = "142" font-family = "Arial" font-size = "16"> &lt; Буква &gt;  </text>
 <!-- LINE: -->
 <path d="M 280 140 L 560 140" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
@@ -28,7 +28,7 @@
 <path d="M 120 200 L 100 190" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 120 200 L 100 210" fill="none" stroke="black" stroke-width="2" />
-<text x = "152" y = "202" font-family = "Arial" font-size = "16"> &lt; Знак_подчеркивания &gt;  </text>
+<text x = "160" y = "202" font-family = "Arial" font-size = "16"> &lt; Знак_подчеркивания &gt;  </text>
 <!-- LINE: -->
 <path d="M 340 200 L 380 200" fill="none" stroke="black" stroke-width="2" />
 <!-- LAST VERTICAL: -->
@@ -40,7 +40,7 @@
 <path d="M 380 155 L 370 175" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 380 155 L 390 175" fill="none" stroke="black" stroke-width="2" />
-<text x = "568" y = "144" font-family = "Arial" font-size = "16"> &lt; Цифра &gt;  </text>
+<text x = "573" y = "144" font-family = "Arial" font-size = "16"> &lt; Цифра &gt;  </text>
 <!-- BOUND LINE -->
 <path d="M 445 140 L 460 125" fill="none" stroke="black" stroke-width="2" />
 <!-- Line After Bound -->
@@ -99,7 +99,7 @@
 <path d="M 560 280 L 540 270" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 560 280 L 540 290" fill="none" stroke="black" stroke-width="2" />
-<text x = "576" y = "282" font-family = "Arial" font-size = "16"> &lt; Знак_подчеркивания &gt;  </text>
+<text x = "584" y = "282" font-family = "Arial" font-size = "16"> &lt; Знак_подчеркивания &gt;  </text>
 <!-- Additional line: -->
 <path d="M 760 280 L 785 280" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
@@ -116,7 +116,7 @@
 <path d="M 600 220 L 580 210" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 600 220 L 580 230" fill="none" stroke="black" stroke-width="2" />
-<text x = "607" y = "224" font-family = "Arial" font-size = "16"> &lt; Буква &gt;  </text>
+<text x = "611" y = "224" font-family = "Arial" font-size = "16"> &lt; Буква &gt;  </text>
 <!-- Additional line: -->
 <path d="M 700 220 L 785 220" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
@@ -125,5 +125,5 @@
 <path d="M 785 220 L 765 230" fill="none" stroke="black" stroke-width="2" />
 <!-- Additional line Intersect 2: -->
 <path d="M 800 235 L 785 220" fill="none" stroke="black" stroke-width="2" />
-<text x = "66" y = "71" font-family = "Arial" font-size = "16"> &lt; Идентификатор &gt; ::=   </text>
+<text x = "74" y = "71" font-family = "Arial" font-size = "16"> &lt; Идентификатор &gt; ::=   </text>
 </svg>

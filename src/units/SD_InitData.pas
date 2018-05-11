@@ -3,7 +3,7 @@ unit SD_InitData;
 interface
 const
   Tolerance = 5; //  ол-во пискелей, на которые юзеру можно "промахнутьс€"
-  NearFigure = 40; //  оличество пикселей, при котором идет "присоединение" фигуры;
+  NearFigure = 20; //  оличество пикселей, при котором идет "присоединение" фигуры;
   step_round = 20;
   Default_LineSVG_Width = 2;
   Font_Size = 8;
@@ -21,6 +21,17 @@ const
   rsHelpHowIsSD_ResName = 'help1';
   rsHelp_ResName = 'help2';
 
+
+  // ### VIEW PART CONSTANTS ###
+const
+  VertRad = 3; // Verts Radius
+
+  Arrow_Width = 20; // length of dowel arrows
+  Arrow_Height = 10;
+
+  Lines_Width = 2;
+  Lines_Deg = 15;
+  Lines_DegLenght = 15;
 implementation
 
 

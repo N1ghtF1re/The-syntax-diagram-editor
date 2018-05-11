@@ -15,17 +15,7 @@ procedure updateScreen(canvas:tcanvas; FigHead: PFigList);
 function beginOfVertLine(tmp:PPointsList;firstP: TPointsInfo):boolean;
 function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 
-// ### VIEW PART CONSTANTS ###
 
-const
-  VertRad = 3; // Verts Radius
-
-  Arrow_Width = 30; // length of dowel arrows
-  Arrow_Height = 10;
-
-  Lines_Width = 2;
-  Lines_Deg = 15;
-  Lines_DegLenght = 15;
 
 implementation
 uses main, SD_Model;
