@@ -2,8 +2,8 @@ unit SD_Types;
 
 interface
 type
-  TDrawMode = (Draw, NoDraw, DrawLine);
-  TFileMode = (FSvg, FBrakh, FBmp, FPng);
+  TDrawMode = (Draw, NoDraw, DrawLine, ResizeCanvas);
+  TFileMode = (FSvg, FBrakh, FBmp, FPng); // SUPORTED FILE EXTENSIONS
   TLineType = (LLine);
   TEditMode = (NoEdit, Move, TSide, BSide, RSide, LSide, Vert1, Vert2, Vert3, Vert4, LineMove);
   TType = (Def,MetaVar,MetaConst, Line, None);

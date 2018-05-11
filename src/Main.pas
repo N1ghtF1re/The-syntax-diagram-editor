@@ -79,6 +79,9 @@ type
     actPNG: TAction;
     mniPNGExport: TMenuItem;
     tbPNG: TToolButton;
+    actResizeCanvas: TAction;
+    tbResizeCanvas: TToolButton;
+    ToolButton4: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -121,16 +124,24 @@ type
     procedure actHelpExecute(Sender: TObject);
     procedure actPNGExecute(Sender: TObject);
     procedure Action1Execute(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure actResizeCanvasExecute(Sender: TObject);
+    procedure ScrollBox1MouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure ScrollBox1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
 
     
   private
     isChanged: Boolean;
     currpath: string;
     isMoveFigure: Boolean;
+    oldDM: TDrawMode;
     USVertex: PUndoStack; // US - Undo Stack
     procedure switchChangedStatus(flag: Boolean);
     procedure changePath(path: string);
     procedure newFile;
+    procedure updateCanvasSizeWithCoords(x,y: Integer);
   public
     PBW, PBH: integer;
     FScale: Real;
@@ -198,6 +209,13 @@ begin
   Self.Invalidate;
 end;
 
+procedure TEditorForm.updateCanvasSizeWithCoords(x, y: Integer);
+begin
+  pbMain.Width := x;
+  pbMain.Height := y; 
+  pbMain.Repaint;
+end;
+
 procedure TEditorForm.useScale(var x, y: integer);
 begin
   x := Round(FScale*x);
@@ -208,10 +226,11 @@ procedure TEditorForm.pbMainMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var x0, y0: Integer;
   UndoRec: TUndoStackInfo;
-begin
+begin  
   x0 := x;
   y0 := y;
   roundCoords(x,y); // round coords (Use steps)
+  
   if dm = DrawLine then
   begin
     case button of
@@ -323,7 +342,13 @@ procedure TEditorForm.pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 var
   undorec: TUndoStackInfo;
-begin
+begin  
+  if dm = ResizeCanvas then
+  begin
+    updateCanvasSizeWithCoords(x, y);
+    exit;
+  end;
+  
   if clickfigure = nil then
     prevText:= edtRectText.Text;
   if (CurrType <> Line) and (DM = DrawLine) then
@@ -400,7 +425,19 @@ end;
 
 procedure TEditorForm.clearScreen;
 begin
-  pbMain.Canvas.Pen.Width := 1;
+  if DM = ResizeCanvas then
+  begin
+    pbMain.Canvas.Pen.Width := 1;
+    pbmain.Canvas.Pen.Style := psDash;
+    pbMain.Canvas.Pen.Color := clBlack;
+  end
+  else
+  begin
+    pbMain.Canvas.Pen.Width := 1;
+    pbMain.Canvas.Pen.Style := psSolid;
+    pbMain.Canvas.Pen.Color := clBlack;    
+  end;
+  
   pbMain.Canvas.Rectangle(0,0,pbMain.Width,pbMain.Height); // Draw white rectangle :)
 end;
 
@@ -480,6 +517,14 @@ begin
     changePath(path);
     readFile(FigHead, path);
   end;
+end;
+
+procedure TEditorForm.FormDestroy(Sender: TObject);
+begin
+  removeAllList(FigHead);
+  Dispose(FigHead);
+  UndoStackClear(USVertex);
+  Dispose(USVertex);
 end;
 
 procedure TEditorForm.FormKeyDown(Sender: TObject; var Key: Word;
@@ -762,6 +807,28 @@ begin
     ExportTOSvg(FigHead, pbMain.Width, pbMain.Height, path, 'Syntax Diagram Project', 'Create by BrakhMen.info');
 end;
 
+procedure TEditorForm.ScrollBox1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if dm = ResizeCanvas then
+  begin
+    changeCanvasSize(Round(X/FScale),Round(Y/FScale));
+    DM := oldDM;
+    actResizeCanvas.Enabled := true;
+    tbResizeCanvas.Down := false;
+    pbMain.Repaint;
+  end;
+end;
+
+procedure TEditorForm.ScrollBox1MouseMove(Sender: TObject; Shift: TShiftState;
+  X, Y: Integer);
+begin
+  if dm = ResizeCanvas then
+  begin
+    updateCanvasSizeWithCoords(x, y);
+  end;
+end;
+
 procedure TEditorForm.ScrollBox1MouseWheelDown(Sender: TObject;
   Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
@@ -938,6 +1005,16 @@ begin
   savePNGFile;
 end;
 
+procedure TEditorForm.actResizeCanvasExecute(Sender: TObject);
+begin
+  tbResizeCanvas.Down := true;
+  if DM <> ResizeCanvas then
+  begin
+    oldDM := DM;
+    DM := ResizeCanvas;
+  end;
+end;
+
 procedure TEditorForm.actSaveAsExecute(Sender: TObject);
 begin
   saveBrakhFile;
@@ -961,6 +1038,7 @@ begin
   if undoStackPop(USVertex, undoRec) then // "Pop" an item from the stack
   begin
     undoChanges(undoRec, Canvas); // cancel changes
+    MagnetizeLines(FigHead);
   end;
 
   if isStackEmpty(USVertex) then (Sender as TAction).Enabled := false;
