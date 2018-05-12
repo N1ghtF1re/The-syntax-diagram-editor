@@ -82,6 +82,8 @@ type
     actResizeCanvas: TAction;
     tbResizeCanvas: TToolButton;
     ToolButton4: TToolButton;
+    actChangeMagnetize: TAction;
+    mniMagnetizeLine: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -130,6 +132,7 @@ type
       Y: Integer);
     procedure sbMainMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure actChangeMagnetizeExecute(Sender: TObject);
 
     
   private
@@ -406,11 +409,12 @@ begin
   end;
   if isMoveFigure then
   begin
-    SearchFiguresInOneLine(FigHead, CurrFigure);
+    if mniMagnetizeLine.Checked then    
+      SearchFiguresInOneLine(FigHead, CurrFigure);
     isMoveFigure := false;
   end;
-
-  MagnetizeLines(FigHead); 
+  if mniMagnetizeLine.Checked then    
+    MagnetizeLines(FigHead);
   pbMain.Repaint;
 end;
 
@@ -900,6 +904,11 @@ begin
   Self.Repaint;
 end;
 
+procedure TEditorForm.actChangeMagnetizeExecute(Sender: TObject);
+begin
+  ;
+end;
+
 procedure TEditorForm.actCopyExecute(Sender: TObject);
 begin
   CoppyFigure := ClickFigure;
@@ -1051,7 +1060,8 @@ begin
   if undoStackPop(USVertex, undoRec) then // "Pop" an item from the stack
   begin
     undoChanges(undoRec, Canvas); // cancel changes
-    MagnetizeLines(FigHead);
+    if mniMagnetizeLine.Checked then
+      MagnetizeLines(FigHead);
   end;
 
   if isStackEmpty(USVertex) then (Sender as TAction).Enabled := false;
