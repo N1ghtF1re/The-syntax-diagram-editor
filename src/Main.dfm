@@ -2,8 +2,8 @@ object EditorForm: TEditorForm
   Left = 0
   Top = 0
   Caption = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083' - Syntax Diagrams'
-  ClientHeight = 399
-  ClientWidth = 775
+  ClientHeight = 395
+  ClientWidth = 770
   Color = clBtnFace
   Constraints.MinHeight = 454
   Constraints.MinWidth = 786
@@ -24,20 +24,22 @@ object EditorForm: TEditorForm
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
-  object ScrollBox1: TScrollBox
+  object sbMain: TScrollBox
     Left = 0
     Top = 49
-    Width = 775
-    Height = 350
+    Width = 770
+    Height = 346
     Align = alClient
     BorderStyle = bsNone
     DoubleBuffered = True
     ParentDoubleBuffered = False
     TabOrder = 0
-    OnMouseDown = ScrollBox1MouseDown
-    OnMouseMove = ScrollBox1MouseMove
-    OnMouseWheelDown = ScrollBox1MouseWheelDown
-    OnMouseWheelUp = ScrollBox1MouseWheelUp
+    OnMouseDown = sbMainMouseDown
+    OnMouseMove = sbMainMouseMove
+    OnMouseWheelDown = sbMainMouseWheelDown
+    OnMouseWheelUp = sbMainMouseWheelUp
+    ExplicitWidth = 775
+    ExplicitHeight = 350
     object pbMain: TPaintBox
       Left = 0
       Top = 0
@@ -55,7 +57,7 @@ object EditorForm: TEditorForm
   object tbarMenu: TToolBar
     Left = 0
     Top = 0
-    Width = 775
+    Width = 770
     Height = 21
     Caption = 'tbarMenu'
     Color = clBtnFace
@@ -68,6 +70,7 @@ object EditorForm: TEditorForm
     ShowHint = True
     TabOrder = 1
     Transparent = False
+    ExplicitWidth = 775
     object tbNew: TToolButton
       Left = 0
       Top = 0
@@ -182,7 +185,7 @@ object EditorForm: TEditorForm
   object tbSelectFigType: TToolBar
     Left = 0
     Top = 21
-    Width = 775
+    Width = 770
     Height = 28
     BorderWidth = 1
     Caption = 'tbSelectFigType'
@@ -196,6 +199,7 @@ object EditorForm: TEditorForm
     ParentDoubleBuffered = False
     TabOrder = 2
     Transparent = False
+    ExplicitWidth = 775
     object tbFigDef: TToolButton
       Left = 0
       Top = 0

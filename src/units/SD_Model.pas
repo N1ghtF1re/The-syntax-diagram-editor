@@ -784,7 +784,7 @@ begin
   begin
     if temp^.Info.tp <> Line then
     begin
-      if (abs( Point^.Info.x - temp^.Info.x1) < NearFigure*2)
+      if (abs( Point^.Info.x - temp^.Info.x1) < NearFigure)
         and
         ( Point^.Info.y < temp^.Info.y2 )
         and
@@ -794,9 +794,8 @@ begin
         Result := true;
         Point^.info.x := temp^.Info.x1;
         point^.Info.y := (temp^.Info.y1 + temp^.Info.y2) div 2;
-      end;
 
-      if (abs( Point^.Info.x - temp^.Info.x2) < NearFigure*2)
+      end else if (abs( Point^.Info.x - temp^.Info.x2) < NearFigure)
         and
         ( Point^.Info.y < temp^.Info.y2 )
         and
@@ -812,6 +811,14 @@ begin
   end;
 end;
 
+function isHorLine(curr, prev: PPointsList):boolean;
+begin
+  if prev = nil then
+    Result := (curr^.Adr <> nil) and (curr^.Info.y = curr^.adr^.Info.y)
+  else
+    Result := prev^.Info.y = curr^.Info.y;
+end;
+
 procedure MagnetizeLines(head: PFigList);
 var
   tmp: PFigList;
@@ -819,6 +826,7 @@ var
   NearP: PPointsList;
   x,y : integer;
   oldP, newP: TPointsInfo;
+  prevP: PPointsList;
 begin
   tmp := head^.adr;
   while tmp <> nil do
@@ -828,17 +836,19 @@ begin
       tmp := tmp^.Adr;
       continue;
     end;
-
+    prevP:=nil;
     tmpP:= tmP^.Info.PointHead^.Adr;
     while tmpP <> nil do
     begin
       x := tmpP^.Info.x;
       y := tmpP^.Info.y;
-      if magnetizeWithFigures(head, tmpP) then
+      if (isHorLine(tmpP, prevP)) and (magnetizeWithFigures(head, tmpP)) then
       begin
         oldp.x := x;
         oldp.y := y;
         MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+        tmpP := tmpP^.adr;
+        continue;
       end;
       NearP := searchNearFigure(head, x,y);
       if NearP <> nil then
@@ -863,11 +873,11 @@ begin
           MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
         end;
       end;
+      prevP := tmpP;
       tmpP := tmpP^.Adr;
     end;
-
-
     tmp := tmp^.Adr;
+
   end;
 end;
 
@@ -938,6 +948,10 @@ begin
     chChangeText:
     begin
       UndoRec.adr^.Info.Txt := UndoRec.text;
+    end;
+    chCanvasSize:
+    begin
+      EditorForm.changeCanvasSize(UndoRec.w, UndoRec.h, false);
     end;
     NonDeleted: ;
   end;

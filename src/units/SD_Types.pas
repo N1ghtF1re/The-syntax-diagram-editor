@@ -43,7 +43,7 @@ type
   end;
 
   // UNDO STACK
-  TChangeType = (chDelete, chInsert, chAddPoint,  chFigMove, chPointMove, chChangeText, NonDeleted);
+  TChangeType = (chDelete, chInsert, chAddPoint,  chFigMove, chPointMove, chChangeText,  chCanvasSize, NonDeleted);
   TUndoStackInfo = record
     adr: PFigList;
   Case ChangeType : TChangeType of
@@ -53,6 +53,7 @@ type
     chFigMove: (PrevInfo: TFigureInfo); // Перемещение/изменение размеров фигур. PrevInfo - координаты "бэкапа"
     chPointMove: (st: string[255]);
     chChangeText: (text: string[255]);
+    chCanvasSize: (w,h: Cardinal);
     NonDeleted: (); // Используется для обозначения последний записи стека, которую нельзя pop
   end;
 

@@ -1,36 +1,36 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
 "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="740" height="270
-" viewBox="0 0 740 270"
+<svg width="1110" height="405
+" viewBox="0 0 1110 405"
 xmlns="http://www.w3.org/2000/svg" version="1.1">
 <title>Syntax Diagram Project</title>
-<text x = "137" y = "70" font-family = "Arial" font-size = "16"> &lt; Тип_Set &gt; ::=   </text>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="190" y="69">&lt; Тип_Set &gt; ::= </text>
 <!-- LINE: -->
-<path d="M 40 140 L 120 140" fill="none" stroke="black" stroke-width="2" />
+<path d="M 40 140 L 121 140" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
-<path d="M 120 140 L 100 130" fill="none" stroke="black" stroke-width="2" />
+<path d="M 121 140 L 101 130" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
-<path d="M 120 140 L 100 150" fill="none" stroke="black" stroke-width="2" />
-<text x = "138" y = "142" font-family = "Arial" font-size = "16"> Set  </text>
-<text x = "255" y = "145" font-family = "Arial" font-size = "16"> Of  </text>
+<path d="M 121 140 L 101 150" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="143" y="144.5">Set</text>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="260" y="144">Of</text>
 <!-- LINE: -->
-<path d="M 180 140 L 240 140" fill="none" stroke="black" stroke-width="2" />
+<path d="M 165 140 L 237 140" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
-<path d="M 240 140 L 220 130" fill="none" stroke="black" stroke-width="2" />
+<path d="M 237 140 L 217 130" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
-<path d="M 240 140 L 220 150" fill="none" stroke="black" stroke-width="2" />
+<path d="M 237 140 L 217 150" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE: -->
-<path d="M 280 140 L 360 140" fill="none" stroke="black" stroke-width="2" />
+<path d="M 278 140 L 363 140" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
-<path d="M 360 140 L 340 130" fill="none" stroke="black" stroke-width="2" />
+<path d="M 363 140 L 343 130" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
-<path d="M 360 140 L 340 150" fill="none" stroke="black" stroke-width="2" />
-<text x = "404" y = "142" font-family = "Arial" font-size = "16"> &lt; Базовый_скалярный_тип &gt;  </text>
+<path d="M 363 140 L 343 150" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="486" y="143">&lt; Базовый_скалярный_тип &gt;</text>
 <!-- LINE: -->
-<path d="M 620 140 L 700 140" fill="none" stroke="black" stroke-width="2" />
+<path d="M 611 139 L 700 139" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
-<path d="M 700 140 L 680 130" fill="none" stroke="black" stroke-width="2" />
+<path d="M 700 139 L 680 129" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
-<path d="M 700 140 L 680 150" fill="none" stroke="black" stroke-width="2" />
+<path d="M 700 139 L 680 149" fill="none" stroke="black" stroke-width="2" />
 </svg>

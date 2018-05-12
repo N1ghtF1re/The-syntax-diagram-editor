@@ -24,7 +24,7 @@ type
     mniSaveAs: TMenuItem;
     mnSettings: TMenuItem;
     mniHolstSize: TMenuItem;
-    ScrollBox1: TScrollBox;
+    sbMain: TScrollBox;
     mniHtml: TMenuItem;
     mniWhatIsSD: TMenuItem;
     mniNew: TMenuItem;
@@ -99,9 +99,9 @@ type
     procedure savePNGFile;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure mniNewClick(Sender: TObject);
-    procedure ScrollBox1MouseWheelDown(Sender: TObject; Shift: TShiftState;
+    procedure sbMainMouseWheelDown(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
-    procedure ScrollBox1MouseWheelUp(Sender: TObject; Shift: TShiftState;
+    procedure sbMainMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure actNewExecute(Sender: TObject);
@@ -126,9 +126,9 @@ type
     procedure Action1Execute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure actResizeCanvasExecute(Sender: TObject);
-    procedure ScrollBox1MouseMove(Sender: TObject; Shift: TShiftState; X,
+    procedure sbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
-    procedure ScrollBox1MouseDown(Sender: TObject; Button: TMouseButton;
+    procedure sbMainMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
 
     
@@ -149,10 +149,9 @@ type
     procedure DiscardScale(var x,y: integer);
     procedure SD_Resize;
     function getFigureHead:PFigList;
-    procedure getTextWH(var TW, TH: Integer; text: string; size: integer; family: string);
     function openFile(mode: TFileMode):string;
     function saveFile(mode: TFileMode):string;
-    procedure changeCanvasSize(w,h: Integer);
+    procedure changeCanvasSize(w,h: Integer; flag: Boolean = true);
     procedure getCanvasSIze(var w,h:Integer);
   end;
 
@@ -357,7 +356,7 @@ begin
   begin
   
     EM := getEditMode(DM, Round(x/FScale),Round(y/FScale),FigHead, CurrType);
-    changeCursor(ScrollBox1, EM); // Меняем курсор в зависимости от положения мыши
+    changeCursor(sbMain, EM); // Меняем курсор в зависимости от положения мыши
 
     if ClickFigure <> nil then
     begin
@@ -665,8 +664,20 @@ begin
 end;
 
 // Change canvas size
-procedure TEditorForm.changeCanvasSize(w,h: Integer);
+procedure TEditorForm.changeCanvasSize(w,h: Integer; flag: Boolean = true);
+var
+  UndoRec: TUndoStackInfo;
 begin
+  if flag then
+  begin
+    // CHANGES STACK PUSHING START
+    UndoRec.ChangeType := chCanvasSize;
+    UndoRec.w := PBW;
+    UndoRec.h := PBH;
+    UndoStackPush(USVertex, UndoRec);
+    actUndo.Enabled := true;
+    // CHANGES STACK PUSHING EDD
+  end;
   PBH := h; // Update global size (for scale = 1)
   PBW := w;
   useScale(W, H); // Use scale for height and width
@@ -807,7 +818,7 @@ begin
     ExportTOSvg(FigHead, pbMain.Width, pbMain.Height, path, 'Syntax Diagram Project', 'Create by BrakhMen.info');
 end;
 
-procedure TEditorForm.ScrollBox1MouseDown(Sender: TObject; Button: TMouseButton;
+procedure TEditorForm.sbMainMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if dm = ResizeCanvas then
@@ -820,7 +831,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.ScrollBox1MouseMove(Sender: TObject; Shift: TShiftState;
+procedure TEditorForm.sbMainMouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
 begin
   if dm = ResizeCanvas then
@@ -829,7 +840,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.ScrollBox1MouseWheelDown(Sender: TObject;
+procedure TEditorForm.sbMainMouseWheelDown(Sender: TObject;
   Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   if ssShift in Shift then
@@ -844,7 +855,7 @@ begin
   end;
 end;
 
-procedure TEditorForm.ScrollBox1MouseWheelUp(Sender: TObject;
+procedure TEditorForm.sbMainMouseWheelUp(Sender: TObject;
   Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   if ssShift in Shift then
@@ -1046,23 +1057,5 @@ begin
   pbMain.Repaint;
 end;
 
-// Return text width (For SVGUtils)
-procedure TEditorForm.getTextWH (var TW, TH: Integer; text: string; size: integer; family: string);
-var
-
-  prevSize:integer;
-begin
-  with pbMain do
-  begin
-    prevSize := Canvas.Font.Size;
-
-    //canvas.Font.Size := size;
-    TW := canvas.TextWidth(text);
-    TH := Canvas.TextHeight(text);
-
-    canvas.Font.Size := prevSize;
-  end;
-
-end;
 
 end.

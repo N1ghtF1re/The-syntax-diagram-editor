@@ -26,18 +26,35 @@ begin
   + IntToStr(width) + '" />'
 end;
 
-function writeSVGText(Figure: TFigureInfo; text: UTF8String; family:UTF8String = 'Arial'; size:integer = 16):UTF8String;
-var TH, TW, TX,TY: integer;
+function writeSVGText(Figure: TFigureInfo; text: UTF8String; family:UTF8String =
+                                        'Tahoma'; size:integer = 16):UTF8String;
+var TH, TW, TX,TY: real;
+TextW, TextH: integer;
+const
+  SVG_VerticalEpsilon = 4; // ѕогрешность (–ассто€ние от верхней точки буквы до
+                           // верха выдел€емой области больше, чем до нижней)
 begin
-  EditorForm.getTextWH(TW,TH, Text, size, family);
+  //EditorForm.getTextWH(TW,TH, Text, size, family);
+
   with figure do
   begin
-    TX := x1 + (x2 - x1) div 2 - TW div 3; //+ TW;
-    TY := y1 + (y2 - y1) div 2 + 5;
+    //  оординаты центра пр€моугольника
+    TX := x1 + abs(x2 - x1) / 2;
+    TY := y1 + abs(y2 - y1) / 2 + SVG_VerticalEpsilon;
   end;
-  Result:= '<text x = "'+ IntToStr(TX) + '" y = "'+ IntToStr(TY)
-    + '" font-family = "'+ family +'" font-size = "' + IntToStr(size) + '">'
-    +' ' + text + '  </text>';
+
+
+  {'<rect x="' + IntToStr(figure.x1) +'" y="' + IntToStr(figure.y1) + '"'
+  + ' width="'+ IntToStr(figure.x2-figure.x1) + '" height="'+ IntToStr(figure.y2-figure.y1) + '"'
+  + ' style="fill:blue;stroke:pink;stroke-width:0;fill-opacity:0.1;stroke-opacity:0.9" />'}
+
+  Result:=
+  //  text-anchor="middle" - центрирует текст по вертикали и горизонтали относительно
+  //  определенной точки
+  '<text text-anchor="middle" font-family = "'+ family +'" font-size = "' + IntToStr(size) + '"'
+  + ' x="'+ StringReplace(FormatFloat( '#.####', TX),',', '.', [rfReplaceAll])
+  +'" y="'+StringReplace(FormatFloat( '#.####', TY),',', '.', [rfReplaceAll])
+  +'">' + text + '</text>';
 end;
 
 procedure drawSVGBoundLine(var f: TextFile; FirstP: TPointsInfo; tmp:PPointsList; var lastp:PPointsList);
