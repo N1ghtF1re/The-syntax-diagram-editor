@@ -309,7 +309,7 @@ begin
       textH := Canvas.TextHeight(text);
       // –асчитываем координаты, чтобы текст был по середине
       TX := x1 + (x2 - x1) div 2 - TextW div 2;
-      TY := y1 + (y2 - y1) div 2 - TextH div 2;
+      TY := y1 + (y2 - y1) div 2 - TextH div 2 - 3;
       Canvas.Font.Size := ScaleRound(Scale, Font_Size);
       // ≈сли ширина или высота блока меньше, чем текста, то подгон€ем под размер текста
       if (abs(x2 - x1) < TextW) then

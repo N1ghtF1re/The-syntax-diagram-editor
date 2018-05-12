@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
 "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="1110" height="405
-" viewBox="0 0 1110 405"
+<svg width="779" height="283
+" viewBox="0 0 779 283"
 xmlns="http://www.w3.org/2000/svg" version="1.1">
 <title>Syntax Diagram Project</title>
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="190" y="69">&lt; Тип_Set &gt; ::= </text>
@@ -12,7 +12,7 @@
 <path d="M 121 140 L 101 130" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 121 140 L 101 150" fill="none" stroke="black" stroke-width="2" />
-<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="143" y="144.5">Set</text>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="143" y="144">Set</text>
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="260" y="144">Of</text>
 <!-- LINE: -->
 <path d="M 165 140 L 237 140" fill="none" stroke="black" stroke-width="2" />
@@ -26,11 +26,11 @@
 <path d="M 363 140 L 343 130" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
 <path d="M 363 140 L 343 150" fill="none" stroke="black" stroke-width="2" />
-<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="486" y="143">&lt; Базовый_скалярный_тип &gt;</text>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="486" y="144">&lt; Базовый_скалярный_тип &gt;</text>
 <!-- LINE: -->
-<path d="M 611 139 L 700 139" fill="none" stroke="black" stroke-width="2" />
+<path d="M 611 140 L 700 140" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROS LEFT -->
-<path d="M 700 139 L 680 129" fill="none" stroke="black" stroke-width="2" />
+<path d="M 700 140 L 680 130" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW RIGHT -->
-<path d="M 700 139 L 680 149" fill="none" stroke="black" stroke-width="2" />
+<path d="M 700 140 L 680 150" fill="none" stroke="black" stroke-width="2" />
 </svg>

@@ -25,7 +25,7 @@ uses SD_types, vcl.graphics, SD_View,vcl.dialogs, SD_InitData, math, SVGUtils, M
  procedure MagnetizeLines(head: PFigList);
  function ScaleRound(scale: real; x: integer): integer;
  procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
-
+ procedure SearchFiguresInOneLine(head, curr: PFigList);
 implementation
 uses System.Sysutils, main;
 
@@ -301,7 +301,7 @@ begin
     Txt := ShortString(text);
     Tp := ftype;
   end;
-
+ 
   Result := tmp;
 end;
 
@@ -819,6 +819,39 @@ begin
     Result := prev^.Info.y = curr^.Info.y;
 end;
 
+procedure SearchFiguresInOneLine(head, curr: PFigList);
+var   
+  temp: PFigList;
+  CurrY : Integer;
+  tempY : integer;
+begin
+  with curr^.Info do
+  begin
+    CurrY := y1 + (y2 - y1) div 2;
+  end;
+  temp := head^.Adr;
+  while temp <> nil do
+  begin
+    if (temp^.Info.tp = line) or (temp = curr) then 
+    begin
+      temp := temp^.Adr;
+      continue;
+    end;
+    with temp^.Info do
+    begin
+      tempY := y1 + (y2 - y1) div 2;
+    end;
+    if abs( CurrY - tempY ) < NearFigure then
+    begin
+      temp^.Info.y1 := curry - (Temp^.Info.y2 - Temp^.Info.y1) div 2;
+      temp^.Info.y2 := curry + (Temp^.Info.y2 - Temp^.Info.y1) div 2; 
+    end;
+    
+    temp := temp^.Adr;
+  end;
+  
+end;
+
 procedure MagnetizeLines(head: PFigList);
 var
   tmp: PFigList;
@@ -833,6 +866,7 @@ begin
   begin
     if tmp^.Info.tp <> Line then
     begin
+      SearchFiguresInOneLine(head, tmp);
       tmp := tmp^.Adr;
       continue;
     end;

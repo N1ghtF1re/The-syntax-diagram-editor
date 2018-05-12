@@ -389,6 +389,7 @@ begin
 
     switchChangedStatus(TRUE); 
     ChangeCoords(CurrFigure, EM, x,y, tempX, tempY ); // Changes coords
+    
     TempX:= X; // Update old coords
     TempY:= Y;
     pbMain.Repaint;
@@ -405,11 +406,11 @@ begin
   end;
   if isMoveFigure then
   begin
+    SearchFiguresInOneLine(FigHead, CurrFigure);
     isMoveFigure := false;
   end;
 
   MagnetizeLines(FigHead); 
-
   pbMain.Repaint;
 end;
 
@@ -420,6 +421,7 @@ begin
     clearScreen;
     drawFigure(Canvas, FigHead, FScale); // Draw all figures, lines
   end;
+
 end;
 
 procedure TEditorForm.clearScreen;
