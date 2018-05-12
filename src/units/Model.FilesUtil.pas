@@ -77,6 +77,7 @@ begin
             otemp^.info.x2 := tmp.x2;
             otemp^.info.y1 := tmp.y1;
             otemp^.info.y2 := tmp.y2;
+            result := true;
           end;
 
         //ShowMessage(otemp^.Info.obType);

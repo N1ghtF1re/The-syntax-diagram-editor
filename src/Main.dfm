@@ -70,7 +70,6 @@ object EditorForm: TEditorForm
     ShowHint = True
     TabOrder = 1
     Transparent = False
-    ExplicitWidth = 775
     object tbNew: TToolButton
       Left = 0
       Top = 0
@@ -199,7 +198,6 @@ object EditorForm: TEditorForm
     ParentDoubleBuffered = False
     TabOrder = 2
     Transparent = False
-    ExplicitWidth = 775
     object tbFigDef: TToolButton
       Left = 0
       Top = 0

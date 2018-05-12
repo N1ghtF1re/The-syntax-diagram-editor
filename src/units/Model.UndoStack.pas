@@ -26,13 +26,14 @@ begin
   if Info.ChangeType = NonDeleted then
   begin
     ShowMessage('Error');
-    exit;
+  end
+  else
+  begin
+    new(tmp);
+    tmp^.Prev := vertex;
+    vertex := tmp;
+    tmp^.Inf := info;
   end;
-
-  new(tmp);
-  tmp^.Prev := vertex;
-  vertex := tmp;
-  tmp^.Inf := info;
 end;
 
 function undoStackPop(var Vertex: PUndoStack; var rec: TUndoStackInfo):boolean;
