@@ -7,13 +7,15 @@ program SyntaxDiag;
 uses
   Vcl.Forms,
   Main in 'Main.pas' {EditorForm},
-  SD_Types in 'units\SD_Types.pas',
-  SD_Model in 'units\SD_Model.pas',
-  SD_View in 'units\SD_View.pas',
-  SD_InitData in 'units\SD_InitData.pas',
-  SVGUtils in 'units\SVGUtils.pas',
+  Data.Types in 'units\Data.Types.pas',
+  Model in 'units\Model.pas',
+  View.Canvas in 'units\View.Canvas.pas',
+  Data.InitData in 'units\Data.InitData.pas',
+  View.SVG in 'units\View.SVG.pas',
   FCanvasSizeSettings in 'forms\FCanvasSizeSettings.pas' {CanvasSettingsForm},
-  FHtmlView in 'forms\FHtmlView.pas' {FHtml};
+  FHtmlView in 'forms\FHtmlView.pas' {FHtml},
+  Model.UndoStack in 'units\Model.UndoStack.pas',
+  Model.Files in 'units\Model.Files.pas';
 
 {$R *.res}
 

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
-  Vcl.Menus, SD_Types, SD_View, SD_InitData, SD_Model, SVGUtils, Vcl.Buttons,
+  Vcl.Menus, Data.Types, View.Canvas, Data.InitData, Model, View.SVG, Vcl.Buttons,
   System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
   Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.ToolWin, Model.UndoStack;
 type
@@ -179,7 +179,7 @@ implementation
 {$R+}
 {$R-}
 
-uses FCanvasSizeSettings, FHtmlView, Model.FilesUtil;
+uses FCanvasSizeSettings, FHtmlView, Model.Files;
 
 procedure TEditorForm.changeEditorText(newtext: string);
 begin

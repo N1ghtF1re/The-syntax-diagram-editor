@@ -2,7 +2,7 @@ object FHtml: TFHtml
   Left = 0
   Top = 0
   Caption = 'FHtml'
-  ClientHeight = 316
+  ClientHeight = 505
   ClientWidth = 562
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +17,7 @@ object FHtml: TFHtml
     Left = 0
     Top = 0
     Width = 562
-    Height = 316
+    Height = 505
     Align = alClient
     TabOrder = 0
     ExplicitLeft = 16
@@ -25,10 +25,18 @@ object FHtml: TFHtml
     ExplicitWidth = 300
     ExplicitHeight = 150
     ControlData = {
-      4C000000163A0000A92000000000000000000000000000000000000000000000
+      4C000000163A0000313400000000000000000000000000000000000000000000
       000000004C000000000000000000000001000000E0D057007335CF11AE690800
       2B2E126209000000000000004C0000000114020000000000C000000000000046
       8000000000000000000000000000000000000000000000000000000000000000
       00000000000000000100000000000000000000000000000000000000}
+  end
+  object pmHtmlMenu: TPopupMenu
+    Left = 328
+    Top = 72
+    object pmiClose: TMenuItem
+      Caption = #1047#1072#1082#1088#1099#1090#1100
+      OnClick = pmiCloseClick
+    end
   end
 end

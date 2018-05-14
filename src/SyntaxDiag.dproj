@@ -83,7 +83,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=BrakhMen Corp;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=Syntax Diagrams Editor;LegalCopyright=;LegalTrademarks=;OriginalFilename=Syntax Diagrams Editor;ProgramID=info.brakhmen.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <Icon_MainIcon>SyntaxDiag_Icon1.ico</Icon_MainIcon>
+        <Icon_MainIcon>SyntaxDiag_Icon.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>D:\labs\Syntax diagrams\src\icons\icon.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>D:\labs\Syntax diagrams\src\icons\icon.png</UWP_DelphiLogo150>
     </PropertyGroup>
@@ -105,11 +105,11 @@
             <Form>EditorForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="units\SD_Types.pas"/>
-        <DCCReference Include="units\SD_Model.pas"/>
-        <DCCReference Include="units\SD_View.pas"/>
-        <DCCReference Include="units\SD_InitData.pas"/>
-        <DCCReference Include="units\SVGUtils.pas"/>
+        <DCCReference Include="units\Data.Types.pas"/>
+        <DCCReference Include="units\Model.pas"/>
+        <DCCReference Include="units\View.Canvas.pas"/>
+        <DCCReference Include="units\Data.InitData.pas"/>
+        <DCCReference Include="units\View.SVG.pas"/>
         <DCCReference Include="forms\FCanvasSizeSettings.pas">
             <Form>CanvasSettingsForm</Form>
             <FormType>dfm</FormType>
@@ -118,6 +118,8 @@
             <Form>FHtml</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="units\Model.UndoStack.pas"/>
+        <DCCReference Include="units\Model.Files.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -150,12 +152,27 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="ProjectiOSDeviceResourceRules">
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <DeployClass Name="ProjectOSXResource">
@@ -534,27 +551,12 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
+                <DeployClass Name="ProjectiOSDeviceResourceRules">
                     <Platform Name="iOSDevice64">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <RemoteDir>Contents\MacOS</RemoteDir>
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                     <Platform Name="iOSDevice32">
                         <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                    <Platform Name="iOSSimulator">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
                     </Platform>
                 </DeployClass>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
