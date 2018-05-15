@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
-  TCanvasSettingsForm = class(TForm)
+  TFCanvasSettings = class(TForm)
     Panel1: TPanel;
     Label1: TLabel;
     lblWidth: TLabel;
@@ -27,13 +27,13 @@ type
   end;
 
 var
-  CanvasSettingsForm: TCanvasSettingsForm;
+  FCanvasSettings: TFCanvasSettings;
 
 implementation
 uses main;
 {$R *.dfm}
 
-procedure TCanvasSettingsForm.btnOkClick(Sender: TObject);
+procedure TFCanvasSettings.btnOkClick(Sender: TObject);
 var
 w,h:integer;
 begin
@@ -47,7 +47,7 @@ begin
   end;     }
 end;
 
-procedure TCanvasSettingsForm.ControlsToItem(var w, h: integer);
+procedure TFCanvasSettings.ControlsToItem(var w, h: integer);
 begin
   try
     w := StrToInt( edtWidth.Text );
@@ -57,7 +57,7 @@ begin
   end;
 end;
 
-function TCanvasSettingsForm.showForm(var w,h: integer):TModalResult;
+function TFCanvasSettings.showForm(var w,h: integer):TModalResult;
 begin
   edtWidth.Text := IntToStr(w);
   edtHeight.Text := IntToStr(h);
@@ -66,7 +66,7 @@ begin
     ControlsToItem(w,h);
 end;
 
-procedure TCanvasSettingsForm.btnCancelClick(Sender: TObject);
+procedure TFCanvasSettings.btnCancelClick(Sender: TObject);
 begin
 //  Self.Close;
 end;

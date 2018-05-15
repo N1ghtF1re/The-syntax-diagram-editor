@@ -2,7 +2,7 @@ unit Model.UndoStack;
 
 interface
 
-uses SD_Types; // in SD_Types - declaration of Stack type
+uses Data.Types; // in SD_Types - declaration of Stack type
  procedure CreateStack(var adr: PUndoStack);
  procedure UndoStackPush(var Vertex: PUndoStack; info: TUndoStackInfo);
  function undoStackPop(var Vertex: PUndoStack; var rec: TUndoStackInfo):boolean;

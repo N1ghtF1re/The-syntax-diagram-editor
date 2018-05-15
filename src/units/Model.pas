@@ -3,87 +3,43 @@ unit Model;
 // responsible for processing information
 interface
 
-uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math, View.SVG, Model.Files;
+uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
+    View.SVG, Model.Files, Model.Lines;
 
- function isHorisontalIntersection(head: PFigList; blocked: PPointsList): boolean;
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
  function removeFigure(head: PFigList; adr: PFigList):PFigList;
- procedure selectFigure(canvas: TCanvas; head:PFigList);
  procedure removeAllList(head:PFigList);
  procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
- procedure checkLineCoords(head: PPointsList);
- function addNewPoint(var head: PPointsList; x,y:integer):PPointsList;
  procedure createFigList(var head: PFigList);
- function addLine(head: PFigList; x,y: integer):PFigList;
- function searchNearFigure(head: PFigList; var x,y: integer):PPointsList;
  function addFigure(head: PFigList; x,y: integer; ftype: TType; Text:String = 'Kek'):PFigList;
  function nearRound(x:integer):integer;
  procedure roundCoords(var x,y:integer);
  function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList; CT: TType) :TEditMode;
  procedure checkFigureCoord(R: PFigList);
- procedure removeTrashLines(head: PFigList; curr: PFigList);
  procedure copyFigure(head: PFigList; copyfigure:PFigList);
  procedure MagnetizeLines(head: PFigList);
  function ScaleRound(scale: real; x: integer): integer;
  procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
  procedure SearchFiguresInOneLine(head, curr: PFigList);
- function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
+
 implementation
 uses System.Sysutils, main;
+
+procedure createFigList(var head: PFigList);
+begin
+  new(head);
+  head.Adr := nil;
+end;
+
 
 function nearRound(x:integer):integer;
 begin
   Result:= round(x/NearFigure)*NearFigure;
 end;
-// Return true if need middle arrow
-function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
-begin
-  Result := (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x)
-        and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2)
-end;
 
-function isHorisontalIntersection(head: PFigList; blocked: PPointsList):boolean;
-var
-  tmp: PFigList;
-  tmpP: PPointsList;
-  ti1, ti2: TPointsInfo;
-begin
-  Result := false;
-  tmp:= head^.adr;
-  while tmp <> nil do
-  begin
-    if tmp^.Info.tp = Line then
-    begin
-      if tmp^.info.PointHead = nil then
-      begin
-        tmp := tmp^.adr;
-        continue;
-      end;
 
-      tmpP := tmp^.Info.PointHead^.adr;
-      while (tmpP <> nil) and (tmpP^.adr <> nil) do
-      begin
-
-        ti1 := tmpP^.Info;
-        ti2 := tmpP^.adr.Info;
-        if (abs(ti1.x- blocked.Info.x) < NearFigure)
-        and (abs(ti2.x - blocked.Info.x) < NearFigure)
-        and (blocked.Info.y < max(ti1.y, ti2.y))
-        and (blocked.Info.y > min(ti1.y, ti2.y))
-        and (tmpP <> blocked) and (tmpP^.adr <> blocked)
-        then
-        begin
-          //blocked^.Info.x := tmpP^.adr^.Info.x;
-          Result := true;
-          exit;
-        end;
-        tmpP:= tmpP^.adr;
-      end;
-    end;
-    tmp := tmp^.Adr;
-  end;
-end;
-
+// ѕроверка координат, чтобы выполн€лись услови€ x2 > x1, y2 > y1
+// ≈сли условие не выполн€етс€ - процедура мен€ет координаты местами
 procedure checkFigureCoord(R: PFigList);
 var
   temp:integer;
@@ -106,64 +62,11 @@ begin
   end;
 end;
 
-
-function isBelongsLine(head: PPointsList; x,y: integer): Boolean;
-var
-  tmp, tmp2 : PPointsList;
-begin
-  if (head = nil) or (head^.Adr = nil) or (head^.Adr^.Adr = nil) then exit;
-  tmp := head^.adr;
-  tmp2 := tmp^.Adr;
-  Result := false;
-  while (tmp <> nil) and (tmp2 <> nil) do
-  begin
-    if (tmp^.Info.x = tmp2^.Info.x) and (abs(tmp^.Info.x - x) < Tolerance) then
-    begin
-      if (y > min(tmp^.Info.y, tmp2^.Info.y)) and (y < max(tmp^.Info.y, tmp2^.Info.y)) then
-      begin
-        Result := true;
-        exit
-      end;
-    end;
-     if (tmp^.Info.y = tmp2^.Info.y) and  (abs(tmp^.Info.y - y) < Tolerance) then
-    begin
-      if (x > min(tmp^.Info.x, tmp2^.Info.x)) and (x < max(tmp^.Info.x, tmp2^.Info.x)) then
-      begin
-        Result := true;
-        exit
-      end;
-    end;
-    tmp := tmp^.Adr;
-    tmp2 := tmp2^.adr;
-
-  end;
-
-
-end;
-
 function ScaleRound(scale: real; x: integer):integer;
 begin
   Result := Round(X*Scale);
 end;
 
-
-function copyPointList(cf: PPointsList):PPointsList;
-var
-  tmp: PPointsList;
-begin
-  
-  new(Result);
-  Result^.adr := nil;
-  tmp := cf;
-  if tmp = nil then exit;
-  tmp := tmp^.Adr;
-  while tmp <> nil do
-  begin
-    addNewPoint(Result, tmp^.Info.x, tmp^.Info.y);
-    tmp := tmp^.Adr;
-  end;
-  
-end;
 
 procedure copyFigure(head: PFigList; copyfigure:PFigList);
 var
@@ -283,12 +186,12 @@ begin
   x := round(x/step_round)*step_round;
   y := round(y/step_round)*step_round;
 
-  searchNearFigure(FigHead, x,y);
+  searchNearLine(FigHead, x,y);
   //ShowMessage( IntToStr(x) + ' ' + IntToStr(y) );
 end;
 
 
-// ƒобавл€ем новый пр€моугольный объект и возвращаем ссылку на него!
+// ƒобавленеие новой фигуры и возврат ссылки на нее
 function addFigure(head: PFigList; x,y: integer; ftype: TType; Text:String = 'Kek'):PFigList;
 var
   tmp: PFigList;
@@ -312,143 +215,8 @@ begin
   Result := tmp;
 end;
 
-// —оздаем массив пр€моугольных фигур
 
 
-function searchNearFigure(head: PFigList; var x,y: integer):PPointsList;
-var
-  temp: PFigList;
-  tmpP: PPointsList;
-  lastP: PPointsList;
-  maxX, maxY, minX, minY:integer;
-begin
-  Result := nil;
-  temp:= head.adr;
-
-  while temp <> nil do
-  begin
-    if temp^.Info.tp = line then
-    begin
-      if temp^.Info.PointHead = nil then
-      begin
-        temp := temp^.adr;
-        Continue;
-      end;
-
-      
-      tmpP:= temp^.Info.PointHead^.adr;
-      lastP:=tmpP;
-      if tmpP^.Adr <> nil then
-        tmpP := tmpP^.adr;
-      while tmpP <> nil do
-      begin
-        // ѕеребирает точки фигуры
-        maxY := max(tmpP.Info.y, lastP.Info.y);
-        minY := min(tmpP.Info.y, lastP.Info.y);
-        maxX := max(tmpP.Info.x, lastP.Info.x);
-        minX := min(tmpP.Info.x, lastP.Info.x);
-        if (abs(MaxX - x) < NearFigure)
-            and
-           (y > minY)
-            and
-           (y < maxY) then
-        begin
-          x := MaxX;
-          Result := tmpP;
-          exit;
-        end;
-
-        if (abs(MinX - x) < NearFigure)
-            and
-           (y > minY)
-            and
-           (y < maxY) then
-        begin
-          x := MinX;
-          Result := tmpP;
-          exit;
-        end;
-
-        if (abs(MaxY - y) < nearFigure)
-            and
-           (x > minx)
-            and
-           (x < maxx) then
-        begin
-          y := MaxY;
-          Result := tmpP;
-          exit;
-        end;
-
-        if (abs(MinY - Y) < NearFigure)
-            and
-           (X > minX)
-            and
-           (X < maxX) then
-        begin
-          Y := MinY;
-          Result := tmpP;
-          exit;
-        end;
-        lastp:= tmpP;
-        tmpP := tmpP^.adr;
-      end;
-
-    end;
-    temp := temp^.Adr;
-  end;
-end;
-
-procedure createFigList(var head: PFigList);
-begin
-  new(head);
-  head.Adr := nil;
-end;
-
-
-
-// ƒобавл€ем линию
-function addLine(head: PFigList; x,y: integer):PFigList;
-var
-  tmp: PFigList;
-begin
-  tmp := head;
-  while tmp^.adr <> nil do
-    tmp := tmp^.Adr;
-  new(tmp^.adr);
-  tmp := tmp^.Adr;
-  tmp^.Adr := nil;
-  tmp^.Info.tp := line;
-  new(tmp^.Info.PointHead);
-  tmp^.Info.PointHead^.Adr := nil;
-  tmp^.Info.LT := CurrLineType;
-  addNewPoint(tmp^.Info.PointHead, x,y);
-
-  result := tmp;
-end;
-
-procedure removeTrashLines(head: PFigList; curr: PFigList);
-var
-  tmp: PFigList;
-begin
-  if head = nil then exit;
-
-  tmp := head^.adr;
-  while tmp <> nil do
-  begin
-    if tmp^.Info.tp = Line then
-    begin
-      if (tmp^.Info.PointHead = nil) or (tmp^.Info.PointHead^.Adr = nil) then continue;
-      
-      if (tmp^.Info.PointHead^.Adr^.Adr = nil) and (tmp <> curr) then
-        removeFigure(head,tmp);
-    end;
-     tmp := tmp^.Adr;
-  end;
-  
-
-
-end;
 
 // ¬озвращает фигуру, по которой был клик
 function getClickFigure(x,y:integer; head: PFigList):PFigList;
@@ -514,36 +282,6 @@ begin
   Result := nil;
 end;
 
-function addNewPoint(var head: PPointsList; x,y:integer):PPointsList;
-var
-  tmp :PPointsList;
-  id :integer;
-  px, py: integer;
-begin
-  tmp := head;
-  while tmp^.adr <> nil do
-    tmp := tmp^.Adr;
-  if tmp <> head then
-  begin
-    px := tmp^.Info.x;
-    py := tmp^.Info.y;
-    // «апрещаем проводить пр€мую под углом.
-    try
-      if (arctan(abs((y-py)/(x-px))) < pi/4) {or (CurrLineType = LAdditLine)} then
-        y:=py
-      else
-        x:=px;
-    except on EZeroDivide do
-      // kek
-    end;
-  end;
-  new(tmp^.adr);
-  Result := tmp;
-  tmp := tmp^.adr;
-  tmp^.Info.x := x;
-  tmp^.Info.y := y;
-  tmp^.Adr := nil;
-end;
 
 // ‘ункци€ выполн€ет логическое удаление фигуры и возвращает ссылку
 // Ќа предшествующую удаленной фигуру фигуру.
@@ -566,33 +304,6 @@ begin
   end;
 end;
 
-
-procedure selectFigure(canvas: TCanvas; head:PFigList);
-var
-  tmp : PPointsList;
-begin
-  //ShowMessage('kek');
-  if head^.Info.tp <> line then
-  begin
-    // –исуем вершины
-    drawSelectFigure(canvas, head^.Info);
-  end
-  else
-  begin
-    //showmessage('kek');
-    if head^.Info.PointHead = nil then exit;
-    tmp := head^.Info.PointHead^.adr;
-    while tmp <> nil do
-    begin
-      drawSelectLineVertex(canvas,tmp^.info);
-      tmp := tmp^.Adr;
-    end;
-  end;
-end;
-
-
-
-
 procedure removeAllList(head:PFigList);
 var
   temp, temp2: PFigList;
@@ -607,94 +318,6 @@ begin
   head.Adr := nil;
 end;
 
-
-procedure checkLineCoords(head: PPointsList);
-var
-  tmp:PPointsList;
-begin
-  tmp := head^.adr;
-  while tmp^.adr <> NIL do
-  begin
-    //showmessage( Inttostr( tmp^.Adr^.Info.y ) );
-    try
-      if arctan(abs((tmp^.Adr^.Info.y-tmp^.Info.y)/(tmp^.Adr^.Info.x-tmp^.Info.x))) < pi/4 then
-          tmp^.Info.y := tmp^.adr^.Info.y
-      else
-         tmp^.Info.x := tmp^.adr^.Info.x;
-      except on E: EZeroDivide do
-
-    end;
-    tmp := tmp^.Adr;
-  end;
-end;
-
-
-{»де€ алгоритма: найти область линии, все точки которой иметь 
-либо координату x, либо координату y, равную старому значение 
-координаты перемещаемой точки. ѕри этом все точки области 
-должны идти подр€д и в области не должно содержатьс€ ни 
-одной точки, не соответствующих данному условию. 
-ѕосле нахождени€ области, нужно изменить координаты 
-каждой точки внутри области.}
-procedure MoveLine(head: PPointsList; oldp, newp: TPointsInfo);
-var
-  tmp: PPointsList;
-  BeginOfArea: PPointsList;
-  isFound:Boolean;
-  isEnd: boolean;
-begin
-  tmp:=head^.adr;
-  isFound := true;
-  BeginOfArea := nil;
-  isEnd := false;
-
-  // ѕоиск начала искомой области
-  while (tmp <> nil) and not isEnd do
-  begin
-    if (tmp^.Info.y = oldp.y) or (tmp^.Info.x = oldp.x) or ((tmp^.Info.x = newP.x) and (tmp^.Info.y = newP.y)) then
-    begin
-      if BeginOfArea = nil then
-        BeginOfArea:= tmp;
-      isFound:= true;
-      if (tmp^.Info.x = newP.x) and (tmp^.Info.y = newP.y) then
-        isEnd := true;
-    end
-    else
-    begin
-      BeginOfArea := nil; // ≈сли точка противоречит одному из перечисленных выше условий,
-      // то заного ищем начало области
-    end;
-    if not isEnd then    
-      tmp := tmp^.Adr;
-  end;
-
-  tmp := BeginOfArea;
-  // изменение координат точек внутри области
-  while (tmp<>nil) and isFound and ((tmp^.Info.y = oldp.y) or (tmp^.Info.x = oldp.x) or ((tmp^.Info.x = newP.x) and (tmp^.Info.y = newP.y) )) do
-  begin    
-    if tmp^.Info.y = oldp.y then
-      tmp^.Info.y := newp.y;
-    if tmp^.Info.x = oldp.x then
-      tmp^.Info.x := newp.x;
-    tmp := tmp^.Adr;
-  end;
-
-
-
-end;
-
-procedure moveALlLinePoint(head: PPointsList; dx, dy: integer);
-var
-  tmp: PPointsList;
-begin
-  tmp := head^.Adr;
-  while tmp <> nil do
-  begin
-    tmp^.Info.x := tmp^.Info.x - dx;
-    tmp^.Info.y := tmp^.Info.y - dy;
-    tmp := tmp^.Adr;
-  end;
-end;
 
 procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
 var
@@ -810,13 +433,6 @@ begin
   end;
 end;
 
-function isHorLine(curr, prev: PPointsList):boolean;
-begin
-  if prev = nil then
-    Result := (curr^.Adr <> nil) and (curr^.Info.y = curr^.adr^.Info.y)
-  else
-    Result := prev^.Info.y = curr^.Info.y;
-end;
 
 procedure SearchFiguresInOneLine(head, curr: PFigList);
 var   
@@ -884,7 +500,7 @@ begin
         continue;
       end;
       
-      NearP := searchNearFigure(head, x,y);
+      NearP := searchNearLine(head, x,y);
       if NearP <> nil then
       begin
         oldp.x := tmpP^.Info.x;
@@ -917,39 +533,6 @@ begin
 end;
 
 
-procedure changeListCoords(head: PPointsList; st:string);
-var
-  tmp: PPointsList;
-  xy: string;
-begin
-  tmp:= head^.Adr;
-  if st <> '' then
-  begin
-    Delete(st,1,1);
-    st := st + '"';
-  end;
-  while (length(st) <> 0) and (st <> '"') do
-  begin
-    xy := copy(st, 1, pos('"', st)-1);
-    Delete(st,1, pos('"', st)+1);
-    if (st <> '') or (xy <> '') then
-    begin
-      if tmp <> nil then
-      begin
-        tmp^.Info.x := strtoint(copy(xy, 1,pos('/', xy)-1));
-        tmp^.Info.y :=  strtoint(copy(xy, pos('/', xy)+1, length(xy)));
-        tmp := tmp^.Adr;
-      end
-      else
-      begin
-        ShowMessage('Error (small)');
-        Exit;
-      end;
-
-    end;
-  end;
-end;
-
 procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
 var
   tmp: PFigList;
@@ -978,7 +561,7 @@ begin
     end;
     chPointMove:
     begin
-      changeListCoords(UndoRec.adr^.Info.PointHead, UndoRec.st);
+      changeLineCoords(UndoRec.adr^.Info.PointHead, UndoRec.st);
     end;
     chChangeText:
     begin

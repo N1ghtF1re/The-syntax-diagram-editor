@@ -111,7 +111,7 @@
         <DCCReference Include="units\Data.InitData.pas"/>
         <DCCReference Include="units\View.SVG.pas"/>
         <DCCReference Include="forms\FCanvasSizeSettings.pas">
-            <Form>CanvasSettingsForm</Form>
+            <Form>FCanvasSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="forms\FHtmlView.pas">
@@ -120,6 +120,7 @@
         </DCCReference>
         <DCCReference Include="units\Model.UndoStack.pas"/>
         <DCCReference Include="units\Model.Files.pas"/>
+        <DCCReference Include="units\Model.Lines.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

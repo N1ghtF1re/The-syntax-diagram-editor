@@ -12,10 +12,11 @@ procedure drawFigure(Canvas:TCanvas; head:PFigList; scale: real; isVertex:boolea
 procedure drawSelectFigure(canvas:tcanvas; figure: TFigureInfo);
 procedure drawSelectLineVertex(canvas: TCanvas; Point: TPointsInfo);
 function beginOfVertLine(tmp:PPointsList;firstP: TPointsInfo):boolean;
+procedure selectFigure(canvas: TCanvas; head:PFigList);
 
 
 implementation
-uses main, Model;
+uses main, Model, Model.Lines;
 
 // MoveTo with using scale
 procedure ScaleMoveTo(canvas:TCanvas; x,y: integer);
@@ -51,6 +52,29 @@ begin
   ScaleMoveTo(Canvas,x,y);
   ScaleLineTo(Canvas,x-Arrow_Width*coef,y+Arrow_Height);
   ScaleMoveTo(Canvas,x,y);
+end;
+
+procedure selectFigure(canvas: TCanvas; head:PFigList);
+var
+  tmp : PPointsList;
+begin
+  //ShowMessage('kek');
+  if head^.Info.tp <> line then
+  begin
+    // Рисуем вершины
+    drawSelectFigure(canvas, head^.Info);
+  end
+  else
+  begin
+    //showmessage('kek');
+    if head^.Info.PointHead = nil then exit;
+    tmp := head^.Info.PointHead^.adr;
+    while tmp <> nil do
+    begin
+      drawSelectLineVertex(canvas,tmp^.info);
+      tmp := tmp^.Adr;
+    end;
+  end;
 end;
 
 // Draw out bound line ( |\----- )
@@ -157,11 +181,7 @@ begin                  //\\
       drawOutBoundLine(canvas,FirstP, tmp);
       isFirstLine :=  true;
     end;
-    {if LT = LAdditLine then
-    begin
-      AddY := tmp^.Info.y;
-    end;}
-    // POTOM
+
     if (tmp^.Adr <> nil) and (PrevP.y = tmp^.adr^.Info.y) and isHorisontalIntersection(EditorForm.getFigureHead,tmp) then
     begin
       if (tmp^.Adr <> nil) and (FirstP.x - tmp^.adr^.Info.x < 0) then

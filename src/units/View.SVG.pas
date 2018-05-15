@@ -5,7 +5,7 @@ uses Data.Types, Data.InitData;
 procedure exportToSVG(head: PFigList; w,h: Integer; path:UTF8String; title: UTF8String; desc: UTF8String);
 
 implementation
-uses SysUtils, vcl.dialogs, vcl.graphics, Model, View.Canvas, main;
+uses SysUtils, vcl.dialogs, vcl.graphics, Model, View.Canvas, main, Model.Lines;
 const svg_head = '<?xml version="1.0" standalone="no"?>' + #10#13
                  + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"'+ #10#13
                 + '"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';

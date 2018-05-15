@@ -1,4 +1,4 @@
-object CanvasSettingsForm: TCanvasSettingsForm
+object FCanvasSettings: TFCanvasSettings
   Left = 0
   Top = 0
   Caption = #1048#1079#1084#1077#1085#1080#1090#1100' '#1088#1072#1079#1084#1077#1088' '#1093#1086#1083#1089#1090#1072

@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, math,
   Vcl.Menus, Data.Types, View.Canvas, Data.InitData, Model, View.SVG, Vcl.Buttons,
   System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
-  Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.ToolWin, Model.UndoStack;
+  Vcl.Imaging.pngimage, Vcl.ComCtrls, Vcl.ToolWin, Model.UndoStack, Model.Lines;
 type
   TEditorForm = class(TForm)
     edtRectText: TEdit;
@@ -899,7 +899,7 @@ var
 begin
   neww:= PBW;
   newh := PBH;
-  CanvasSettingsForm.showForm(neww, newh); // Open form
+  FCanvasSettings.showForm(neww, newh); // Open form
   changeCanvasSize(neww, newh);
   Self.Repaint;
 end;
