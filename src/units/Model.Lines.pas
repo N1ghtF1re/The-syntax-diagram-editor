@@ -12,13 +12,13 @@ interface
   procedure MoveLine(head: PPointsList; oldp, newp: TPointsInfo);
   procedure moveALlLinePoint(head: PPointsList; dx, dy: integer);
   function isHorLine(curr, prev: PPointsList):boolean;
-  procedure changeLineCoords(head: PPointsList; st:string);
+  procedure changeLineCoordsFromStr(head: PPointsList; st:string);
   function searchNearLine(head: PFigList; var x,y: integer):PPointsList;
   procedure removeTrashLines(head: PFigList; curr: PFigList);
 implementation
   uses math, System.SysUtils, vcl.dialogs, Model;
 
-procedure changeLineCoords(head: PPointsList; st:string);
+procedure changeLineCoordsFromStr(head: PPointsList; st:string);
 var
   tmp: PPointsList;
   xy: string;
@@ -101,10 +101,21 @@ begin
     begin
       if (tmp^.Info.PointHead = nil) or (tmp^.Info.PointHead^.Adr = nil) then continue;
 
-      if (tmp^.Info.PointHead^.Adr^.Adr = nil) and (tmp <> curr) then
-        removeFigure(head,tmp);
+      if (tmp^.Info.PointHead^.Adr^.Adr = nil) and (tmp = curr) then
+        removeFigure(head,tmp)
+      else
+      if (tmp^.Info.PointHead^.Adr^.Adr <> nil)
+        and
+        (tmp^.Info.PointHead^.Adr.Info.x = tmp^.Info.PointHead^.Adr^.adr.Info.x)
+        and
+        (tmp^.Info.PointHead^.Adr.Info.y = tmp^.Info.PointHead^.Adr^.adr.Info.y)
+      then
+      begin
+        tmp^.Info.PointHead := tmp^.Info.PointHead^.Adr;
+        removeTrashLines(head,curr);
+      end;
     end;
-     tmp := tmp^.Adr;
+      tmp := tmp^.Adr;
   end;
 end;
 
@@ -139,7 +150,9 @@ begin
   tmp^.Adr := nil;
 end;
 
-
+// Процедура превращает линии под углом в вертикальные или горизонтальные
+// В зависимости от угла наклона. (Все линии в синтаксических диаграммах
+// Должны быть параллельны одной из осей.
 procedure checkLineCoords(head: PPointsList);
 var
   tmp:PPointsList;
@@ -147,14 +160,12 @@ begin
   tmp := head^.adr;
   while tmp^.adr <> NIL do
   begin
-    //showmessage( Inttostr( tmp^.Adr^.Info.y ) );
     try
       if arctan(abs((tmp^.Adr^.Info.y-tmp^.Info.y)/(tmp^.Adr^.Info.x-tmp^.Info.x))) < pi/4 then
           tmp^.Info.y := tmp^.adr^.Info.y
       else
          tmp^.Info.x := tmp^.adr^.Info.x;
       except on E: EZeroDivide do
-
     end;
     tmp := tmp^.Adr;
   end;

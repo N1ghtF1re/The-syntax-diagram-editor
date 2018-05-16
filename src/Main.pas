@@ -99,6 +99,7 @@ type
     procedure pbMainPaint(Sender: TObject);
     procedure saveBMPFile;
     procedure savePNGFile;
+    procedure endDrawLine;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure mniNewClick(Sender: TObject);
     procedure sbMainMouseWheelDown(Sender: TObject; Shift: TShiftState;
@@ -218,6 +219,7 @@ begin
   pbMain.Repaint;
 end;
 
+
 procedure TEditorForm.useScale(var x, y: integer);
 begin
   x := Round(FScale*x);
@@ -249,8 +251,12 @@ begin
         // CHANGES STASCK PUSHING END
       end;
       // If clicked button - right or middle then finish drawing
-      TMouseButton.mbRight: dm:=NoDraw;
-      TMouseButton.mbMiddle: dm:=NoDraw;
+      TMouseButton.mbRight: 
+      begin
+        // Remove lines with one point
+        endDrawLine;
+      end;
+      TMouseButton.mbMiddle: endDrawLine;
     end;
 
   end
@@ -306,8 +312,7 @@ begin
   begin
     changeEditorText(prevText);
   end;
-  // Remove lines with one point
-  removeTrashLines(FigHead, CurrFigure);
+
 end;
 
 procedure changeCursor(ScrollBox:TScrollBox; Mode: TEditMode);
@@ -415,6 +420,10 @@ begin
   end;
   if mniMagnetizeLine.Checked then    
     MagnetizeLines(FigHead);
+
+
+  
+  Self.pbMain.Repaint;
   pbMain.Repaint;
 end;
 
@@ -451,6 +460,13 @@ procedure TEditorForm.DiscardScale(var x, y: integer);
 begin
   x := Round(x/FScale);
   y := Round(y/FScale);
+end;
+
+procedure TEditorForm.endDrawLine;
+begin
+  removeTrashLines(FigHead, CurrFigure); 
+  dm:=NoDraw;
+  pbMain.Repaint;
 end;
 
 procedure TEditorForm.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -927,6 +943,8 @@ end;
 
 procedure TEditorForm.actFigDefExecute(Sender: TObject);
 begin
+  if CurrType = Line then
+    endDrawLine;
   CurrType := def;
 end;
 
@@ -938,16 +956,22 @@ end;
 
 procedure TEditorForm.actFigMetaConstExecute(Sender: TObject);
 begin
+  if CurrType = Line then
+    endDrawLine;
   CurrType := MetaConst;
 end;
 
 procedure TEditorForm.actFigMetaVarExecute(Sender: TObject);
 begin
+  if CurrType = Line then
+    endDrawLine;
   CurrType := MetaVar;
 end;
 
 procedure TEditorForm.actFigNoneExecute(Sender: TObject);
 begin
+  if CurrType = Line then
+    endDrawLine;
   CurrType := None;
 end;
 

@@ -327,8 +327,7 @@ begin
   case EM of
     NoEdit:
     begin
-      {F^.Info.x2 := x;
-            F^.Info.y2 := y;}
+
     end;
     Move: // Перемещаем объект :)
     begin
@@ -338,7 +337,6 @@ begin
         currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
         currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
         MoveLine(CurrFigure^.Info.PointHead, oldp, currPointAdr^.Info);
-        //checkLineCoords(CurrFigure^.Info.PointHead);
       end
       else
       begin
@@ -561,7 +559,7 @@ begin
     end;
     chPointMove:
     begin
-      changeLineCoords(UndoRec.adr^.Info.PointHead, UndoRec.st);
+      changeLineCoordsFromStr(UndoRec.adr^.Info.PointHead, UndoRec.st);
     end;
     chChangeText:
     begin
