@@ -58,7 +58,9 @@ To change the text of an already added shape, you must select the "Edit" mode, c
 <br>
 To change the scale of the image, it is necessary to move the corresponding "slider" in the desired direction. An example of changing the scale is shown in the picture below
 <br>
+
 ![Select scale](https://i.imgur.com/auFdix6.png)
+
 <br>
 Also, the program has a convenient menu and a toolbar, where you can find functions such as
 
