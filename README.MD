@@ -58,7 +58,7 @@ To change the text of an already added shape, you must select the "Edit" mode, c
 <br>
 To change the scale of the image, it is necessary to move the corresponding "slider" in the desired direction. An example of changing the scale is shown in the picture below
 <br>
-![Select scale](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image141.png?raw=true)
+![Select scale](https://i.imgur.com/auFdix6.png)
 <br>
 Also, the program has a convenient menu and a toolbar, where you can find functions such as
 
