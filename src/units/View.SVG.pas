@@ -6,10 +6,13 @@ procedure exportToSVG(head: PFigList; w,h: Integer; path:UTF8String; title: UTF8
 
 implementation
 uses SysUtils, vcl.dialogs, vcl.graphics, Model, View.Canvas, main, Model.Lines;
+
+// Заголовок SVG
 const svg_head = '<?xml version="1.0" standalone="no"?>' + #10#13
                  + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"'+ #10#13
                 + '"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
 
+// Возвращает строку с открытием SVG-тега
 function getSVGOpenTag(h,w: integer):UTF8String;
 begin
   result := '<svg width="' + IntToStr(W) + '" height="' + IntToStr(H) + #10#13
@@ -26,6 +29,7 @@ begin
   + IntToStr(width) + '" />'
 end;
 
+// Функция возвращает строку с text-тегом с заданным содержанием
 function writeSVGText(Figure: TFigureInfo; text: UTF8String; family:UTF8String =
                                         'Tahoma'; size:integer = 16):UTF8String;
 var TH, TW, TX,TY: real;
@@ -34,8 +38,6 @@ const
   SVG_VerticalEpsilon = 4; // Погрешность (Расстояние от верхней точки буквы до
                            // верха выделяемой области больше, чем до нижней)
 begin
-  //EditorForm.getTextWH(TW,TH, Text, size, family);
-
   with figure do
   begin
     // Координаты центра прямоугольника
@@ -49,12 +51,13 @@ begin
 
   Result:=
   //  text-anchor="middle" - центрирует текст по вертикали и горизонтали относительно
-  //  определенной точки
+  //  определенной точки. Подробнее - в документации по формату SVG
   '<text text-anchor="middle" font-family = "'+ family +'" font-size = "' + IntToStr(size) + '"'
   + ' x="'+ StringReplace(FormatFloat( '#.####', TX),',', '.', [rfReplaceAll])
   +'" y="'+StringReplace(FormatFloat( '#.####', TY),',', '.', [rfReplaceAll])
   +'">' + text + '</text>';
 end;
+
 
 procedure drawSVGBoundLine(var f: TextFile; FirstP: TPointsInfo; tmp:PPointsList; var lastp:PPointsList);
 var
@@ -73,7 +76,6 @@ begin
   writeln(f, '<!-- BOUND LINE -->');
   writeln(f, writePatch(p1, p2));
   lastp^.Info := p2;
-  // canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y+15*coef-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+15*coef+VertRad);
 end;
 
 procedure drawSVGArrowVertical(var f: textFile; x,y : integer; coef: ShortInt);
@@ -111,6 +113,8 @@ begin
   writeln(f, writePatch(p1,p2));
 end;
 
+
+// Превращаем специальные символы в "сущности"
 function htmlspecialchars(s: UTF8String):UTF8String;
 begin
  s:=StringReplace(s,'&','&amp;',[rfReplaceAll, rfIgnoreCase]);
@@ -157,6 +161,8 @@ begin
   {point.y := point.y + 2*coef*Lines_DegLenght;}
 end;
 
+
+// Экспорт в SVG
 procedure exportToSVG(head: PFigList; w,h: Integer; path:UTF8String; title: UTF8String; desc: UTF8String);
 var
   f: TextFile;
@@ -260,7 +266,7 @@ begin
         end;
         writeln(f, '<!-- LINE: -->');
         Writeln(f, writePatch( prev, curr));
-        if (tmpP^.Adr = nil) and isDegEnd {and (tmp^.Info.LT <> LAdditLine)} and (prevP^.Info.x = curr.x)  then
+        if (tmpP^.Adr = nil) and isDegEnd and (prevP^.Info.x = curr.x)  then
         begin
 
           drawIncomingLineSVG(f, curr, coef, tmpp);
@@ -272,7 +278,6 @@ begin
         if (tmpP^.Adr = nil) then
         begin
           drawArrowAtSVG(f, curr, prev);
-            //drawArrow(canvas,tmp^.Info.x, tmp^.Info.y);
         end;
 
          if needMiddleArrow(tmpp, FirstP) then // if these is incoming and outgoing lines
@@ -315,7 +320,7 @@ begin
 
 
 
-  writeln(f, '</svg>');
+  writeln(f, '</svg>'); // Зарытие тега SVG
   close(f);
 end;
 

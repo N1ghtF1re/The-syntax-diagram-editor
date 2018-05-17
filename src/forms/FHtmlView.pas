@@ -48,6 +48,7 @@ begin
   Self.Close;
 end;
 
+// Отображение HTML страницы из ресурсов.
 procedure TFHtml.showHTML(title, htmlres: WideString);
 var
   s: WideString;

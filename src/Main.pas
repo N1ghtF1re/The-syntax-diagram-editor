@@ -409,7 +409,7 @@ procedure TEditorForm.pbMainMouseUp(Sender: TObject; Button: TMouseButton;
 begin
   if DM <> DrawLine then
   begin
-    DM := NoDraw; // Заканчиваем рисование
+    DM := NoDraw; // End draw
     checkFigureCoord(CurrFigure);
   end;
   if isMoveFigure then

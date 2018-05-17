@@ -191,7 +191,6 @@ begin                  //\\
       ScaleMoveTo(Canvas,tmp^.Info.x, tmp^.Info.y-Lines_DegLenght);
       ScaleLineTo(Canvas,tmp^.Info.x+Lines_Deg*coef, tmp^.Info.y);
     end;
-    // POTOM END;
 
     if isVertex then
       drawVertexRect(canvas, tmp^.Info);
@@ -219,7 +218,6 @@ begin                  //\\
         if isVertex then
           drawVertexRect(canvas, point1);
 
-        //canvas.Rectangle(tmp^.Info.x-VertRad,tmp^.Info.y-VertRad, tmp^.Info.x+VertRad, tmp^.Info.y+VertRad);
         tmp:=tmp^.Adr;
         continue;
       end;

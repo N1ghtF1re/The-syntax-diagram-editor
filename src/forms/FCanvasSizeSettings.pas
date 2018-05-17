@@ -18,8 +18,6 @@ type
     btnCancel: TButton;
     lbl1px: TLabel;
     Label2: TLabel;
-    procedure btnCancelClick(Sender: TObject);
-    procedure btnOkClick(Sender: TObject);
   private
     procedure ControlsToItem(var w,h: integer);
   public
@@ -33,20 +31,8 @@ implementation
 uses main;
 {$R *.dfm}
 
-procedure TFCanvasSettings.btnOkClick(Sender: TObject);
-var
-w,h:integer;
-begin
-  {try
-    w := StrToInt( edtWidth.Text );
-    h := StrToInt( edtHeight.Text );
-    EditorForm.changeCanvasSize(w,h);
-    Self.Close;
-  except on E:Exception  do
-    ShowMessage('Ошибка ввода');
-  end;     }
-end;
 
+// Возввращает в w,h размеры, введенные пользователем в текстовом поле
 procedure TFCanvasSettings.ControlsToItem(var w, h: integer);
 begin
   try
@@ -64,11 +50,6 @@ begin
   Result := Self.ShowModal;
   if Result = mrOk then
     ControlsToItem(w,h);
-end;
-
-procedure TFCanvasSettings.btnCancelClick(Sender: TObject);
-begin
-//  Self.Close;
 end;
 
 end.

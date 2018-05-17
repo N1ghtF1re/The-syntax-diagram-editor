@@ -9,6 +9,10 @@ implementation
 
 uses System.SysUtils, Data.InitData, Main, vcl.dialogs;
 
+// Чтение файла
+// ВНИМАНИЕ!
+// В первом элементе всегда хранится проверка на валидность
+// и размеры канваса, сохраненные пользователем
 function readFile(const head:PFigList; filedir:string):boolean;
 var
   f: file of TFigureInFile;
@@ -24,15 +28,20 @@ begin
     Reset(f);
 
     OTemp := Head;
+    if Eof(f) then Raise Exception.Create(rsTrashFile);
+
     read(f, tmp);
-    if tmp.Check <> 'BRAKH' then
+    if tmp.Check <> 'BRAKH' then // Проверка валидности файла
     begin
       close(f);
-      ShowMessage(rsInvalidFile);
+      Raise Exception.Create(rsInvalidFile);
       exit;
     end;
+
+    // Изменение координат:
     EditorForm.changeCanvasSize(tmp.Width,tmp.Height);
     head^.Adr := nil;
+
     try
       while not EOF(f) do
       begin
@@ -44,12 +53,12 @@ begin
           OTemp^.Info.tp := tmp.tp;
           if tmp.tp = line then
           begin
-            //showMessage(tmp.Point);
             OTemp^.Info.tp := line;
             Otemp^.Info.LT := tmp.LT;
             new(OTemp^.Info.PointHead);
             ptemp := OTemp^.Info.PointHead;
             ptemp^.Adr := nil;
+            // Парсинг строки формата "X1/Y1""X2/Y2""X3/Y3"
             if tmp.Point <> '' then
             begin
               Delete(tmp.Point,1,1);
@@ -80,23 +89,21 @@ begin
             result := true;
           end;
 
-        //ShowMessage(otemp^.Info.obType);
-        //OTemp^.Info
       end;
       except on E: Exception do
-        ShowMessage('Файл поврежден!');
+        ShowMessage(rsTrashFile);
       end;
   end
   else
   begin
-    Rewrite(f);
-    //Writeln('Create File');
+    Rewrite(f); // Если файл не создан - надо создать
     result := true;
   end;
   close(f);
   EditorForm.SD_Resize;
 end;
 
+// Создание строкового представления списка точек (Формат: "X1/Y1""X2/Y2""X3/Y3"...)
 function pointsToStr(tmpPoints: PPointsList):string;
 begin
   Result := '';
@@ -107,7 +114,10 @@ begin
   end;
 end;
 
-
+// Сохранение файла
+// ВНИМАНИЕ!
+// В первом элементе всегда хранится проверка на валидность
+// и размеры канваса, сохраненные пользователем
 procedure saveToFile(Head: PFigList; filedir: string);
 var f: file of TFigureInFile;
   temp: PFigList;
@@ -118,8 +128,8 @@ begin
   AssignFile(f, filedir);
   rewrite(f);
   tempRec.tp := TTYPE(4);
-  EditorForm.getCanvasSIze(tempRec.Width,tempRec.Height);
-  tempRec.Check := 'BRAKH';
+  EditorForm.getCanvasSize(tempRec.Width,tempRec.Height); // Сохранение размеров
+  tempRec.Check := 'BRAKH'; // Сохранение строки-проверки валидности
   Write(f, tempRec);
   temp := head^.adr;
   while temp <> nil do
@@ -129,7 +139,6 @@ begin
     begin
       tmpPoints := temp^.Info.PointHead^.adr;
       st := pointsToStr(tmpPoints);
-      //showMessage(String(st));
       tempRec.Point := st;
       tempRec.LT := temp^.Info.LT;
       tempRec.tp := Line;

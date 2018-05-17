@@ -18,6 +18,9 @@ interface
 implementation
   uses math, System.SysUtils, vcl.dialogs, Model;
 
+// Парсинг строки формата "X1/Y1""X2/Y2"... и имзенение
+// Координат списка точек линии на координаты, полученные
+// при парсинге
 procedure changeLineCoordsFromStr(head: PPointsList; st:string);
 var
   tmp: PPointsList;
@@ -51,6 +54,7 @@ begin
   end;
 end;
 
+// Полная копия списка точек
 function copyPointList(cf: PPointsList):PPointsList;
 var
   tmp: PPointsList;
@@ -69,7 +73,7 @@ begin
 
 end;
 
-// Добавляем линию
+// Добавляем линию и возвращаем ссылку на нее
 function addLine(head: PFigList; x,y: integer):PFigList;
 var
   tmp: PFigList;
@@ -81,13 +85,15 @@ begin
   tmp := tmp^.Adr;
   tmp^.Adr := nil;
   tmp^.Info.tp := line;
-  new(tmp^.Info.PointHead);
-  tmp^.Info.PointHead^.Adr := nil;
-  addNewPoint(tmp^.Info.PointHead, x,y);
 
-  result := tmp;
+  new(tmp^.Info.PointHead); // Создаем список точек
+  tmp^.Info.PointHead^.Adr := nil;
+  addNewPoint(tmp^.Info.PointHead, x,y); // Добавляем первую точку
+
+  result := tmp; // Возвращаем созданную линию
 end;
 
+// Удаление "Мусорных линий" (состоящих из одной точки)
 procedure removeTrashLines(head: PFigList; curr: PFigList);
 var
   tmp: PFigList;
@@ -102,7 +108,7 @@ begin
       if (tmp^.Info.PointHead = nil) or (tmp^.Info.PointHead^.Adr = nil) then continue;
 
       if (tmp^.Info.PointHead^.Adr^.Adr = nil) and (tmp = curr) then
-        removeFigure(head,tmp)
+        removeFigure(head,tmp) // Точка - единственная и фигура дорисована => удаляем
       else
       if (tmp^.Info.PointHead^.Adr^.Adr <> nil)
         and
@@ -111,6 +117,7 @@ begin
         (tmp^.Info.PointHead^.Adr.Info.y = tmp^.Info.PointHead^.Adr^.adr.Info.y)
       then
       begin
+        // Добавленно много точек, но все с одними координатами => удаляем :)
         tmp^.Info.PointHead := tmp^.Info.PointHead^.Adr;
         removeTrashLines(head,curr);
       end;
@@ -119,6 +126,7 @@ begin
   end;
 end;
 
+// Добавление точки линии
 function addNewPoint(var head: PPointsList; x,y:integer):PPointsList;
 var
   tmp :PPointsList;
@@ -134,12 +142,12 @@ begin
     py := tmp^.Info.y;
     // Запрещаем проводить прямую под углом.
     try
-      if (arctan(abs((y-py)/(x-px))) < pi/4) {or (CurrLineType = LAdditLine)} then
+      if (arctan(abs((y-py)/(x-px))) < pi/4)  then
         y:=py
       else
         x:=px;
     except on EZeroDivide do
-      // kek
+
     end;
   end;
   new(tmp^.adr);
@@ -222,10 +230,11 @@ begin
     tmp := tmp^.Adr;
   end;
 
-
-
 end;
 
+
+// Изменение координат всех точек линии на одинаковое количество
+// пикселей
 procedure moveALlLinePoint(head: PPointsList; dx, dy: integer);
 var
   tmp: PPointsList;
@@ -238,7 +247,9 @@ begin
     tmp := tmp^.Adr;
   end;
 end;
-// Функция ищет линию вблизи точки
+
+// Функция ищет линию вблизи точки и возвращает в x,y точку на прямой
+// вблизи исходной точки. Если фигура не нашлась, функция вернет nil
 function searchNearLine(head: PFigList; var x,y: integer):PPointsList;
 var
   temp: PFigList;
@@ -328,6 +339,7 @@ end;
 
 // BOOOLEAN FUNCTIONS
 
+// Возвращает true если линия горизонтальная
 function isHorLine(curr, prev: PPointsList):boolean;
 begin
   if prev = nil then
@@ -337,7 +349,7 @@ begin
 end;
 
 
-// Return true if need middle arrow
+// Возвращает true если нужна стрелка по середине
 function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 begin
   Result := (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x)
@@ -345,6 +357,7 @@ begin
 end;
 
 
+// Возвращает true если нужен диагональный срез
 function isHorisontalIntersection(head: PFigList; blocked: PPointsList):boolean;
 var
   tmp: PFigList;
@@ -376,7 +389,6 @@ begin
         and (tmpP <> blocked) and (tmpP^.adr <> blocked)
         then
         begin
-          //blocked^.Info.x := tmpP^.adr^.Info.x;
           Result := true;
           exit;
         end;
@@ -418,7 +430,5 @@ begin
     tmp2 := tmp2^.adr;
 
   end;
-
-
 end;
 end.

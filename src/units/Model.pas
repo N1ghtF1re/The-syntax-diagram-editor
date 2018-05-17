@@ -68,6 +68,7 @@ begin
 end;
 
 
+// Создание копии фигуры
 procedure copyFigure(head: PFigList; copyfigure:PFigList);
 var
   newfigure: TFigureInfo;
@@ -89,6 +90,8 @@ begin
       
 end;
 
+// Функция вовзращает тип режима редактирования в зависимости от того,
+// Что находится во координатам наведения мыши
 function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList; CT: TType) :TEditMode;
 var
   r:TFigureInfo;
@@ -181,13 +184,14 @@ begin
   Result :=  NoEdit;
 end;
 
+
+// Округление координат с заданным шагом.
 procedure roundCoords(var x,y:integer);
 begin
   x := round(x/step_round)*step_round;
   y := round(y/step_round)*step_round;
 
   searchNearLine(FigHead, x,y);
-  //ShowMessage( IntToStr(x) + ' ' + IntToStr(y) );
 end;
 
 
@@ -204,6 +208,8 @@ begin
   tmp^.Adr := nil;
   with tmp^.Info do
   begin
+    // По-умолчанию - линия - точка. В дальнейшем - размеры подстроятся под
+    // размеры текста (при отрисовке)
     x1 := x;
     x2 := x;
     y1 := y;
@@ -230,8 +236,8 @@ begin
   begin
     if tmp^.Info.tp <> Line then
     begin
-      if (x > tmp^.Info.x1)
-          and
+      if (x > tmp^.Info.x1)  // Если точка клика принадлежит прямоугольной поверхности
+          and                // То возвращаем фигуру
           (x < tmp^.Info.x2)
           and
           (y > tmp^.Info.y1)
@@ -240,7 +246,6 @@ begin
           then
       begin
         result := tmp;
-        //showMessage('kek');
         exit;
       end;
     end
@@ -254,6 +259,7 @@ begin
       tmpP := tmp^.Info.PointHead^.Adr;
       while tmpP <> nil do
       begin
+        // Точка пренадлежит вершине
         if (abs(y-tmpP^.Info.x) <= Tolerance) and (abs(x-tmpP^.Info.y) <= Tolerance) then
         begin
           result := tmp;
@@ -262,7 +268,7 @@ begin
 
         if tmpP^.Adr <> nil then
         begin
-
+          // Точка пренадлежит отрезку
           if ((abs(y - tmpP^.Info.y) <= Tolerance*2 ) and (x > min(tmpP^.Info.x, tmpP^.adr^.Info.x)) and (x <= max(tmpP^.Info.x, tmpP^.adr^.Info.x)) )
               or
              ((abs(x - tmpP^.Info.x) <= Tolerance*2) and (y > min(tmpP^.Info.y, tmpP^.adr^.Info.y)) and (y <= max(tmpP^.Info.y, tmpP^.adr^.Info.y))) then
@@ -283,8 +289,11 @@ begin
 end;
 
 
-// Функция выполняет логическое удаление фигуры и возвращает ссылку
+// Функция выполняет ЛОГИЧЕСКОЕ удаление фигуры и возвращает ссылку
 // На предшествующую удаленной фигуру фигуру.
+// Потребность в ЛОГИЧЕСКОМ удалении обусловлено тем, что необходимо
+// предусмотреть возможность отменить имзенение и восстановить
+// фигуру
 function removeFigure(head: PFigList; adr: PFigList):PFigList;
 var
   temp,temp2:PFigList;
@@ -297,13 +306,13 @@ begin
     begin
       temp^.adr := temp2^.adr;
       Result := temp;
-      //dispose(temp2);
     end
     else
       temp:= temp^.adr;
   end;
 end;
 
+// Полностью удалить список фигур (Кроме головы)
 procedure removeAllList(head:PFigList);
 var
   temp, temp2: PFigList;
@@ -318,7 +327,7 @@ begin
   head.Adr := nil;
 end;
 
-
+// Редактирование фигуры и редактирование ее координат
 procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
 var
   oldp: TPointsInfo;
@@ -340,12 +349,12 @@ begin
       end
       else
       begin
-      // Смещаем объект
-      // TmpX, TmpY - смещение координат относительно прошлого вызова события
-      F^.Info.x1 := F^.Info.x1 - (TmpX - x);
-      F^.Info.x2 := F^.Info.x2 - (TmpX - x);
-      F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
-      F^.Info.y2 := F^.Info.y2 - (TmpY - y);
+        // Смещаем объект
+        // TmpX, TmpY - смещение координат относительно прошлого вызова события
+        F^.Info.x1 := F^.Info.x1 - (TmpX - x);
+        F^.Info.x2 := F^.Info.x2 - (TmpX - x);
+        F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
+        F^.Info.y2 := F^.Info.y2 - (TmpY - y);
       end;
     end;
     LineMove:
@@ -395,6 +404,8 @@ begin
   end;
 end;
 
+// Функция "Примагничивает" точку к фигуре и возвращает true, если
+// "примагничивание" удалось
 function magnetizeWithFigures(head: PFigList; Point: PPointsList):boolean;
 var
   temp: PFigList;
@@ -405,7 +416,7 @@ begin
   begin
     if temp^.Info.tp <> Line then
     begin
-      if (abs( Point^.Info.x - temp^.Info.x1) < NearFigure)
+      if (abs( Point^.Info.x - temp^.Info.x1) < NearFigure) // Левая грань
         and
         ( Point^.Info.y < temp^.Info.y2 )
         and
@@ -415,7 +426,7 @@ begin
         Result := true;
         Point^.info.x := temp^.Info.x1;
         point^.Info.y := (temp^.Info.y1 + temp^.Info.y2) div 2;
-      end else if (abs( Point^.Info.x - temp^.Info.x2) < NearFigure)
+      end else if (abs( Point^.Info.x - temp^.Info.x2) < NearFigure)  // Правая грань
         and
         ( Point^.Info.y < temp^.Info.y2 )
         and
@@ -431,7 +442,9 @@ begin
   end;
 end;
 
-
+// Поиск фигур, расположенных приблизительно в одну линию
+// И изменение координат так, чтобы они оказались точно
+// в одной линии
 procedure SearchFiguresInOneLine(head, curr: PFigList);
 var   
   temp: PFigList;
@@ -440,7 +453,7 @@ var
 begin
   with curr^.Info do
   begin
-    CurrY := y1 + (y2 - y1) div 2;
+    CurrY := y1 + (y2 - y1) div 2; // Центр по Y переданной фигуры
   end;
   temp := head^.Adr;
   while temp <> nil do
@@ -452,7 +465,7 @@ begin
     end;
     with temp^.Info do
     begin
-      tempY := y1 + (y2 - y1) div 2;
+      tempY := y1 + (y2 - y1) div 2; // Центр по Y текущей фигуры
     end;
     if abs( CurrY - tempY ) < NearFigure then
     begin
@@ -465,6 +478,8 @@ begin
   
 end;
 
+
+// "Примагничивание" линий к другим фигурам
 procedure MagnetizeLines(head: PFigList);
 var
   tmp: PFigList;
@@ -479,7 +494,7 @@ begin
   begin
     if tmp^.Info.tp <> Line then
     begin
-      SearchFiguresInOneLine(head, tmp);
+      SearchFiguresInOneLine(head, tmp); // Пробуем найти фигуры в одну линию
       tmp := tmp^.Adr;
       continue;
     end;
@@ -489,6 +504,7 @@ begin
     begin
       x := tmpP^.Info.x;
       y := tmpP^.Info.y;
+      // Пробуем примагнитить линию к текстовой фигуре
       if (isHorLine(tmpP, prevP)) and (magnetizeWithFigures(head, tmpP)) then
       begin
         oldp.x := x;
@@ -497,7 +513,8 @@ begin
         tmpP := tmpP^.adr;
         continue;
       end;
-      
+
+      // Пробуем примгнитить линию к другой линии
       NearP := searchNearLine(head, x,y);
       if NearP <> nil then
       begin
@@ -505,9 +522,6 @@ begin
         oldp.y := tmpP^.Info.y;
         newP.x := nearP.Info.x;
         newP.y := tmpP^.Info.y;
-        {currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
-        currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
-        MoveLine(CurrFigure^.Info.PointHead, oldp, currPointAdr^.Info);}
 
         if abs(tmpP^.Info.x  - nearP.Info.x) < nearFigure then
         begin
@@ -530,7 +544,7 @@ begin
   end;
 end;
 
-
+// Отмена изменений
 procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
 var
   tmp: PFigList;
@@ -539,37 +553,45 @@ begin
   case UndoRec.ChangeType of
     chDelete:
     begin
+      // Снова возвращаем фигуру (Она не была удалена физически, только логически)
       tmp := UndoRec.adr;
       tmp.Adr := UndoRec.PrevFigure^.Adr;
       undoRec.PrevFigure^.Adr := tmp;
     end;
     chAddPoint:
     begin
+      // Удаление точки (физическое)
       tmpP:= UndoRec.PrevPointAdr^.adr;
       UndoRec.PrevPointAdr^.Adr := nil;
       Dispose(tmpP);
     end;
     chInsert:
     begin
+      // Удаление фигуры
       removeFigure(EditorForm.getFigureHead, UndoRec.adr)
     end;
     chFigMove:
     begin
+      // Возврат предыдущих координат фигуры
       UndoRec.adr^.Info := UndoRec.PrevInfo;
     end;
     chPointMove:
     begin
+      // Вовзрат предыдущих координат точек линии
       changeLineCoordsFromStr(UndoRec.adr^.Info.PointHead, UndoRec.st);
     end;
     chChangeText:
     begin
+      // Возврат предыдущего текста
       UndoRec.adr^.Info.Txt := UndoRec.text;
     end;
     chCanvasSize:
     begin
+      // Возврат прошлых размеров полотна
       EditorForm.changeCanvasSize(UndoRec.w, UndoRec.h, false);
     end;
-    NonDeleted: ;
+    NonDeleted: // Ничего не делаем :)
+    ;
   end;
 
 

@@ -121,7 +121,6 @@ object FCanvasSettings: TFCanvasSettings
       Default = True
       ModalResult = 1
       TabOrder = 2
-      OnClick = btnOkClick
     end
     object btnCancel: TButton
       Left = 320
@@ -131,7 +130,6 @@ object FCanvasSettings: TFCanvasSettings
       Caption = #1054#1090#1084#1077#1085#1072
       ModalResult = 2
       TabOrder = 3
-      OnClick = btnCancelClick
     end
   end
 end

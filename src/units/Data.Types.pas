@@ -2,12 +2,13 @@ unit Data.Types;
 
 interface
 type
-  TDrawMode = (Draw, NoDraw, DrawLine, ResizeCanvas);
-  TFileMode = (FSvg, FBrakh, FBmp, FPng); // SUPORTED FILE EXTENSIONS
+  TDrawMode = (Draw, NoDraw, DrawLine, ResizeCanvas);  // Режим рисования
+  TFileMode = (FSvg, FBrakh, FBmp, FPng); // Режим открытия/сохранения файла
   TLineType = (LLine);
   TEditMode = (NoEdit, Move, TSide, BSide, RSide, LSide, Vert1, Vert2, Vert3, Vert4, LineMove);
+  // Режим редактирования
   TType = (Def,MetaVar,MetaConst, Line, None);
-  //TFigureType = (rect, line);
+  // Режим фигуры
 
   // СПИСОК ТОЧЕК НАЧАЛО
   TPointsInfo = record
@@ -20,7 +21,7 @@ type
   end;
   // СПИСОК ТОЧЕК КОНЕЦ
 
-  // СПИСОК  ОБЪЕКТОВ НАЧАЛО
+  // СПИСОК  ФИГУР НАЧАЛО
   TFigureInfo = record
     case tp:TType of
     Def, MetaConst, MetaVar: (x1,x2,y1,y2: integer;Txt: string[255];);
@@ -32,9 +33,10 @@ type
     Info: TFigureInfo;
     Adr: PFigList;
   end;
-  // СПИСОК ОБЪЕКТОВ КОНЕЦ
+  // СПИСОК ФИГУР КОНЕЦ
 
 
+  // ПРЕДСТАВЛЕНИЕ ФИГУР В ФАЙЛЕ
   TFigureInFile = record
     case tp:TType of
     Def, MetaConst, MetaVar: (Txt: string[255];x1,x2,y1,y2: integer);
