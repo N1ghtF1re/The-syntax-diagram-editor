@@ -13,6 +13,9 @@ In order to get acquainted with the new programming language and write a simple 
 To describe the rules of programming language syntax, formalized notation systems are used - metalanguage.<br> There are two main metalanguages:
 * Extended form of Backus-Naur (EFBN);
 * Syntax diagrams.
+
 <br><br>
 The RBNF language is more stringent and precise, more convenient for representing the syntax in the machine's memory, more compact. Syntax diagrams are more cumbersome, but much clearer and easier to understand.<br>
 This program is intended for constructing syntactic diagrams using vector graphics.
+
+![Screen of program](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image137.png)
