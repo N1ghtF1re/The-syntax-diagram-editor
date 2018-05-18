@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{542CEEF6-9DDF-46AB-A0C6-095F251242FE}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="SyntaxDiag.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ENU\SyntaxDiag_ENU.bdsproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="RUS\SyntaxDiag_RUS.bdsproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="SyntaxDiag">
+        <MSBuild Projects="SyntaxDiag.dproj"/>
+    </Target>
+    <Target Name="SyntaxDiag:Clean">
+        <MSBuild Projects="SyntaxDiag.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SyntaxDiag:Make">
+        <MSBuild Projects="SyntaxDiag.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SyntaxDiag_ENU">
+        <MSBuild Projects="ENU\SyntaxDiag_ENU.bdsproj"/>
+    </Target>
+    <Target Name="SyntaxDiag_ENU:Clean">
+        <MSBuild Projects="ENU\SyntaxDiag_ENU.bdsproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SyntaxDiag_ENU:Make">
+        <MSBuild Projects="ENU\SyntaxDiag_ENU.bdsproj" Targets="Make"/>
+    </Target>
+    <Target Name="SyntaxDiag_RUS">
+        <MSBuild Projects="RUS\SyntaxDiag_RUS.bdsproj"/>
+    </Target>
+    <Target Name="SyntaxDiag_RUS:Clean">
+        <MSBuild Projects="RUS\SyntaxDiag_RUS.bdsproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SyntaxDiag_RUS:Make">
+        <MSBuild Projects="RUS\SyntaxDiag_RUS.bdsproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="SyntaxDiag;SyntaxDiag_ENU;SyntaxDiag_RUS"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="SyntaxDiag:Clean;SyntaxDiag_ENU:Clean;SyntaxDiag_RUS:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="SyntaxDiag:Make;SyntaxDiag_ENU:Make;SyntaxDiag_RUS:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file original="D:\labs\Syntax diagrams\src\forms\FCanvasSizeSettings.dfm" source-language="ru-RU" target-language="ru-RU" datatype="delphiform" tool="ETM v10.0" ts="D:\labs\Syntax diagrams\src\forms\FCanvasSizeSettings.dfm">
+    <header>
+      <prop-group name="ITEHeaderProp">
+        <prop prop-type="Version">9.0</prop>
+        <prop prop-type="SelfDateTime">43238.4410416667</prop>
+        <prop prop-type="OrigDateTime">43236.8325925926</prop>
+        <prop prop-type="XlatDateTime">43236.8325925926</prop>
+        <prop prop-type="Translated">0</prop>
+        <prop prop-type="UnTranslated">113</prop>
+      </prop-group>
+    </header>
+    <body>
+      <trans-unit id="O:FCanvasSettings.Left" resname="O:FCanvasSettings.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">0</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Top" resname="O:FCanvasSettings.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">1</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Caption" resname="O:FCanvasSettings.Caption">
+        <source>'Изменить размер холста'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">2</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.ClientHeight" resname="O:FCanvasSettings.ClientHeight">
+        <source>246</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">3</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.ClientWidth" resname="O:FCanvasSettings.ClientWidth">
+        <source>418</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">4</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Color" resname="O:FCanvasSettings.Color">
+        <source>clBtnFace</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">5</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Font.Charset" resname="O:FCanvasSettings.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">6</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Font.Color" resname="O:FCanvasSettings.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">7</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Font.Height" resname="O:FCanvasSettings.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">8</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Font.Name" resname="O:FCanvasSettings.Font.Name">
+        <source>'Tahoma'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">9</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.Font.Style" resname="O:FCanvasSettings.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">10</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.KeyPreview" resname="O:FCanvasSettings.KeyPreview">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563542</prop><prop prop-type="Status">0</prop><prop prop-type="Order">11</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.OldCreateOrder" resname="O:FCanvasSettings.OldCreateOrder">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">12</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.PixelsPerInch" resname="O:FCanvasSettings.PixelsPerInch">
+        <source>96</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">13</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.TextHeight" resname="O:FCanvasSettings.TextHeight">
+        <source>13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">14</prop><prop prop-type="Type">TFCanvasSettings</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Left" resname="O:FCanvasSettings.O:Panel1.Left">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">15</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Top" resname="O:FCanvasSettings.O:Panel1.Top">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">16</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Width" resname="O:FCanvasSettings.O:Panel1.Width">
+        <source>418</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">17</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Height" resname="O:FCanvasSettings.O:Panel1.Height">
+        <source>246</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">18</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Align" resname="O:FCanvasSettings.O:Panel1.Align">
+        <source>alClient</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">19</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Color" resname="O:FCanvasSettings.O:Panel1.Color">
+        <source>clWhite</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">20</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Font.Charset" resname="O:FCanvasSettings.O:Panel1.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">21</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Font.Color" resname="O:FCanvasSettings.O:Panel1.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">22</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Font.Height" resname="O:FCanvasSettings.O:Panel1.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">23</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Font.Name" resname="O:FCanvasSettings.O:Panel1.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">24</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.Font.Style" resname="O:FCanvasSettings.O:Panel1.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">25</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.ParentBackground" resname="O:FCanvasSettings.O:Panel1.ParentBackground">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">26</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.ParentFont" resname="O:FCanvasSettings.O:Panel1.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">27</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.TabOrder" resname="O:FCanvasSettings.O:Panel1.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">28</prop><prop prop-type="Type">TPanel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Left" resname="O:FCanvasSettings.O:Panel1.O:Label1.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">29</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Top" resname="O:FCanvasSettings.O:Panel1.O:Label1.Top">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">30</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Width" resname="O:FCanvasSettings.O:Panel1.O:Label1.Width">
+        <source>190</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">31</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Height" resname="O:FCanvasSettings.O:Panel1.O:Label1.Height">
+        <source>20</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">32</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Caption" resname="O:FCanvasSettings.O:Panel1.O:Label1.Caption">
+        <source>'Введите новые размеры холста: '</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">33</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Font.Charset" resname="O:FCanvasSettings.O:Panel1.O:Label1.Font.Charset">
+        <source>ANSI_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">34</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Font.Color" resname="O:FCanvasSettings.O:Panel1.O:Label1.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">35</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Font.Height" resname="O:FCanvasSettings.O:Panel1.O:Label1.Font.Height">
+        <source>-15</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">36</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Font.Name" resname="O:FCanvasSettings.O:Panel1.O:Label1.Font.Name">
+        <source>'Arial Narrow'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">37</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.Font.Style" resname="O:FCanvasSettings.O:Panel1.O:Label1.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">38</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label1.ParentFont" resname="O:FCanvasSettings.O:Panel1.O:Label1.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">39</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Left" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">40</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Top" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Top">
+        <source>64</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563657</prop><prop prop-type="Status">0</prop><prop prop-type="Order">41</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Width" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Width">
+        <source>50</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">42</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Height" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Height">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">43</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Caption" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Caption">
+        <source>'Ширина:'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">44</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Charset" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">45</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Color" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">46</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Height" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Height">
+        <source>-13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">47</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Name" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">48</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Style" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">49</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblWidth.ParentFont" resname="O:FCanvasSettings.O:Panel1.O:lblWidth.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">50</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Left" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">51</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Top" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Top">
+        <source>125</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">52</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Width" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Width">
+        <source>48</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">53</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Height" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Height">
+        <source>16</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">54</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Caption" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Caption">
+        <source>'Высота:'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">55</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Charset" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">56</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Color" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">57</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Height" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Height">
+        <source>-13</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">58</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Name" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">59</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Style" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">60</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lblHeight.ParentFont" resname="O:FCanvasSettings.O:Panel1.O:lblHeight.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">61</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Left" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Left">
+        <source>175</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">62</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Top" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Top">
+        <source>88</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">63</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Width" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Width">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">64</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Height" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">65</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Caption" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Caption">
+        <source>'px'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">66</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Charset" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">67</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Color" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">68</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Height" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">69</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Name" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">70</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Style" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">71</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:lbl1px.ParentFont" resname="O:FCanvasSettings.O:Panel1.O:lbl1px.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563773</prop><prop prop-type="Status">0</prop><prop prop-type="Order">72</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Left" resname="O:FCanvasSettings.O:Panel1.O:Label2.Left">
+        <source>175</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">73</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Top" resname="O:FCanvasSettings.O:Panel1.O:Label2.Top">
+        <source>148</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">74</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Width" resname="O:FCanvasSettings.O:Panel1.O:Label2.Width">
+        <source>12</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">75</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Height" resname="O:FCanvasSettings.O:Panel1.O:Label2.Height">
+        <source>14</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">76</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Caption" resname="O:FCanvasSettings.O:Panel1.O:Label2.Caption">
+        <source>'px'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">77</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Font.Charset" resname="O:FCanvasSettings.O:Panel1.O:Label2.Font.Charset">
+        <source>DEFAULT_CHARSET</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">78</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Font.Color" resname="O:FCanvasSettings.O:Panel1.O:Label2.Font.Color">
+        <source>clWindowText</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">79</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Font.Height" resname="O:FCanvasSettings.O:Panel1.O:Label2.Font.Height">
+        <source>-11</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">80</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Font.Name" resname="O:FCanvasSettings.O:Panel1.O:Label2.Font.Name">
+        <source>'Arial'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">81</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.Font.Style" resname="O:FCanvasSettings.O:Panel1.O:Label2.Font.Style">
+        <source>[]</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">82</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:Label2.ParentFont" resname="O:FCanvasSettings.O:Panel1.O:Label2.ParentFont">
+        <source>False</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">83</prop><prop prop-type="Type">TLabel</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtWidth.Left" resname="O:FCanvasSettings.O:Panel1.O:edtWidth.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">84</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtWidth.Top" resname="O:FCanvasSettings.O:Panel1.O:edtWidth.Top">
+        <source>85</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">85</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtWidth.Width" resname="O:FCanvasSettings.O:Panel1.O:edtWidth.Width">
+        <source>145</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">86</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtWidth.Height" resname="O:FCanvasSettings.O:Panel1.O:edtWidth.Height">
+        <source>22</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">87</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtWidth.NumbersOnly" resname="O:FCanvasSettings.O:Panel1.O:edtWidth.NumbersOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">88</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtWidth.TabOrder" resname="O:FCanvasSettings.O:Panel1.O:edtWidth.TabOrder">
+        <source>0</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">89</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtWidth.Text" resname="O:FCanvasSettings.O:Panel1.O:edtWidth.Text">
+        <source>'edtWidth'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">90</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtHeight.Left" resname="O:FCanvasSettings.O:Panel1.O:edtHeight.Left">
+        <source>24</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">91</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtHeight.Top" resname="O:FCanvasSettings.O:Panel1.O:edtHeight.Top">
+        <source>144</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">92</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtHeight.Width" resname="O:FCanvasSettings.O:Panel1.O:edtHeight.Width">
+        <source>145</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">93</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtHeight.Height" resname="O:FCanvasSettings.O:Panel1.O:edtHeight.Height">
+        <source>22</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">94</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtHeight.NumbersOnly" resname="O:FCanvasSettings.O:Panel1.O:edtHeight.NumbersOnly">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">95</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtHeight.TabOrder" resname="O:FCanvasSettings.O:Panel1.O:edtHeight.TabOrder">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">96</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:edtHeight.Text" resname="O:FCanvasSettings.O:Panel1.O:edtHeight.Text">
+        <source>'edtHeight'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">97</prop><prop prop-type="Type">TEdit</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.Left" resname="O:FCanvasSettings.O:Panel1.O:btnOk.Left">
+        <source>224</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">98</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.Top" resname="O:FCanvasSettings.O:Panel1.O:btnOk.Top">
+        <source>208</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">99</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.Width" resname="O:FCanvasSettings.O:Panel1.O:btnOk.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">100</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.Height" resname="O:FCanvasSettings.O:Panel1.O:btnOk.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">101</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.Caption" resname="O:FCanvasSettings.O:Panel1.O:btnOk.Caption">
+        <source>'Применить'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410563889</prop><prop prop-type="Status">0</prop><prop prop-type="Order">102</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.Default" resname="O:FCanvasSettings.O:Panel1.O:btnOk.Default">
+        <source>True</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">103</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.ModalResult" resname="O:FCanvasSettings.O:Panel1.O:btnOk.ModalResult">
+        <source>1</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">104</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnOk.TabOrder" resname="O:FCanvasSettings.O:Panel1.O:btnOk.TabOrder">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">105</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnCancel.Left" resname="O:FCanvasSettings.O:Panel1.O:btnCancel.Left">
+        <source>320</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">106</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnCancel.Top" resname="O:FCanvasSettings.O:Panel1.O:btnCancel.Top">
+        <source>208</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">107</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnCancel.Width" resname="O:FCanvasSettings.O:Panel1.O:btnCancel.Width">
+        <source>75</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">108</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnCancel.Height" resname="O:FCanvasSettings.O:Panel1.O:btnCancel.Height">
+        <source>25</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">109</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnCancel.Caption" resname="O:FCanvasSettings.O:Panel1.O:btnCancel.Caption">
+        <source>'Отмена'</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">110</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnCancel.ModalResult" resname="O:FCanvasSettings.O:Panel1.O:btnCancel.ModalResult">
+        <source>2</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">111</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+      <trans-unit id="O:FCanvasSettings.O:Panel1.O:btnCancel.TabOrder" resname="O:FCanvasSettings.O:Panel1.O:btnCancel.TabOrder">
+        <source>3</source>
+        <prop-group name="ITEFieldProp">
+        <prop prop-type="Created">43238.4410564005</prop><prop prop-type="Status">0</prop><prop prop-type="Order">112</prop><prop prop-type="Type">TButton</prop><prop prop-type="Localize">1</prop></prop-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

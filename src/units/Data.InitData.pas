@@ -17,9 +17,12 @@ resourcestring // Работа с файлами:
 resourcestring // Раздел помощи
   rsHelpHowIsSD_Caption = 'Что такое синтаксическая диаграмма?';
   rsHelp_Caption = 'Помощь';
-const // Название ресурсов
+  // Название ресурсов
   rsHelpHowIsSD_ResName = 'help1';
   rsHelp_ResName = 'help2';
+ const // Смена языка
+  SRuChangeLangMsg = 'Язык изменен. Для того, чтобы он обновился, перезапустите приложение';
+  SEnChangeLangMsg = 'The language is changed. In order for it to be updated, restart the application';
 
 
   // ### VIEW PART CONSTANTS ###

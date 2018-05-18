@@ -84,6 +84,11 @@ type
     ToolButton4: TToolButton;
     actChangeMagnetize: TAction;
     mniMagnetizeLine: TMenuItem;
+    actRusLang: TAction;
+    mniSelectLang: TMenuItem;
+    actEngLang: TAction;
+    English1: TMenuItem;
+    N1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -134,6 +139,9 @@ type
     procedure sbMainMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure actChangeMagnetizeExecute(Sender: TObject);
+    procedure mniRusLangClick(Sender: TObject);
+    procedure actEngLangExecute(Sender: TObject);
+    procedure actRusLangExecute(Sender: TObject);
 
     
   private
@@ -180,7 +188,7 @@ implementation
 {$R+}
 {$R-}
 
-uses FCanvasSizeSettings, FHtmlView, Model.Files;
+uses FCanvasSizeSettings, FHtmlView, Model.Files,System.Win.Registry;
 
 procedure TEditorForm.changeEditorText(newtext: string);
 begin
@@ -507,10 +515,23 @@ begin
   result := params;
 end;
 
-procedure TEditorForm.FormCreate(Sender: TObject); 
+procedure SetLocaleOverride(const FileName, LocaleOverride: string);
+var
+  Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  try
+    if Reg.OpenKey('Software\Embarcadero\Locales', True) then
+      Reg.WriteString(FileName, LocaleOverride);
+  finally
+    Reg.Free;
+  end;
+end;
+
+procedure TEditorForm.FormCreate(Sender: TObject);
 var path : string;
 begin
-  // Initialise: 
+  // Initialise:
   FScale := 1; // Default Scale
   PBH := pbMain.height;
   PBW := pbMain.Width;
@@ -728,7 +749,11 @@ begin
   end;
 end;
 
-// Change path 
+procedure TEditorForm.mniRusLangClick(Sender: TObject);
+begin
+end;
+
+// Change path
 procedure TEditorForm.changePath(path: string);
 var
     FileName: string;
@@ -931,6 +956,12 @@ begin
   actPast.Enabled := true;
 end;
 
+procedure TEditorForm.actEngLangExecute(Sender: TObject);
+begin
+  SetLocaleOverride(ParamStr(0), 'ENU');
+  ShowMessage(SEnChangeLangMsg);
+end;
+
 procedure TEditorForm.actExportBMPExecute(Sender: TObject);
 begin
   saveBMPFile;
@@ -1059,6 +1090,12 @@ begin
     oldDM := DM;
     DM := ResizeCanvas;
   end;
+end;
+
+procedure TEditorForm.actRusLangExecute(Sender: TObject);
+begin
+  ShowMessage(SRuChangeLangMsg);
+  SetLocaleOverride(ParamStr(0), 'RUS');
 end;
 
 procedure TEditorForm.actSaveAsExecute(Sender: TObject);
