@@ -483,7 +483,7 @@ var
 begin
   if isChanged then
   begin
-    answer := MessageDlg(rsExitDlg,mtCustom,
+    answer := MessageDlg(rsExitDlg,mtWarning,
                               [mbYes,mbNo,mbCancel], 0);
     case answer of
       mrYes:
@@ -602,8 +602,6 @@ begin
     ClickFigure.Info.Txt := ShortString(edtRectText.Text);
     pbMain.Repaint;
   end;
-
-  //ShowMessage( IntToStr(key) );
 
   // SHORTCUT FOR SCALE UP : ctrl + "+"
   if (GetKeyState( VK_OEM_PLUS ) < 0) and (GetKeyState(VK_CONTROL) < 0) then
@@ -742,7 +740,7 @@ procedure TEditorForm.mniNewClick(Sender: TObject);
 var
   answer: Integer;
 begin
-  answer := MessageDlg(rsNewFileDlg,mtCustom,[mbYes,mbNo], 0);
+  answer := MessageDlg(rsNewFileDlg,mtWarning,[mbYes,mbNo], 0);
   if  answer = mrYes then
   begin
     newFile;
@@ -959,7 +957,7 @@ end;
 procedure TEditorForm.actEngLangExecute(Sender: TObject);
 begin
   SetLocaleOverride(ParamStr(0), 'ENU');
-  ShowMessage(SEnChangeLangMsg);
+  MessageDlg(SEnChangeLangMsg, mtInformation, [mbok], 0);
 end;
 
 procedure TEditorForm.actExportBMPExecute(Sender: TObject);
@@ -1013,7 +1011,6 @@ end;
 
 procedure TEditorForm.Action1Execute(Sender: TObject);
 begin
-  showMessage('kek');
 end;
 
 // Create new Diagram
@@ -1021,7 +1018,7 @@ procedure TEditorForm.actNewExecute(Sender: TObject);
 var
   answer: Integer;
 begin
-  answer := MessageDlg(rsNewFileDlg,mtCustom,[mbYes,mbNo], 0);  
+  answer := MessageDlg(rsNewFileDlg,mtWarning,[mbYes,mbNo], 0);
   if  answer = mrYes then
   begin
     newFile;
@@ -1039,7 +1036,7 @@ var
 begin
   if isChanged then  // if the diagram is changed, it is suggested to save the file 
   begin
-    answer := MessageDlg(rsExitDlg,mtCustom,
+    answer := MessageDlg(rsExitDlg,mtWarning,
                               [mbYes,mbNo,mbCancel], 0);
     case answer of
       mrYes:
@@ -1094,8 +1091,8 @@ end;
 
 procedure TEditorForm.actRusLangExecute(Sender: TObject);
 begin
-  ShowMessage(SRuChangeLangMsg);
   SetLocaleOverride(ParamStr(0), 'RUS');
+  MessageDlg(SRuChangeLangMsg, mtInformation, [mbok], 0);
 end;
 
 procedure TEditorForm.actSaveAsExecute(Sender: TObject);

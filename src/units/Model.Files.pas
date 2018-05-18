@@ -12,7 +12,7 @@ uses System.SysUtils, Data.InitData, Main, vcl.dialogs;
 // Чтение файла
 // ВНИМАНИЕ!
 // В первом элементе всегда хранится проверка на валидность
-// и размеры канваса, сохраненные пользователем
+// и размеры канваса, сохраненные пользователеsм
 function readFile(const head:PFigList; filedir:string):boolean;
 var
   f: file of TFigureInFile;
@@ -91,7 +91,7 @@ begin
 
       end;
       except on E: Exception do
-        ShowMessage(rsTrashFile);
+        MessageDlg(rsTrashFile, mtWarning, [mbOk], 0);
       end;
   end
   else
