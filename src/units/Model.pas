@@ -201,6 +201,8 @@ var
   tmp: PFigList;
 begin
   tmp := head;
+  if Trim(text) = '' then
+  Text := 'None';
   while tmp^.adr <> nil do
     tmp := tmp^.Adr;
   new(tmp^.adr);

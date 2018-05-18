@@ -279,6 +279,7 @@ begin
     if CurrType <> Line then
     begin
       // Add new figure to canvas
+
       CurrFigure := addFigure(FigHead, Round(x/FScale),Round(y/FSCale), CurrType, edtRectText.Text);
       // CHANGES STACK PUSHING START
       UndoRec.ChangeType := chInsert;
