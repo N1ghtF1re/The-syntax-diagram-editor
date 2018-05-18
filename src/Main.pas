@@ -87,8 +87,8 @@ type
     actRusLang: TAction;
     mniSelectLang: TMenuItem;
     actEngLang: TAction;
-    English1: TMenuItem;
-    N1: TMenuItem;
+    mniEngLang: TMenuItem;
+    mniRusLang: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -529,8 +529,23 @@ begin
   end;
 end;
 
+function GetLocale(const FileNames:string):string;
+var
+  Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  try
+    if Reg.OpenKey('Software\Embarcadero\Locales', True) then
+      Result := Reg.ReadString(FileNames);
+      reg.ReadString(FileNames)
+  finally
+    Reg.Free;
+  end;
+end;
+
 procedure TEditorForm.FormCreate(Sender: TObject);
 var path : string;
+  currLocal: string;
 begin
   // Initialise:
   FScale := 1; // Default Scale
@@ -634,7 +649,10 @@ begin
 end;
 
 
-// Reurn only filename, delete other path 
+
+
+
+// Reurn only filename, delete other path
 // Example: input: C:/data/input.brakh
 //          output: input brakh
 function ExtractFileNameEx(FileName:string):string;

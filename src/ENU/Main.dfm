@@ -432,7 +432,7 @@ object EditorForm: TEditorForm
     end
     object actAboutSB: TAction
       Category = 'ctgHelp'
-      Caption = 'What is Syntax Diagram?'
+      Caption = 'What is a Syntax Diagram?'
       ImageIndex = 8
       OnExecute = actAboutSBExecute
     end

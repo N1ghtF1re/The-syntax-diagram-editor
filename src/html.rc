@@ -1,2 +1,4 @@
 help1 23 ".\html\help1.htm"
 help2 23 ".\html\help2.htm"
+help1_en 23 ".\html\help1_en.htm"
+help2_en 23 ".\html\help2_en.htm"

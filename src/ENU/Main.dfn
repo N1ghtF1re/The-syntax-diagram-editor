@@ -5,7 +5,7 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">43238.4826157407</prop>
+        <prop prop-type="SelfDateTime">43238.5974537037</prop>
         <prop prop-type="OrigDateTime">43238.4712268518</prop>
         <prop prop-type="XlatDateTime">43237.9281712963</prop>
         <prop prop-type="Translated">41</prop>
@@ -3123,7 +3123,7 @@
       </trans-unit>
       <trans-unit id="O:EditorForm.O:alMenu.O:actAboutSB.Caption" resname="O:EditorForm.O:alMenu.O:actAboutSB.Caption">
         <source>'Что такое синтаксические диаграммы?'</source>
-        <target>'What is Syntax Diagram?'</target>
+        <target>'What is a Syntax Diagram?'</target>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">43237.9063157755</prop>
           <prop prop-type="Status">1</prop>

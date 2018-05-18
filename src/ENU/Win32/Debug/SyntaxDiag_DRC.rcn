@@ -5,11 +5,11 @@
     <header>
       <prop-group name="ITEHeaderProp">
         <prop prop-type="Version">9.0</prop>
-        <prop prop-type="SelfDateTime">43238.482337963</prop>
-        <prop prop-type="OrigDateTime">43238.4748611111</prop>
+        <prop prop-type="SelfDateTime">43238.5959490741</prop>
+        <prop prop-type="OrigDateTime">43238.5625462963</prop>
         <prop prop-type="XlatDateTime">43237.9062962963</prop>
-        <prop prop-type="Translated">7</prop>
-        <prop prop-type="UnTranslated">395</prop>
+        <prop prop-type="Translated">9</prop>
+        <prop prop-type="UnTranslated">393</prop>
       </prop-group>
     </header>
     <body>
@@ -2810,15 +2810,17 @@
         <source>"help1"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">43238.4476173611</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"help1_en"</target>
       </trans-unit>
       <trans-unit id="Data_InitData_rsHelp_ResName" resname="Data_InitData_rsHelp_ResName">
         <source>"help2"</source>
         <prop-group name="ITEFieldProp">
           <prop prop-type="Created">43238.4476173611</prop>
-          <prop prop-type="Status">0</prop>
+          <prop prop-type="Status">1</prop>
         </prop-group>
+        <target>"help2_en"</target>
       </trans-unit>
       <trans-unit id="Data_InitData_rsRuChangeLangMsg" resname="Data_InitData_rsRuChangeLangMsg">
         <source>"Язык изменен. Для того, чтобы он обновился, перезапустите приложение"</source>

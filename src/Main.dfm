@@ -333,10 +333,11 @@ object EditorForm: TEditorForm
       object mniSelectLang: TMenuItem
         Caption = #1071#1079#1099#1082
         ImageIndex = 16
-        object English1: TMenuItem
+        object mniEngLang: TMenuItem
           Action = actEngLang
+          RadioItem = True
         end
-        object N1: TMenuItem
+        object mniRusLang: TMenuItem
           Action = actRusLang
         end
       end
