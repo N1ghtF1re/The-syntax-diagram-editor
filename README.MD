@@ -44,17 +44,17 @@ By default, when open, the "Edit" mode is active, in which drawing is prohibited
 <br>
 
 ![Select DrawMode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image135.png?raw=true)
-
 <br>
 After selecting a mode, you can start drawing (If editing mode is not selected). If the "line" mode is selected, each click on the canvas adds a new point to the line.) Pressing the RMB - stops drawing the current shape, otherwise, if one of the drawing modes is selected text figures - each click adds a new figure.<br>
 To change the text that will be displayed inside the figure, you need to edit the contents of the text field shown in the picture below
 <br>
+
 ![Textfield](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/TextField.PNG?raw=true)
 <br>
 If you select the "Edit" mode (Cursor icon), then when you hover the cursor changes, then you can change the shape by the usual clamping and moving the cursor
 <br>
-![Editmode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/ChangeCursor.png?raw=true)
 
+![Editmode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/ChangeCursor.png?raw=true)
 <br>
 
 To change the text of an already added shape, you must select the "Edit" mode, click on the shape in which you want to change the text, change the contents of the text field and press Enter.
@@ -64,7 +64,6 @@ To change the scale of the image, it is necessary to move the corresponding "sli
 <br>
 
 ![Select scale](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/Scale.PNG?raw=true)
-
 <br>
 Also, the program has a convenient menu and a toolbar, where you can find functions such as
 
