@@ -1,0 +1,164 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="1106" height="470
+" viewBox="0 0 1106 470"
+xmlns="http://www.w3.org/2000/svg" version="1.1">
+<title>Syntax Diagram Project</title>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="152" y="62">&lt; Operator_Case &gt; ::= </text>
+<!-- LINE: -->
+<path d="M 40 115 L 122 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 122 115 L 102 105" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 122 115 L 102 125" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="160" y="119">Case</text>
+<!-- LINE: -->
+<path d="M 198 115 L 263 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 263 115 L 243 105" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 263 115 L 243 125" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="333" y="119">&lt; Expression &gt;</text>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="477" y="119">of</text>
+<!-- LINE: -->
+<path d="M 405 115 L 460 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 460 115 L 440 105" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 460 115 L 440 125" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 494 115 L 602 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 602 115 L 582 105" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 602 115 L 582 125" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="667" y="119">&lt; Range &gt;</text>
+<!-- LINE: -->
+<path d="M 732 115 L 806 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 806 115 L 786 105" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 806 115 L 786 125" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="870" y="119">&lt; Operator &gt;</text>
+<!-- BOUND LINE -->
+<path d="M 765 115 L 780 130" fill="none" stroke="black" stroke-width="2" />
+<!-- Line After Bound -->
+<path d="M 780 130 L 780 180" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 780 180 L 671 180" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 671 180 L 691 170" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 671 180 L 691 190" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 628 180 L 560 180" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 560 180 L 560 130" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 560 130 L 575 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 560 130 L 550 150" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 560 130 L 570 150" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="649.5" y="184">,</text>
+<!-- LINE: -->
+<path d="M 934 115 L 1020 115" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 1020 115 L 1020 280" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 1020 280 L 40 280" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 40 280 L 40 338" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 40 338 L 189 338" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 189 338 L 169 328" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 189 338 L 169 348" fill="none" stroke="black" stroke-width="2" />
+<!-- BOUND LINE -->
+<path d="M 945 115 L 960 130" fill="none" stroke="black" stroke-width="2" />
+<!-- Line After Bound -->
+<path d="M 960 130 L 960 240" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 960 240 L 733 240" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 733 240 L 753 230" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 733 240 L 753 250" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 707 240 L 520 240" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 520 240 L 520 130" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 520 130 L 535 115" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 520 130 L 510 150" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 520 130 L 530 150" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="720" y="244">;</text>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="387" y="342">&lt; Operator &gt;</text>
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="214" y="342">Else</text>
+<!-- LINE: -->
+<path d="M 239 338 L 323 338" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 323 338 L 303 328" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 323 338 L 303 348" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 451 338 L 711 338" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 711 338 L 691 328" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 711 338 L 691 348" fill="none" stroke="black" stroke-width="2" />
+<!-- BOUND LINE -->
+<path d="M 105 338 L 120 353" fill="none" stroke="black" stroke-width="2" />
+<!-- Line After Bound -->
+<path d="M 120 353 L 120 400" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 120 400 L 500 400" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 320 400 L 300 390" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 320 400 L 300 410" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 500 400 L 500 353" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 500 353 L 515 338" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 500 353 L 490 373" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 500 353 L 510 373" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="735" y="342">End</text>
+<!-- LINE: -->
+<path d="M 759 338 L 1020 338" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 1020 338 L 1000 328" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 1020 338 L 1000 348" fill="none" stroke="black" stroke-width="2" />
+<!-- BOUND LINE -->
+<path d="M 525 338 L 540 353" fill="none" stroke="black" stroke-width="2" />
+<!-- Line After Bound -->
+<path d="M 540 353 L 540 400" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 540 400 L 587 400" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 587 400 L 567 390" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 587 400 L 567 410" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE: -->
+<path d="M 613 400 L 660 400" fill="none" stroke="black" stroke-width="2" />
+<!-- LAST VERTICAL: -->
+<!-- LINE: -->
+<path d="M 660 400 L 660 353" fill="none" stroke="black" stroke-width="2" />
+<!-- Incoming Line -->
+<path d="M 660 353 L 675 338" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROS LEFT -->
+<path d="M 660 353 L 650 373" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW RIGHT -->
+<path d="M 660 353 L 670 373" fill="none" stroke="black" stroke-width="2" />
+<text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="600" y="404">;</text>
+</svg>

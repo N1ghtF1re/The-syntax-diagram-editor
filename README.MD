@@ -18,7 +18,7 @@ To describe the rules of programming language syntax, formalized notation system
 The EBNF language is more stringent and precise, more convenient for representing the syntax in the machine's memory, more compact. Syntax diagrams are more cumbersome, but much clearer and easier to understand.<br>
 This program is intended for constructing syntactic diagrams using vector graphics.
 
-![Screen of program](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image137.png)
+![Screen of program](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/MainWindow.png)
 
 ## Functional
 * Drawing figures (Text figures, lines)
@@ -37,7 +37,8 @@ This program is intended for constructing syntactic diagrams using vector graphi
 ## How to use
 In order to start using the program, you must run the SyntaxDiag.exe file, or open the file with the extension ".brakh" (The extension must be associated with the program in advance). After opening the program, the window shown in the picture below will appear.
 <br>
-![Screen of start window](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image133.png?raw=true)
+![Screen of start window](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/NewFile.png)
+
 <br>
 By default, when open, the "Edit" mode is active, in which drawing is prohibited. To switch it, you need to select the appropriate mode by clicking on the corresponding icon in the ToolBar (see the picture below)
 <br>
@@ -46,11 +47,12 @@ By default, when open, the "Edit" mode is active, in which drawing is prohibited
 After selecting a mode, you can start drawing (If editing mode is not selected). If the "line" mode is selected, each click on the canvas adds a new point to the line.) Pressing the RMB - stops drawing the current shape, otherwise, if one of the drawing modes is selected text figures - each click adds a new figure.<br>
 To change the text that will be displayed inside the figure, you need to edit the contents of the text field shown in the picture below
 <br>
-![Textfield](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image136.png?raw=true)
+![Textfield](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/TextField.png)
 <br>
 If you select the "Edit" mode (Cursor icon), then when you hover the cursor changes, then you can change the shape by the usual clamping and moving the cursor
 <br>
-![Editmode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image139.png?raw=true)
+![Editmode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/ChangeCursor.png)
+
 <br>
 
 To change the text of an already added shape, you must select the "Edit" mode, click on the shape in which you want to change the text, change the contents of the text field and press Enter.
@@ -59,7 +61,7 @@ To change the text of an already added shape, you must select the "Edit" mode, c
 To change the scale of the image, it is necessary to move the corresponding "slider" in the desired direction. An example of changing the scale is shown in the picture below
 <br>
 
-![Select scale](https://i.imgur.com/auFdix6.png)
+![Select scale](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/Scale.png)
 
 <br>
 Also, the program has a convenient menu and a toolbar, where you can find functions such as
@@ -74,3 +76,6 @@ Also, the program has a convenient menu and a toolbar, where you can find functi
 * Cancel changes
 * Change the canvas size
 * View Help
+* The change of language (Screenshot of the program with the Russian interface is presented below)
+
+![Select scale](https://github.com/N1ghtF1re/The-syntax-diagram-editor/raw/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image137.png)
