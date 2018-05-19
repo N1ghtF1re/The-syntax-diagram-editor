@@ -246,7 +246,7 @@ begin                  //\\
 
 
 
-      if needMiddleArrow(tmp, FirstP) then // if these is incoming and outgoing lines
+      if needMiddleArrow(tmp, FirstP) and (PrevP.x <> tmp^.Info.x) then // if these is incoming and outgoing lines
       begin
         if isFirstLine then
         begin
@@ -262,7 +262,8 @@ begin                  //\\
           coef := -1
         else
           coef := 1;
-        isDegEnd := true;
+        if tmp^.adr^.Adr = nil then
+          isDegEnd := true;
       end
       else
       begin

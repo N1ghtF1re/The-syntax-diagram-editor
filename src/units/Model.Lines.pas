@@ -352,7 +352,7 @@ end;
 // ¬озвращает true если нужна стрелка по середине
 function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 begin
-  Result := (tmp^.Adr <> nil) and (tmp^.adr^.Adr = nil) and (tmp^.Info.x <> FirstP.x)
+  Result := (tmp^.Adr <> nil) {and (tmp^.adr^.Adr = nil) }and (tmp^.Info.x <> FirstP.x)
         and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2)
 end;
 
