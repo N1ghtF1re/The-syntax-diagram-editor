@@ -43,7 +43,7 @@ In order to start using the program, you must run the SyntaxDiag.exe file, or op
 By default, when open, the "Edit" mode is active, in which drawing is prohibited. To switch it, you need to select the appropriate mode by clicking on the corresponding icon in the ToolBar (see the picture below)
 <br>
 
-![Select DrawMode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image135.png?raw=true)
+![Select DrawMode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/selectFigure.png?raw=true)
 <br>
 After selecting a mode, you can start drawing (If editing mode is not selected). If the "line" mode is selected, each click on the canvas adds a new point to the line.) Pressing the RMB - stops drawing the current shape, otherwise, if one of the drawing modes is selected text figures - each click adds a new figure.<br>
 To change the text that will be displayed inside the figure, you need to edit the contents of the text field shown in the picture below
@@ -79,4 +79,4 @@ Also, the program has a convenient menu and a toolbar, where you can find functi
 * View Help
 * The change of language (Screenshot of the program with the Russian interface is presented below)
 
-![Select scale](https://github.com/N1ghtF1re/The-syntax-diagram-editor/raw/master/docs/%D0%9F%D0%BE%D1%8F%D1%81%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%BA%D0%B0.files/image137.png)
+![Rus Screen](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/Rus_Screen.png?raw=true)

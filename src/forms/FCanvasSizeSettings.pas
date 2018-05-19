@@ -28,18 +28,30 @@ var
   FCanvasSettings: TFCanvasSettings;
 
 implementation
-uses main;
+uses main, Data.initdata;
 {$R *.dfm}
 
 
 // Возввращает в w,h размеры, введенные пользователем в текстовом поле
 procedure TFCanvasSettings.ControlsToItem(var w, h: integer);
+var
+  nw, nh: Integer;
 begin
   try
-    w := StrToInt( edtWidth.Text );
-    h := StrToInt( edtHeight.Text );
+    nw := StrToInt( edtWidth.Text );
+    nh := StrToInt( edtHeight.Text );
+    if (nw <= 5000) and (nh <= 5000) then
+    begin
+      w := nw;
+      h := nh;
+    end
+    else
+    begin
+      MessageDlg(rsInputBigSizes, mtError, [mbOk], 0);
+    end;
+
   except on E: EConvertError   do
-    ShowMessage('Ошибка ввода');
+    ShowMessage(rsInputError);
   end;
 end;
 

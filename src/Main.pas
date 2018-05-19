@@ -358,7 +358,7 @@ procedure TEditorForm.pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 var
   undorec: TUndoStackInfo;
-begin  
+begin
   if dm = ResizeCanvas then
   begin
     updateCanvasSizeWithCoords(x, y);
@@ -460,7 +460,7 @@ begin
     pbMain.Canvas.Pen.Style := psSolid;
     pbMain.Canvas.Pen.Color := clBlack;    
   end;
-  
+
   pbMain.Canvas.Rectangle(0,0,pbMain.Width,pbMain.Height); // Draw white rectangle :)
 end;
 
@@ -835,6 +835,7 @@ begin
   begin
     ClickFigure := nil;
     try
+      png := TPngImage.Create;
       bitmap := TBitMap.Create;  // create bitmap
       with bitmap do
       begin
@@ -879,7 +880,7 @@ var
 begin
   path := saveFile(FSvg);
   if path <> '' then
-    ExportTOSvg(FigHead, pbMain.Width, pbMain.Height, path, 'Syntax Diagram Project', 'Create by BrakhMen.info');
+    ExportTOSvg(FigHead, pbMain.Width, pbMain.Height, path, UTF8String('Syntax Diagram Project'), UTF8String('Create by BrakhMen.info'));
 end;
 
 procedure TEditorForm.sbMainMouseDown(Sender: TObject; Button: TMouseButton;

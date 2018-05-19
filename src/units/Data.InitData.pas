@@ -20,6 +20,10 @@ resourcestring // Раздел помощи
   // Название ресурсов
   rsHelpHowIsSD_ResName = 'help1';
   rsHelp_ResName = 'help2';
+resourcestring
+  rsInputError = 'Ошибка ввода';
+  rsInputBigSizes = 'Введенные размеры слишком большие и могут вызвать переполнение первичного рабочего диска';
+
  const // Смена языка
   SRuChangeLangMsg = 'Язык изменен. Для того, чтобы он обновился, перезапустите приложение';
   SEnChangeLangMsg = 'The language is changed. In order for it to be updated, restart the application';

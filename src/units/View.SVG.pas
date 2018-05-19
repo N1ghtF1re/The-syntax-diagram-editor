@@ -2,8 +2,7 @@ unit View.SVG;
 
 interface
 uses Data.Types, Data.InitData;
-procedure exportToSVG(head: PFigList; w,h: Integer; path:UTF8String; title: UTF8String; desc: UTF8String);
-
+procedure exportToSVG(head: PFigList; w,h: Integer; path:String; title: UTF8String; desc: UTF8String);
 implementation
 uses SysUtils, vcl.dialogs, vcl.graphics, Model, View.Canvas, main, Model.Lines;
 
@@ -32,8 +31,7 @@ end;
 // Функция возвращает строку с text-тегом с заданным содержанием
 function writeSVGText(Figure: TFigureInfo; text: UTF8String; family:UTF8String =
                                         'Tahoma'; size:integer = 16):UTF8String;
-var TH, TW, TX,TY: real;
-TextW, TextH: integer;
+var TX,TY: real;
 const
   SVG_VerticalEpsilon = 4; // Погрешность (Расстояние от верхней точки буквы до
                            // верха выделяемой области больше, чем до нижней)
@@ -116,12 +114,15 @@ end;
 
 // Превращаем специальные символы в "сущности"
 function htmlspecialchars(s: UTF8String):UTF8String;
+var
+  st: string;
 begin
- s:=StringReplace(s,'&','&amp;',[rfReplaceAll, rfIgnoreCase]);
- s:=StringReplace(s,'<','&lt;',[rfReplaceAll, rfIgnoreCase]);
- s:=StringReplace(s,'>','&gt;',[rfReplaceAll, rfIgnoreCase]);
- s:=StringReplace(s,'"','&quot;',[rfReplaceAll, rfIgnoreCase]);
- result:=s;
+  st := UTF8ToString(s);
+  st:=StringReplace(st,'&','&amp;',[rfReplaceAll, rfIgnoreCase]);
+  st:=StringReplace(st,'<','&lt;',[rfReplaceAll, rfIgnoreCase]);
+  st:=StringReplace(st,'>','&gt;',[rfReplaceAll, rfIgnoreCase]);
+  st:=StringReplace(st,'"','&quot;',[rfReplaceAll, rfIgnoreCase]);
+  result:= AnsiToUtf8(st);
 end;
 
 procedure drawArrowAtSVG(var f: textfile; point, PrevPoint:TPointsInfo);
@@ -163,7 +164,7 @@ end;
 
 
 // Экспорт в SVG
-procedure exportToSVG(head: PFigList; w,h: Integer; path:UTF8String; title: UTF8String; desc: UTF8String);
+procedure exportToSVG(head: PFigList; w,h: Integer; path:String; title: UTF8String; desc: UTF8String);
 var
   f: TextFile;
   Point1, Point2: TPointsInfo;
@@ -183,7 +184,8 @@ begin
   writeln(f, svg_head);
   writeln(f, getSVGOpenTag(h,w));
   writeln(f, '<title>' + title + '</title>');
-
+  isDegEnd := false;
+  coef := 1;
 
   tmp := head^.adr;
   while tmp <> nil do
@@ -306,7 +308,7 @@ begin
     end
     else
     begin // Other Figures
-      text:= AnsiToUtf8( tmp^.Info.Txt );
+      text:= AnsiToUtf8( String(tmp^.Info.Txt) );
       case tmp^.Info.tp of
         Def: Text := '< ' + Text + ' > ::= ';
         MetaVar: Text := '< ' + Text + ' >';

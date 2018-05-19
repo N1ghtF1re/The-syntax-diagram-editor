@@ -29,8 +29,8 @@
 #define Data_InitData_rsHelp_Caption 65152
 #define Data_InitData_rsHelpHowIsSD_ResName 65153
 #define Data_InitData_rsHelp_ResName 65154
-#define Data_InitData_rsRuChangeLangMsg 65155
-#define Data_InitData_rsEnChangeLangMsg 65156
+#define Data_InitData_rsInputError 65155
+#define Data_InitData_rsInputBigSizes 65156
 #define Vcl_Imaging_pnglang_EPngInvalidCRCText 65157
 #define Vcl_Imaging_pnglang_EPNGInvalidIHDRText 65158
 #define Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText 65159
@@ -433,8 +433,8 @@ BEGIN
 	Data_InitData_rsHelp_Caption,	L"Help"
 	Data_InitData_rsHelpHowIsSD_ResName,	L"help1_en"
 	Data_InitData_rsHelp_ResName,	L"help2_en"
-	Data_InitData_rsRuChangeLangMsg,	L"\x042F\x0437\x044B\x043A \x0438\x0437\x043C\x0435\x043D\x0435\x043D. \x0414\x043B\x044F \x0442\x043E\x0433\x043E, \x0447\x0442\x043E\x0431\x044B \x043E\x043D \x043E\x0431\x043D\x043E\x0432\x0438\x043B\x0441\x044F, \x043F\x0435\x0440\x0435\x0437\x0430\x043F\x0443\x0441\x0442\x0438\x0442\x0435 \x043F\x0440\x0438\x043B\x043E\x0436\x0435\x043D\x0438\x0435"
-	Data_InitData_rsEnChangeLangMsg,	L"The language is changed. In order for it to be updated, restart the application"
+	Data_InitData_rsInputError,	L"Input error"
+	Data_InitData_rsInputBigSizes,	L"The entered dimensions are too large and can cause the primary working disk to overflow"
 	Vcl_Imaging_pnglang_EPngInvalidCRCText,	L"This ""Portable Network Graphics"" image is not valid because it contains invalid pieces of data (crc error)"
 	Vcl_Imaging_pnglang_EPNGInvalidIHDRText,	L"The ""Portable Network Graphics"" image could not be loaded because one of its main piece of data (ihdr) might be corrupted"
 	Vcl_Imaging_pnglang_EPNGMissingMultipleIDATText,	L"This ""Portable Network Graphics"" image is invalid because it has missing image parts."
