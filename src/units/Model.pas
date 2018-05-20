@@ -513,6 +513,7 @@ begin
         oldp.x := x;
         oldp.y := y;
         MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+        prevP := tmpP;
         tmpP := tmpP^.adr;
         continue;
       end;

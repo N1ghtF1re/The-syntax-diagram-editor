@@ -12,17 +12,22 @@
 <desc>Create by BrakhMen.info</desc>
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="166" y="61">&lt; Интерфейсный_раздел &gt; ::= </text>
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="181" y="120">Interface</text>
+<!-- START DRAWING LINE №1 -->
 <!-- LASTARROW -->
 <!-- ARROW -->
 <path d="M 120 106 L 140 116 L 120 126" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 40 116 L 140 116" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №1 -->
+<!-- START DRAWING LINE №2 -->
 <!-- LASTARROW -->
 <!-- ARROW -->
 <path d="M 1109 106 L 1129 116 L 1109 126" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 222 116 L 1129 116" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №2 -->
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="387" y="168">&lt; Предложение_Uses &gt;</text>
+<!-- START DRAWING LINE №3 -->
 <!-- BOUND LINE -->
 <path d="M 238 116 L 253 131" fill="none" stroke="black" stroke-width="2" />
 <!-- LASTARROW -->
@@ -30,6 +35,8 @@
 <path d="M 269 154 L 289 164 L 269 174" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 3 POINTS: -->
 <path d="M 253 131 L 253 164 L 289 164" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №3 -->
+<!-- START DRAWING LINE №4 -->
 <!-- LAST VERTICAL: -->
 <!-- Incoming Line -->
 <path d="M 520 131 L 535 116" fill="none" stroke="black" stroke-width="2" />
@@ -37,10 +44,12 @@
 <path d="M 510 151 L 520 131 L 530 151" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 3 POINTS: -->
 <path d="M 485 164 L 520 164 L 520 131" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №4 -->
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="788" y="168">&lt; Раздел_констант &gt;</text>
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="782" y="222">&lt; Раздел_типов &gt;</text>
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="790" y="281">Раздел_переменных</text>
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="805" y="333">&lt; Раздел_заголовков_процедур_и_функций &gt;</text>
+<!-- START DRAWING LINE №5 -->
 <!-- BOUND LINE -->
 <path d="M 575 116 L 590 131" fill="none" stroke="black" stroke-width="2" />
 <!-- LASTARROW -->
@@ -48,6 +57,8 @@
 <path d="M 603 319 L 623 329 L 603 339" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 3 POINTS: -->
 <path d="M 590 131 L 590 329 L 623 329" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №5 -->
+<!-- START DRAWING LINE №6 -->
 <!-- Additional line Intersection: -->
 <path d="M 590 149 L 605 164" fill="none" stroke="black" stroke-width="2" />
 <!-- LASTARROW -->
@@ -55,6 +66,8 @@
 <path d="M 679 154 L 699 164 L 679 174" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 605 164 L 699 164" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №6 -->
+<!-- START DRAWING LINE №7 -->
 <!-- Additional line Intersection: -->
 <path d="M 590 203 L 605 218" fill="none" stroke="black" stroke-width="2" />
 <!-- LASTARROW -->
@@ -62,6 +75,8 @@
 <path d="M 684 208 L 704 218 L 684 228" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 605 218 L 704 218" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №7 -->
+<!-- START DRAWING LINE №8 -->
 <!-- LAST VERTICAL: -->
 <!-- Incoming Line -->
 <path d="M 1020 131 L 1035 116" fill="none" stroke="black" stroke-width="2" />
@@ -69,6 +84,8 @@
 <path d="M 1010 151 L 1020 131 L 1030 151" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 3 POINTS: -->
 <path d="M 987 329 L 1020 329 L 1020 131" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №8 -->
+<!-- START DRAWING LINE №9 -->
 <!-- Additional line: -->
 <!-- ARROW -->
 <path d="M 985 154 L 1005 164 L 985 174" fill="none" stroke="black" stroke-width="2" />
@@ -76,6 +93,8 @@
 <path d="M 1020 179 L 1005 164" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 877 164 L 1005 164" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №9 -->
+<!-- START DRAWING LINE №10 -->
 <!-- Additional line: -->
 <!-- ARROW -->
 <path d="M 985 208 L 1005 218 L 985 228" fill="none" stroke="black" stroke-width="2" />
@@ -83,6 +102,8 @@
 <path d="M 1020 233 L 1005 218" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 860 218 L 1005 218" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №10 -->
+<!-- START DRAWING LINE №11 -->
 <!-- Additional line Intersection: -->
 <path d="M 590 262 L 605 277" fill="none" stroke="black" stroke-width="2" />
 <!-- LASTARROW -->
@@ -90,6 +111,8 @@
 <path d="M 686 267 L 706 277 L 686 287" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 605 277 L 706 277" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №11 -->
+<!-- START DRAWING LINE №12 -->
 <!-- Additional line: -->
 <!-- ARROW -->
 <path d="M 985 267 L 1005 277 L 985 287" fill="none" stroke="black" stroke-width="2" />
@@ -97,6 +120,8 @@
 <path d="M 1020 292 L 1005 277" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 2 POINTS: -->
 <path d="M 874 277 L 1005 277" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №12 -->
+<!-- START DRAWING LINE №13 -->
 <!-- BOUND LINE -->
 <path d="M 1055 116 L 1070 131" fill="none" stroke="black" stroke-width="2" />
 <!-- ARROW -->
@@ -108,4 +133,5 @@
 <path d="M 536 151 L 546 131 L 556 151" fill="none" stroke="black" stroke-width="2" />
 <!-- LINE WITH 4 POINTS: -->
 <path d="M 1070 131 L 1070 378 L 546 378 L 546 131" fill="none" stroke="black" stroke-width="2" />
+<!-- END DRAWING LINE №13 -->
 </svg>
