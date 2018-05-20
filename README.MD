@@ -11,7 +11,7 @@
  ## About the program
 In order to get acquainted with the new programming language and write a simple program, the programmer should familiarize himself with the grammatical description of the language. The grammatical description of any programming language includes the alphabet, syntax and semantics.<br>
 To describe the rules of programming language syntax, formalized notation systems are used - metalanguage.<br> There are two main metalanguages:
-* Extended form of Backus-Naur (EBNF);
+* Extended Backus-Naur form (EBNF) ;
 * Syntax diagrams.
 
 <br>
@@ -45,7 +45,7 @@ By default, when open, the "Edit" mode is active, in which drawing is prohibited
 
 ![Select DrawMode](https://github.com/N1ghtF1re/The-syntax-diagram-editor/blob/master/docs/Eng_Screens/selectFigure.png?raw=true)
 <br>
-After selecting a mode, you can start drawing (If editing mode is not selected). If the "line" mode is selected, each click on the canvas adds a new point to the line.) Pressing the RMB - stops drawing the current shape, otherwise, if one of the drawing modes is selected text figures - each click adds a new figure.<br>
+After selecting a mode, you can start drawing (If editing mode is not selected). If the "line" mode is selected, each click on the canvas adds a new point to the line). Pressing the RMB - stops drawing the current shape, otherwise, if one of the drawing modes is selected text figures - each click adds a new figure.<br>
 To change the text that will be displayed inside the figure, you need to edit the contents of the text field shown in the picture below
 <br>
 
