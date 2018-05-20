@@ -19,13 +19,27 @@ begin
         + 'xmlns="http://www.w3.org/2000/svg" version="1.1">'
 end;
 
-function writePatch(Point1, Point2: TPointsInfo; color: UTF8String = 'black'; width:Integer = Default_LineSVG_Width):UTF8String;
+function writePatch(Point1, Point2: TPointsInfo; color: UTF8String = 'black'; width:Integer = Default_LineSVG_Width):UTF8String; overload;
 begin
   Result := '<path d="M ' + IntToStr(Point1.x) + ' '
   + IntToStr(Point1.y) +   ' L ' + IntToStr(Point2.x)
   + ' '+ IntToStr(Point2.y) + '" '
   + 'fill="none" stroke="' + color +'" stroke-width="'
   + IntToStr(width) + '" />'
+end;
+
+function writePatch(Points: array of TPointsInfo;color: UTF8String = 'black'; width:Integer = Default_LineSVG_Width):UTF8String; overload;
+var i:integer;
+begin
+  Result := '<path d="M ' + IntToStr(Points[0].x) + ' '
+  + IntToStr(Points[0].y);
+  for i := 1 to Length(Points)-1 do
+  begin
+    Result := Result + ' L ' + IntToStr(Points[i].x) + ' ' + IntToStr(Points[i].y);
+  end;
+  Result := result + '" '
+  + 'fill="none" stroke="' + color +'" stroke-width="'
+  + IntToStr(width) + '" />';
 end;
 
 // Функция возвращает строку с text-тегом с заданным содержанием
@@ -79,36 +93,40 @@ end;
 procedure drawSVGArrowVertical(var f: textFile; x,y : integer; coef: ShortInt);
 var
   p1, p2: TPointsInfo;
+  points: array[0..2] of TPointsInfo;
 begin
   // Draw Vertical Arrow
   P1.x := x;
   P1.y := y;
+  points[1] := p1; // СРЕДНЯЯ ТОЧКА
   P2.x := x-Arrow_Height;
   P2.y:= y+Arrow_Width*coef;
-  writeln(f, '<!-- ARROS LEFT -->');
-  writeln(f, writePatch(p1,p2));
+  points[0] := p2;
 
   p2.x := x+Arrow_Height;
   p2.y := y+Arrow_Width*coef;
-  writeln(f, '<!-- ARROW RIGHT -->');
-  writeln(f, writePatch(p1,p2));
+  writeln(f, '<!-- VERTICAL ARROW -->');
+  points[2] := p2;
+  writeln(f, writePatch(points));
 end;
 
 procedure drawSVGArrow(var F: TextFile; x,y : integer; coef: ShortInt);
 var
   p1, p2: TPointsInfo;
+  points: array[0..2] of TPointsInfo;
 begin
   P1.x := x;
   P1.y := y;
+  points[1] := p1; // СРЕДНЯЯ ТОЧКА
   P2.x := x-Arrow_Width*coef;
   P2.y:= y-Arrow_Height;
-  writeln(f, '<!-- ARROS LEFT -->');
-  writeln(f, writePatch(p1,p2));
 
+  points[0] := p2;
   p2.x :=  x-Arrow_Width*coef;
   p2.y := y+ +Arrow_Height;
-  writeln(f, '<!-- ARROW RIGHT -->');
-  writeln(f, writePatch(p1,p2));
+  writeln(f, '<!-- ARROW -->');
+  points[2] := p2;
+  writeln(f, writePatch(points));
 end;
 
 
@@ -178,6 +196,8 @@ var
   prev: TPointsInfo;
   curr:TPointsInfo;
   isChanged: boolean;
+  Points: array of TPointsInfo; // Массив точек линии!
+  CurrIndex: Integer;
 begin
   AssignFile(f, path,CP_UTF8);
   rewrite(f);
@@ -193,17 +213,23 @@ begin
 
     if tmp^.Info.tp = line then
     begin
+      SetLength(Points, getPointsCount(tmp^.Info.PointHead));
+      CurrIndex := 1;
       tmpP := tmp^.Info.PointHead^.adr;
       prevp := tmpP;
       curr := tmpP^.Info;
       firstP := tmpP^.Info;
+      Points[0] := firstP; // Первая точка
       isFirstLine := false;
       if beginOfVertLine(tmpP,firstP) then
       begin
         prev := prevP^.Info;
         drawSVGBoundLine(f, firstp, tmpP, prevp);
-        writeln(f, '<!-- Line After Bound -->');
-        Writeln(f, writePatch(prevP^.Info, tmpP^.adr.Info));
+
+        points[0] := prevP^.Info; // Новая первая точка
+        points[CurrIndex] := tmpP^.Adr.Info;
+
+        Inc(CurrIndex);
         prevP^.Info := prev;
         tmpP := tmpP^.Adr;
         isFirstLine :=  true;
@@ -224,10 +250,15 @@ begin
         curr := tmpP^.Info;
 
         curr.x := tmpP^.Info.x+Lines_Deg*coef;
+        points[0] := curr; // Новая первая точка
         isChanged := true;
 
       end;
-
+      if (tmpP^.Adr = nil) then
+      begin
+        writeln(f, '<!-- LASTARROW -->');
+        drawArrowAtSVG(f, tmpP^.info, firstP);
+      end;
       while (tmpP <> nil) and (tmpP^.Adr <> nil) do
       begin
         if not isChanged then
@@ -243,7 +274,9 @@ begin
           Point2.x := curr.x-Lines_Deg*coef;
           point2.y := curr.y;
           writeln(f, '<!-- Additional line: -->');
-          writeln(f, writePatch(Point1,Point2,'black'));
+          //writeln(f, writePatch(Point1,Point2,'black'));
+          Points[CurrIndex] := point2;
+          Inc(CurrIndex);
           if Prev.x - curr.x > 0 then
             drawSVGArrow(f, curr.x-Lines_Deg*coef, curr.y, -1)
           else
@@ -266,8 +299,9 @@ begin
           writeln(f, '<!-- LAST VERTICAL: -->');
           curr.y := curr.y + 15*coef;
         end;
-        writeln(f, '<!-- LINE: -->');
-        Writeln(f, writePatch( prev, curr));
+        Points[CurrIndex] := curr;
+        Inc(CurrIndex);
+        //Writeln(f, writePatch( prev, curr));
         if (tmpP^.Adr = nil) and isDegEnd and (prevP^.Info.x = curr.x)  then
         begin
 
@@ -279,6 +313,7 @@ begin
 
         if (tmpP^.Adr = nil) then
         begin
+          writeln(f, '<!-- LASTARROW -->');
           drawArrowAtSVG(f, curr, prev);
         end;
 
@@ -304,7 +339,10 @@ begin
           begin
             isDegEnd:= false;
           end;
+
       end;
+      writeln(f, '<!-- LINE WITH ' + IntToStr(Length(points)) +' POINTS: -->');
+      Writeln(f, writePatch(Points));
     end
     else
     begin // Other Figures

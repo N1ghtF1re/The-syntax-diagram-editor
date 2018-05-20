@@ -5,125 +5,92 @@
 " viewBox="0 0 1106 400"
 xmlns="http://www.w3.org/2000/svg" version="1.1">
 <title>Syntax Diagram Project</title>
-<!-- LINE: -->
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 163 127 L 183 137 L 163 147" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 2 POINTS: -->
 <path d="M 40 137 L 183 137" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 183 137 L 163 127" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 183 137 L 163 147" fill="none" stroke="black" stroke-width="2" />
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="232" y="141">&lt; Буква &gt;</text>
-<!-- LINE: -->
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 540 127 L 560 137 L 540 147" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 2 POINTS: -->
 <path d="M 281 137 L 560 137" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 560 137 L 540 127" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 560 137 L 540 147" fill="none" stroke="black" stroke-width="2" />
 <!-- BOUND LINE -->
 <path d="M 65 137 L 80 152" fill="none" stroke="black" stroke-width="2" />
-<!-- Line After Bound -->
-<path d="M 80 152 L 80 197" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 80 197 L 132 197" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 132 197 L 112 187" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 132 197 L 112 207" fill="none" stroke="black" stroke-width="2" />
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 112 187 L 132 197 L 112 207" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 3 POINTS: -->
+<path d="M 80 152 L 80 197 L 132 197" fill="none" stroke="black" stroke-width="2" />
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="234" y="201.5">&lt; Знак_подчеркивания &gt;</text>
-<!-- LINE: -->
-<path d="M 336 197 L 380 197" fill="none" stroke="black" stroke-width="2" />
 <!-- LAST VERTICAL: -->
-<!-- LINE: -->
-<path d="M 380 197 L 380 152" fill="none" stroke="black" stroke-width="2" />
 <!-- Incoming Line -->
 <path d="M 380 152 L 395 137" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 380 152 L 370 172" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 380 152 L 390 172" fill="none" stroke="black" stroke-width="2" />
+<!-- VERTICAL ARROW -->
+<path d="M 370 172 L 380 152 L 390 172" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 3 POINTS: -->
+<path d="M 336 197 L 380 197 L 380 152" fill="none" stroke="black" stroke-width="2" />
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="611" y="141">&lt; Цифра &gt;</text>
 <!-- BOUND LINE -->
 <path d="M 445 137 L 460 122" fill="none" stroke="black" stroke-width="2" />
-<!-- Line After Bound -->
-<path d="M 460 122 L 460 60" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 460 60 L 840 60" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 840 60 L 820 50" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 840 60 L 820 70" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 660 137 L 800 137" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 800 137 L 800 340" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 800 340 L 480 340" fill="none" stroke="black" stroke-width="2" />
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 820 50 L 840 60 L 820 70" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 3 POINTS: -->
+<path d="M 460 122 L 460 60 L 840 60" fill="none" stroke="black" stroke-width="2" />
 <!-- LAST VERTICAL: -->
-<!-- LINE: -->
-<path d="M 480 340 L 480 152" fill="none" stroke="black" stroke-width="2" />
 <!-- Incoming Line -->
 <path d="M 480 152 L 495 137" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 480 152 L 470 172" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 480 152 L 490 172" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
+<!-- VERTICAL ARROW -->
+<path d="M 470 172 L 480 152 L 490 172" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 5 POINTS: -->
+<path d="M 660 137 L 800 137 L 800 340 L 480 340 L 480 152" fill="none" stroke="black" stroke-width="2" />
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 780 127 L 800 137 L 780 147" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 2 POINTS: -->
 <path d="M 660 137 L 800 137" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 800 137 L 780 127" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 800 137 L 780 147" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 660 330 L 640 340 L 660 350" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 2 POINTS: -->
 <path d="M 800 340 L 640 340" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 640 340 L 660 330" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 640 340 L 660 350" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 540 600 L 540 600" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 540 600 L 540 600" fill="none" stroke="black" stroke-width="2" />
 <!-- LAST VERTICAL: -->
-<!-- LINE: -->
-<path d="M 540 600 L 540 615" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 540 615 L 530 595" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 540 615 L 550 595" fill="none" stroke="black" stroke-width="2" />
+<!-- LASTARROW -->
+<!-- VERTICAL ARROW -->
+<path d="M 530 595 L 540 615 L 550 595" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 4 POINTS: -->
+<path d="M 540 600 L 540 600 L 540 600 L 540 615" fill="none" stroke="black" stroke-width="2" />
 <!-- BOUND LINE -->
 <path d="M 505 137 L 520 152" fill="none" stroke="black" stroke-width="2" />
-<!-- Line After Bound -->
-<path d="M 520 152 L 520 277" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
-<path d="M 520 277 L 556 277" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 556 277 L 536 267" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 556 277 L 536 287" fill="none" stroke="black" stroke-width="2" />
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 536 267 L 556 277 L 536 287" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 3 POINTS: -->
+<path d="M 520 152 L 520 277 L 556 277" fill="none" stroke="black" stroke-width="2" />
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="658" y="281.5">&lt; Знак_подчеркивания &gt;</text>
 <!-- Additional line: -->
-<path d="M 760 277 L 785 277" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 785 277 L 765 267" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 785 277 L 765 287" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW -->
+<path d="M 765 267 L 785 277 L 765 287" fill="none" stroke="black" stroke-width="2" />
 <!-- Additional line Intersect 2: -->
 <path d="M 800 292 L 785 277" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 2 POINTS: -->
+<path d="M 760 277 L 785 277" fill="none" stroke="black" stroke-width="2" />
 <!-- Additional line Intersection: -->
 <path d="M 520 204 L 535 219" fill="none" stroke="black" stroke-width="2" />
-<!-- LINE: -->
+<!-- LASTARROW -->
+<!-- ARROW -->
+<path d="M 578 209 L 598 219 L 578 229" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 2 POINTS: -->
 <path d="M 535 219 L 598 219" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 598 219 L 578 209" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 598 219 L 578 229" fill="none" stroke="black" stroke-width="2" />
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="647" y="223">&lt; Буква &gt;</text>
 <!-- Additional line: -->
-<path d="M 696 219 L 785 219" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROS LEFT -->
-<path d="M 785 219 L 765 209" fill="none" stroke="black" stroke-width="2" />
-<!-- ARROW RIGHT -->
-<path d="M 785 219 L 765 229" fill="none" stroke="black" stroke-width="2" />
+<!-- ARROW -->
+<path d="M 765 209 L 785 219 L 765 229" fill="none" stroke="black" stroke-width="2" />
 <!-- Additional line Intersect 2: -->
 <path d="M 800 234 L 785 219" fill="none" stroke="black" stroke-width="2" />
+<!-- LINE WITH 2 POINTS: -->
+<path d="M 696 219 L 785 219" fill="none" stroke="black" stroke-width="2" />
 <text text-anchor="middle" font-family = "Tahoma" font-size = "16" x="146" y="70">&lt; Идентификатор &gt; ::= </text>
 </svg>

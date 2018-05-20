@@ -6,6 +6,7 @@ interface
 uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
     View.SVG, Model.Files, Model.Lines;
 
+ function getPointsCount(head: PPointsList):integer;
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
  function removeFigure(head: PFigList; adr: PFigList):PFigList;
  procedure removeAllList(head:PFigList);
@@ -599,6 +600,17 @@ begin
 
 end;
 
-
+function getPointsCount(head: PPointsList):integer;
+var
+temp:PPointsList;
+begin
+  Result := 0;
+  temp := head^.Adr;
+  while temp <> nil do
+  begin
+    inc(Result);
+    temp := temp^.Adr;
+  end;
+end;
 
 end.
