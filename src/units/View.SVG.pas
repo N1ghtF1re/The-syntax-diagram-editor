@@ -198,6 +198,7 @@ var
   isChanged: boolean;
   Points: array of TPointsInfo; // Массив точек линии!
   CurrIndex: Integer;
+  linecounter:integer;
 begin
   AssignFile(f, path,CP_UTF8);
   rewrite(f);
@@ -209,6 +210,7 @@ begin
   writeln(f, '<desc>' + desc + '</desc>');
   isDegEnd := false;
   coef := 1;
+  linecounter :=0;
 
   tmp := head^.adr;
   while tmp <> nil do
@@ -216,6 +218,8 @@ begin
 
     if tmp^.Info.tp = line then
     begin
+      Inc(linecounter);
+      writeln(f, '<!-- START DRAWING LINE №' + IntToStr(linecounter) + ' -->');
       SetLength(Points, getPointsCount(tmp^.Info.PointHead));
       CurrIndex := 1;
       tmpP := tmp^.Info.PointHead^.adr;
@@ -346,6 +350,7 @@ begin
       end;
       writeln(f, '<!-- LINE WITH ' + IntToStr(Length(points)) +' POINTS: -->');
       Writeln(f, writePatch(Points));
+      writeln(f, '<!-- END DRAWING LINE №' + IntToStr(linecounter) + ' -->');
     end
     else
     begin // Other Figures
