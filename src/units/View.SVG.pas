@@ -201,9 +201,12 @@ var
 begin
   AssignFile(f, path,CP_UTF8);
   rewrite(f);
+
   writeln(f, svg_head);
   writeln(f, getSVGOpenTag(h,w));
+  Writeln(F, SGeneratedText);
   writeln(f, '<title>' + title + '</title>');
+  writeln(f, '<desc>' + desc + '</desc>');
   isDegEnd := false;
   coef := 1;
 
