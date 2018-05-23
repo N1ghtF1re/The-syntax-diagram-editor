@@ -5,7 +5,7 @@
 			<Option Name="Personality">W32ResourceDLL.Personality</Option>
 			<Option Name="ProjectType">ResourceDLL</Option>
 			<Option Name="Version">1.0</Option>
-			<Option Name="GUID">{EFAF3ECF-EA2F-449A-802E-826E6701B5F9}</Option>
+			<Option Name="GUID">{79C001AD-10FB-41BA-93E8-54502EABF908}</Option>
 		</Option>
 	</PersonalityInfo>
 	<W32ResourceDLL.Personality>
@@ -14,7 +14,7 @@
 		</Source>
 		<Options>
 			<Options Name="BaseLang">1049</Options>
-			<Options Name="TargetName">..\Win32\Debug\SyntaxDiag.RUS</Options>
+			<Options Name="TargetName">..\Win32\Debug\SyntaxDiag.FRA</Options>
 			<Options Name="BRCC_IncludePath"></Options>
 			<Options Name="Company"></Options>
 			<Options Name="Configuration"></Options>
@@ -29,11 +29,5 @@
 			<Options Name="KeyFile"></Options>
 			<Options Name="KeyName"></Options>
 		</Options>
-		<FileList>
-			<File FileName="forms\FCanvasSizeSettings.dfm" ContainerId="W32Form" ModuleName="FCanvasSizeSettings.dfm"/>
-			<File FileName="forms\FHtmlView.dfm" ContainerId="W32Form" ModuleName="FHtmlView.dfm"/>
-			<File FileName="Main.dfm" ContainerId="W32Form" ModuleName="Main.dfm"/>
-			<File FileName="Win32\Debug\SyntaxDiag_DRC.rc" ContainerId="W32RC" ModuleName="SyntaxDiag_DRC.rc"/>
-		</FileList>
-	</W32ResourceDLL.Personality>
+		<FileList><File FileName="forms\FCanvasSizeSettings.dfm" ContainerId="W32Form" ModuleName="FCanvasSizeSettings.dfm"/><File FileName="forms\FHtmlView.dfm" ContainerId="W32Form" ModuleName="FHtmlView.dfm"/><File FileName="Main.dfm" ContainerId="W32Form" ModuleName="Main.dfm"/><File FileName="Win32\Debug\SyntaxDiag_DRC.rc" ContainerId="W32RC" ModuleName="SyntaxDiag_DRC.rc"/></FileList></W32ResourceDLL.Personality>
 </BorlandProject>

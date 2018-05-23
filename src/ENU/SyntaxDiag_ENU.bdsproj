@@ -29,5 +29,11 @@
 			<Options Name="KeyFile"></Options>
 			<Options Name="KeyName"></Options>
 		</Options>
-		<FileList><File FileName="forms\FCanvasSizeSettings.dfm" ContainerId="W32Form" ModuleName="FCanvasSizeSettings.dfm"/><File FileName="forms\FHtmlView.dfm" ContainerId="W32Form" ModuleName="FHtmlView.dfm"/><File FileName="Main.dfm" ContainerId="W32Form" ModuleName="Main.dfm"/><File FileName="Win32\Debug\SyntaxDiag_DRC.rc" ContainerId="W32RC" ModuleName="SyntaxDiag_DRC.rc"/></FileList></W32ResourceDLL.Personality>
+		<FileList>
+			<File FileName="forms\FCanvasSizeSettings.dfm" ContainerId="W32Form" ModuleName="FCanvasSizeSettings.dfm"/>
+			<File FileName="forms\FHtmlView.dfm" ContainerId="W32Form" ModuleName="FHtmlView.dfm"/>
+			<File FileName="Main.dfm" ContainerId="W32Form" ModuleName="Main.dfm"/>
+			<File FileName="Win32\Debug\SyntaxDiag_DRC.rc" ContainerId="W32RC" ModuleName="SyntaxDiag_DRC.rc"/>
+		</FileList>
+	</W32ResourceDLL.Personality>
 </BorlandProject>

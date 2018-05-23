@@ -89,6 +89,8 @@ type
     actEngLang: TAction;
     mniEngLang: TMenuItem;
     mniRusLang: TMenuItem;
+    actFrencLang: TAction;
+    actFrencLang1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure clearScreen;
     procedure pbMainMouseUp(Sender: TObject; Button: TMouseButton;
@@ -142,6 +144,7 @@ type
     procedure mniRusLangClick(Sender: TObject);
     procedure actEngLangExecute(Sender: TObject);
     procedure actRusLangExecute(Sender: TObject);
+    procedure actFrencLangExecute(Sender: TObject);
 
     
   private
@@ -470,7 +473,7 @@ begin
     pbMain.Canvas.Pen.Style := psSolid;
     pbMain.Canvas.Pen.Color := clBlack;    
   end;
-
+  pbMain.Canvas.Brush.Color := clWhite;
   pbMain.Canvas.Rectangle(0,0,pbMain.Width,pbMain.Height); // Draw white rectangle :)
 end;
 
@@ -1042,6 +1045,12 @@ begin
     endDrawLine;
   CurrType := None;
   tbFigNone.Down := true;
+end;
+
+procedure TEditorForm.actFrencLangExecute(Sender: TObject);
+begin
+  SetLocaleOverride(ParamStr(0), 'FRA');
+  MessageDlg(SFrChangeLangMsg, mtInformation, [mbok], 0);
 end;
 
 procedure TEditorForm.actHelpExecute(Sender: TObject);

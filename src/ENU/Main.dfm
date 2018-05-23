@@ -44,7 +44,7 @@ object EditorForm: TEditorForm
       Width = 770
       Height = 346
       Margins.Bottom = 0
-      Color = clWhite
+      Color = clBtnFace
       ParentColor = False
       OnMouseDown = pbMainMouseDown
       OnMouseMove = pbMainMouseMove
@@ -58,9 +58,11 @@ object EditorForm: TEditorForm
     Width = 770
     Height = 21
     Caption = 'tbarMenu'
-    Color = clBtnFace
+    Color = clBlack
     DoubleBuffered = True
+    GradientStartColor = clMenuHighlight
     HotImages = ilMenu
+    HotTrackColor = clBlack
     Images = ilMenu
     ParentColor = False
     ParentDoubleBuffered = False
@@ -199,8 +201,13 @@ object EditorForm: TEditorForm
     object tbFigDef: TToolButton
       Left = 0
       Top = 0
+      Hint = #1048#1084#1103' '#1089#1080#1085#1090#1072#1082#1089#1080#1095#1077#1089#1082#1086#1081' '#1076#1080#1072#1075#1088#1072#1084#1084#1099' (Ctrl + 1)'
+      ParentCustomHint = False
       Action = actFigDef
+      Caption = #1047#1072#1075#1086#1083#1086#1074#1086#1082' '#1089#1080#1085#1090'. '#1076#1080#1072#1075#1088#1072#1084#1084#1099
       Grouped = True
+      ParentShowHint = False
+      ShowHint = True
       Style = tbsCheck
     end
     object tbFigMV: TToolButton
@@ -208,6 +215,8 @@ object EditorForm: TEditorForm
       Top = 0
       Action = actFigMetaVar
       Grouped = True
+      ParentShowHint = False
+      ShowHint = True
       Style = tbsCheck
     end
     object tbFigConst: TToolButton
@@ -339,6 +348,9 @@ object EditorForm: TEditorForm
         end
         object mniRusLang: TMenuItem
           Action = actRusLang
+        end
+        object actFrencLang1: TMenuItem
+          Action = actFrencLang
         end
       end
     end
@@ -482,12 +494,17 @@ object EditorForm: TEditorForm
       Caption = 'English'
       OnExecute = actEngLangExecute
     end
+    object actFrencLang: TAction
+      Category = 'ctgSettings'
+      Caption = 'Fran'#231'ais'
+      OnExecute = actFrencLangExecute
+    end
   end
   object ilMenu: TImageList
     Left = 56
     Top = 168
     Bitmap = {
-      494C01011100C000EC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01011100C000040110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1158,7 +1175,7 @@ object EditorForm: TEditorForm
     Left = 96
     Top = 168
     Bitmap = {
-      494C010105000800580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010105000800700010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

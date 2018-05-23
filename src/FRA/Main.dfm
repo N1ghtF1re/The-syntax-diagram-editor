@@ -1,7 +1,7 @@
 object EditorForm: TEditorForm
   Left = 0
   Top = 0
-  Caption = #1053#1086#1074#1099#1081' '#1092#1072#1081#1083' - Syntax Diagrams'
+  Caption = 'Nouveau fichier - Syntax Diagrams'
   ClientHeight = 395
   ClientWidth = 770
   Color = clBtnFace
@@ -157,7 +157,7 @@ object EditorForm: TEditorForm
       Width = 97
       Height = 22
       Alignment = taRightJustify
-      Caption = '            '#1052#1072#1089#1096#1090#1072#1073':    '
+      Caption = '            Zoom:    '
       Layout = tlCenter
     end
     object tbSelectScale: TTrackBar
@@ -201,10 +201,10 @@ object EditorForm: TEditorForm
     object tbFigDef: TToolButton
       Left = 0
       Top = 0
-      Hint = #1048#1084#1103' '#1089#1080#1085#1090#1072#1082#1089#1080#1095#1077#1089#1082#1086#1081' '#1076#1080#1072#1075#1088#1072#1084#1084#1099' (Ctrl + 1)'
+      Hint = 'Nom du diagramme de syntaxe (Ctrl + 1)'
       ParentCustomHint = False
       Action = actFigDef
-      Caption = #1047#1072#1075#1086#1083#1086#1074#1086#1082' '#1089#1080#1085#1090'. '#1076#1080#1072#1075#1088#1072#1084#1084#1099
+      Caption = 'En-t'#234'te du diagramme de syntaxe'
       Grouped = True
       ParentShowHint = False
       ShowHint = True
@@ -255,7 +255,7 @@ object EditorForm: TEditorForm
       Align = alBottom
       Alignment = taRightJustify
       AutoSize = False
-      Caption = '    '#1058#1077#1082#1089#1090':  '
+      Caption = '    Le texte:  '
       ParentShowHint = False
       ShowHint = True
       Layout = tlCenter
@@ -279,7 +279,7 @@ object EditorForm: TEditorForm
       MaxLength = 255
       ParentFont = False
       TabOrder = 0
-      Text = 'Example'
+      Text = 'Exemple'
     end
   end
   object MainMenu: TMainMenu
@@ -289,7 +289,7 @@ object EditorForm: TEditorForm
     Left = 56
     Top = 208
     object mnFile: TMenuItem
-      Caption = #1060#1072#1081#1083
+      Caption = 'Fichier'
       object mniNew: TMenuItem
         Action = actNew
       end
@@ -303,7 +303,7 @@ object EditorForm: TEditorForm
         Action = actSaveAs
       end
       object mniExport: TMenuItem
-        Caption = #1069#1082#1089#1087#1086#1088#1090
+        Caption = 'Export'
         ImageIndex = 4
         object mniExportToBMP: TMenuItem
           Action = actExportBMP
@@ -317,7 +317,7 @@ object EditorForm: TEditorForm
       end
     end
     object mniEdit: TMenuItem
-      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
+      Caption = 'Modifier'
       object mniCopy: TMenuItem
         Action = actCopy
       end
@@ -330,7 +330,7 @@ object EditorForm: TEditorForm
     end
     object mnSettings: TMenuItem
       Tag = 1
-      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      Caption = 'Param'#232'tres'
       object mniHolstSize: TMenuItem
         Action = actCanvasSize
       end
@@ -340,7 +340,7 @@ object EditorForm: TEditorForm
         RadioItem = True
       end
       object mniSelectLang: TMenuItem
-        Caption = #1071#1079#1099#1082
+        Caption = 'Langue'
         ImageIndex = 16
         object mniEngLang: TMenuItem
           Action = actEngLang
@@ -356,7 +356,7 @@ object EditorForm: TEditorForm
     end
     object mniHtml: TMenuItem
       Tag = 3
-      Caption = #1055#1086#1084#1086#1097#1100
+      Caption = 'Aide'
       object mniWhatIsSD: TMenuItem
         Action = actAboutSB
       end
@@ -379,79 +379,79 @@ object EditorForm: TEditorForm
     Top = 120
     object actNew: TAction
       Category = 'ctgFile'
-      Caption = #1053#1086#1074#1099#1081
-      Hint = #1053#1086#1074#1099#1081
+      Caption = 'Nouveau'
+      Hint = 'Nouveau'
       ImageIndex = 0
       ShortCut = 16462
       OnExecute = actNewExecute
     end
     object actOpen: TAction
       Category = 'ctgFile'
-      Caption = #1054#1090#1082#1088#1099#1090#1100
-      Hint = #1054#1090#1082#1088#1099#1090#1100
+      Caption = 'Ouvrir'
+      Hint = 'Ouvrir'
       ImageIndex = 1
       ShortCut = 16463
       OnExecute = actOpenExecute
     end
     object actSave: TAction
       Category = 'ctgFile'
-      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
-      Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+      Caption = 'Enregistrer'
+      Hint = 'Enregistrer'
       ImageIndex = 2
       ShortCut = 16467
       OnExecute = actSaveExecute
     end
     object actSaveAs: TAction
       Category = 'ctgFile'
-      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082
-      Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082
+      Caption = 'Enregistrer sous'
+      Hint = 'Enregistrer sous'
       ImageIndex = 3
       ShortCut = 49235
       OnExecute = actSaveAsExecute
     end
     object actExportBMP: TAction
       Category = 'ctgExport'
-      Caption = #1069#1082#1089#1087#1086#1088#1090' '#1074' BMP'
+      Caption = 'Export to BMP'
       ImageIndex = 9
       OnExecute = actExportBMPExecute
     end
     object actExportSVG: TAction
       Category = 'ctgExport'
-      Caption = #1069#1082#1089#1087#1086#1088#1090' '#1074' SVG'
+      Caption = 'Export to SVG'
       ImageIndex = 11
       OnExecute = actExportSVGExecute
     end
     object actCopy: TAction
       Category = 'ctgEdit'
-      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
-      Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      Caption = 'Copier'
+      Hint = 'Copier'
       ImageIndex = 5
       ShortCut = 16451
       OnExecute = actCopyExecute
     end
     object actPast: TAction
       Category = 'ctgEdit'
-      Caption = #1042#1089#1090#1072#1074#1080#1090#1100
-      Hint = #1042#1089#1090#1072#1074#1080#1090#1100
+      Caption = 'Ins'#233'rer'
+      Hint = 'Ins'#233'rer'
       ImageIndex = 6
       ShortCut = 16470
       OnExecute = actPastExecute
     end
     object actCanvasSize: TAction
       Category = 'ctgSettings'
-      Caption = #1056#1072#1079#1084#1077#1088' '#1093#1086#1083#1089#1090#1072
+      Caption = '"Taille de la toile"'
       ImageIndex = 7
       OnExecute = actCanvasSizeExecute
     end
     object actAboutSB: TAction
       Category = 'ctgHelp'
-      Caption = #1063#1090#1086' '#1090#1072#1082#1086#1077' '#1089#1080#1085#1090#1072#1082#1089#1080#1095#1077#1089#1082#1080#1077' '#1076#1080#1072#1075#1088#1072#1084#1084#1099'?'
+      Caption = 'Quels sont les diagrammes de syntaxe?'
       ImageIndex = 8
       OnExecute = actAboutSBExecute
     end
     object actUndo: TAction
       Category = 'ctgEdit'
-      Caption = #1054#1090#1084#1077#1085#1080#1090#1100
+      Caption = 'Annuler'
       Enabled = False
       ImageIndex = 12
       ShortCut = 16474
@@ -459,27 +459,27 @@ object EditorForm: TEditorForm
     end
     object actHelp: TAction
       Category = 'ctgHelp'
-      Caption = #1055#1086#1084#1086#1097#1100
+      Caption = 'Aide'
       ImageIndex = 8
       ShortCut = 112
       OnExecute = actHelpExecute
     end
     object actPNG: TAction
       Category = 'ctgExport'
-      Caption = #1069#1082#1089#1087#1086#1088#1090' '#1074' PNG'
+      Caption = 'Export to PNG'
       ImageIndex = 13
       OnExecute = actPNGExecute
     end
     object actResizeCanvas: TAction
       Category = 'ctgSettings'
-      Caption = #1048#1079#1084#1077#1085#1077#1085#1080#1077' '#1088#1072#1079#1084#1077#1088#1072' '#1087#1086#1083#1086#1090#1085#1072
-      Hint = #1048#1079#1084#1077#1085#1080#1090#1100' '#1088#1072#1079#1084#1077#1088' '#1087#1086#1083#1086#1090#1085#1072
+      Caption = 'Changer la taille de la toile'
+      Hint = 'Changer la taille de la toile'
       ImageIndex = 14
       OnExecute = actResizeCanvasExecute
     end
     object actChangeMagnetize: TAction
       Category = 'ctgSettings'
-      Caption = '"'#1055#1088#1080#1084#1072#1075#1085#1080#1095#1080#1074#1072#1085#1080#1077'" '#1092#1080#1075#1091#1088' [beta]'
+      Caption = 'Magn'#233'tiser" les chiffres [b'#234'ta]'
       Checked = True
       ImageIndex = 15
       OnExecute = actChangeMagnetizeExecute
@@ -1451,32 +1451,32 @@ object EditorForm: TEditorForm
     Left = 96
     Top = 120
     object actFigNone: TAction
-      Caption = #1050#1091#1088#1089#1086#1088
-      Hint = #1050#1091#1088#1089#1086#1088
+      Caption = 'Curseur'
+      Hint = 'Curseur'
       ImageIndex = 0
       OnExecute = actFigNoneExecute
     end
     object actFigLine: TAction
-      Caption = #1051#1080#1085#1080#1103
-      Hint = #1051#1080#1085#1080#1103
+      Caption = 'Line'
+      Hint = 'Line'
       ImageIndex = 1
       OnExecute = actFigLineExecute
     end
     object actFigDef: TAction
-      Caption = #1055#1086' '#1086#1087#1088#1077#1076#1077#1083#1077#1085#1080#1102' '#1077#1089#1090#1100
-      Hint = #1048#1084#1103' '#1089#1080#1085#1090#1072#1082#1089#1080#1095#1077#1089#1082#1086#1081' '#1076#1080#1072#1075#1088#1072#1084#1084#1099
+      Caption = 'Nom du tableau de syntaxe'
+      Hint = 'Nom du tableau de syntaxe'
       ImageIndex = 2
       OnExecute = actFigDefExecute
     end
     object actFigMetaVar: TAction
-      Caption = #1052#1077#1090#1072#1087#1077#1088#1077#1084#1077#1085#1085#1072#1103
-      Hint = #1052#1077#1090#1072#1087#1077#1088#1077#1084#1077#1085#1085#1072#1103
+      Caption = 'M'#233'ta-variable'
+      Hint = 'M'#233'ta-variable'
       ImageIndex = 3
       OnExecute = actFigMetaVarExecute
     end
     object actFigMetaConst: TAction
-      Caption = #1052#1077#1090#1072#1082#1086#1085#1089#1090#1072#1085#1090#1072
-      Hint = #1052#1077#1090#1072#1082#1086#1085#1089#1090#1072#1085#1090#1072
+      Caption = 'Metaconstant'
+      Hint = 'Metaconstant'
       ImageIndex = 4
       OnExecute = actFigMetaConstExecute
     end
