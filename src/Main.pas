@@ -188,7 +188,7 @@ implementation
 {$R+}
 {$R-}
 
-uses FCanvasSizeSettings, FHtmlView, Model.Files,System.Win.Registry;
+uses FCanvasSizeSettings, FHtmlView, Model.Files,System.Win.Registry, System.UITypes;
 
 procedure TEditorForm.changeEditorText(newtext: string);
 begin
@@ -226,6 +226,8 @@ begin
   pbMain.Height := y; 
   pbMain.Repaint;
 end;
+
+
 
 
 procedure TEditorForm.useScale(var x, y: integer);
@@ -569,6 +571,11 @@ begin
   createFigList(FigHead);
   CurrType := None;
   EM := NoEdit;
+  actFigNone.ShortCut := scCtrl or vk5; // CTRL + '5'
+  actFigDef.ShortCut := scCtrl or vk1; // CTRL + '1'
+  actFigMetaVar.ShortCut := scCtrl or vk2; // CTRL + '2'
+  actFigMetaConst.ShortCut := scCtrl or vk3; // CTRL + '3'
+  actFigLine.ShortCut := scCtrl or vk4; // CTRL + '4'
   CurrFigure := nil;
   clearScreen;
   CoppyFigure := nil;
@@ -653,7 +660,7 @@ end;
 
 procedure TEditorForm.FormResize(Sender: TObject);
 begin
-  pbMain.Repaint;
+  // pbMain.Repaint;
 end;
 
 
@@ -1003,12 +1010,14 @@ begin
   if CurrType = Line then
     endDrawLine;
   CurrType := def;
+  tbFigDef.Down := true;
 end;
 
 procedure TEditorForm.actFigLineExecute(Sender: TObject);
 begin
   CurrType := Line;
   CurrLineType := LLine;
+  tbFigLine.Down := true;
 end;
 
 procedure TEditorForm.actFigMetaConstExecute(Sender: TObject);
@@ -1016,6 +1025,7 @@ begin
   if CurrType = Line then
     endDrawLine;
   CurrType := MetaConst;
+  tbFigConst.Down := true;
 end;
 
 procedure TEditorForm.actFigMetaVarExecute(Sender: TObject);
@@ -1023,6 +1033,7 @@ begin
   if CurrType = Line then
     endDrawLine;
   CurrType := MetaVar;
+  tbFigMV.Down := true;
 end;
 
 procedure TEditorForm.actFigNoneExecute(Sender: TObject);
@@ -1030,6 +1041,7 @@ begin
   if CurrType = Line then
     endDrawLine;
   CurrType := None;
+  tbFigNone.Down := true;
 end;
 
 procedure TEditorForm.actHelpExecute(Sender: TObject);

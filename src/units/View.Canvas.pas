@@ -221,12 +221,6 @@ begin                  //\\
     isDegEnd := false;
     while tmp <> nil do
     begin
-      {if LT =LAdditLine then
-      begin
-        tmp^.Info.y := AddY;
-      end;}
-
-
       if (PrevP.y = tmp^.Info.y) and (tmp^.Adr = nil) and  isHorisontalIntersection(EditorForm.getFigureHead,tmp)  then
       begin
         ScaleLineTo(Canvas,tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);

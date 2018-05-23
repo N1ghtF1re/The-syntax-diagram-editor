@@ -201,8 +201,13 @@ object EditorForm: TEditorForm
     object tbFigDef: TToolButton
       Left = 0
       Top = 0
+      Hint = #1048#1084#1103' '#1089#1080#1085#1090#1072#1082#1089#1080#1095#1077#1089#1082#1086#1081' '#1076#1080#1072#1075#1088#1072#1084#1084#1099' (Ctrl + 1)'
+      ParentCustomHint = False
       Action = actFigDef
+      Caption = #1047#1072#1075#1086#1083#1086#1074#1086#1082' '#1089#1080#1085#1090'. '#1076#1080#1072#1075#1088#1072#1084#1084#1099
       Grouped = True
+      ParentShowHint = False
+      ShowHint = True
       Style = tbsCheck
     end
     object tbFigMV: TToolButton
@@ -210,6 +215,8 @@ object EditorForm: TEditorForm
       Top = 0
       Action = actFigMetaVar
       Grouped = True
+      ParentShowHint = False
+      ShowHint = True
       Style = tbsCheck
     end
     object tbFigConst: TToolButton
