@@ -242,7 +242,7 @@ begin
   x0 := x;
   y0 := y;
   roundCoords(x,y); // round coords (Use steps)
-  
+
   if dm = DrawLine then
   begin
     case button of
@@ -367,6 +367,14 @@ begin
   
   if clickfigure = nil then
     prevText:= edtRectText.Text;
+
+  if (CurrType = Line) and (DM=DrawLine) then
+  begin
+    pbMain.Repaint;
+    drawProection(pbMain.Canvas, currfigure^.Info.PointHead, x,y);
+
+  end;
+
   if (CurrType <> Line) and (DM = DrawLine) then
     DM := nodraw;
   if (dm = NoDraw) and (CurrType = None) then

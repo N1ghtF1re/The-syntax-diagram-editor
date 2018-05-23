@@ -15,6 +15,7 @@ interface
   procedure changeLineCoordsFromStr(head: PPointsList; st:string);
   function searchNearLine(head: PFigList; var x,y: integer):PPointsList;
   procedure removeTrashLines(head: PFigList; curr: PFigList);
+  function isvertLine(curr, prev: TPointsInfo): Boolean;
 implementation
   uses math, System.SysUtils, vcl.dialogs, Model;
 
@@ -349,6 +350,7 @@ begin
 end;
 
 
+
 // ¬озвращает true если нужна стрелка по середине
 function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 begin
@@ -431,5 +433,11 @@ begin
 
   end;
 end;
+
+function isvertLine(curr, prev: TPointsInfo): Boolean;
+begin
+  Result:= (curr.x = prev.x) and (curr.y <> prev.y);  
+end;
+
 end.
 

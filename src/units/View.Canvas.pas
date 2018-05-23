@@ -13,7 +13,7 @@ procedure drawSelectFigure(canvas:tcanvas; figure: TFigureInfo);
 procedure drawSelectLineVertex(canvas: TCanvas; Point: TPointsInfo);
 function beginOfVertLine(tmp:PPointsList;firstP: TPointsInfo):boolean;
 procedure selectFigure(canvas: TCanvas; head:PFigList);
-
+procedure drawProection(Canvas: TCanvas; head: PPointsList; x,y: integer);
 
 implementation
 uses main, Model, Model.Lines;
@@ -42,6 +42,26 @@ begin
   ScaleMoveTo(Canvas,x,y);
   ScaleLineTo(Canvas,x+Arrow_Height,y+Arrow_Width*coef);
   ScaleMoveTo(Canvas,x,y);
+end;
+
+procedure drawProection(Canvas: TCanvas; head: PPointsList; x,y: integer);
+var
+  temp: PPointsList;
+  px, py: integer;
+begin
+  if (head^.Adr = nil) then exit;
+  temp := head^.adr;
+  while temp^.Adr <> nil do
+    temp := temp^.Adr;
+  px := temp^.Info.x;
+  py := temp^.Info.y;
+  if ((x-px) <> 0 ) and (arctan(abs((y-py)/(x-px))) < pi/4)  then
+    y:=py
+  else
+    x:=px;
+  Canvas.Pen.Style := psDot;
+  ScaleMoveTo(Canvas, temp^.Info.x, temp^.Info.y);
+  ScaleLineTo(canvas, x,y);
 end;
 
 // Draw horisontal arrow
@@ -156,13 +176,14 @@ var
   isFirstLine:boolean;
   point1:TPointsInfo;
   isDegEnd: boolean;
+  isWasVertLine: Boolean;
   coef: -1..1;
 begin                  //\\
   coef := 1;
   canvas.Pen.Width := Trunc(Lines_Width*scale); // Width For Line
   isFirstLine := false;
   tmp := head;
-
+  isWasVertLine := false;
   if (tmp <> nil) and (tmp^.Adr <> nil) then
   begin
     FirstP.X := tmp^.Adr^.Info.x; // Initialise First Points
@@ -204,6 +225,8 @@ begin                  //\\
       begin
         tmp^.Info.y := AddY;
       end;}
+
+
       if (PrevP.y = tmp^.Info.y) and (tmp^.Adr = nil) and  isHorisontalIntersection(EditorForm.getFigureHead,tmp)  then
       begin
         ScaleLineTo(Canvas,tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
@@ -245,10 +268,11 @@ begin                  //\\
       end;
 
 
-
+      if isvertLine(tmp^.Info, prevP) then
+        isWasVertLine:=true;
       if needMiddleArrow(tmp, FirstP) and (PrevP.x <> tmp^.Info.x) then // if these is incoming and outgoing lines
       begin
-        if isFirstLine then
+        if isFirstLine or isWasVertLine then
         begin
           tmpx := tmp^.Info.x - PrevP.x;
           if tmpx > 0 then

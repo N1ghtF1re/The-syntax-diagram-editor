@@ -12,6 +12,9 @@
         <Projects Include="RUS\SyntaxDiag_RUS.bdsproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="SyntaxDiag_RUS:Make">
         <MSBuild Projects="RUS\SyntaxDiag_RUS.bdsproj" Targets="Make"/>
     </Target>
+    <Target Name="FlowG_project">
+        <MSBuild Projects="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj"/>
+    </Target>
+    <Target Name="FlowG_project:Clean">
+        <MSBuild Projects="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlowG_project:Make">
+        <MSBuild Projects="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="SyntaxDiag;SyntaxDiag_ENU;SyntaxDiag_RUS"/>
+        <CallTarget Targets="SyntaxDiag;SyntaxDiag_ENU;SyntaxDiag_RUS;FlowG_project"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="SyntaxDiag:Clean;SyntaxDiag_ENU:Clean;SyntaxDiag_RUS:Clean"/>
+        <CallTarget Targets="SyntaxDiag:Clean;SyntaxDiag_ENU:Clean;SyntaxDiag_RUS:Clean;FlowG_project:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="SyntaxDiag:Make;SyntaxDiag_ENU:Make;SyntaxDiag_RUS:Make"/>
+        <CallTarget Targets="SyntaxDiag:Make;SyntaxDiag_ENU:Make;SyntaxDiag_RUS:Make;FlowG_project:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
