@@ -157,7 +157,7 @@ begin
   if tmpy > 0 then
     drawSVGArrowVertical(f,point.x, point.y,-1)
   else if tmpy < 0 then
-  drawSVGArrowVertical(f,point.x, point.y,1);
+    drawSVGArrowVertical(f,point.x, point.y,1);
 end;
 
 procedure drawIncomingLineSVG(var f: textfile; point: TPointsInfo; coef: ShortInt; var d: PPointsList);
@@ -212,11 +212,10 @@ begin
   isDegEnd := false;
   coef := 1;
   linecounter :=0;
-
   tmp := head^.adr;
   while tmp <> nil do
   begin
-
+    isWasVertLine := false;
     if tmp^.Info.tp = line then
     begin
       Inc(linecounter);
@@ -309,7 +308,8 @@ begin
         if (tmpP^.Adr = nil) and (prevP.Info.x = curr.x) then
         begin
           writeln(f, '<!-- LAST VERTICAL: -->');
-          curr.y := curr.y + 15*coef;
+          if prevp.Info.y <> curr.y then
+            curr.y := curr.y + 15*coef;
         end;
         Points[CurrIndex] := curr;
         Inc(CurrIndex);
@@ -330,7 +330,7 @@ begin
         end;
         if isvertLine(tmpP^.Info, prevP^.Info) then
           isWasVertLine:=true;
-         if needMiddleArrow(tmpp, FirstP) then // if these is incoming and outgoing lines
+         if needMiddleArrow(tmpp, FirstP) and (curr.x <> prev.x) then // if these is incoming and outgoing lines
           begin
             if isFirstLine or isWasVertLine then
             begin
