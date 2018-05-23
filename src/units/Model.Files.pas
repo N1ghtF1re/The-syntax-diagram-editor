@@ -2,7 +2,7 @@ unit Model.Files;
 
 interface
 uses Data.Types;
-function readFile(const head:PFigList; filedir:string):boolean;
+function readFile(var head:PFigList; filedir:string):boolean;
 procedure saveToFile(Head: PFigList; filedir: string);
 function pointsToStr(tmpPoints: PPointsList):string;
 implementation
@@ -13,7 +13,7 @@ uses System.SysUtils, Data.InitData, Main, vcl.dialogs;
 // ВНИМАНИЕ!
 // В первом элементе всегда хранится проверка на валидность
 // и размеры канваса, сохраненные пользователеsм
-function readFile(const head:PFigList; filedir:string):boolean;
+function readFile(var head:PFigList; filedir:string):boolean;
 var
   f: file of TFigureInFile;
   OTemp: PFigList;

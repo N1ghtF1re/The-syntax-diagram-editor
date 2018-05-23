@@ -436,7 +436,7 @@ begin
   end;
   if isMoveFigure then
   begin
-    if mniMagnetizeLine.Checked then    
+    if mniMagnetizeLine.Checked and (CurrType <> line) then
       SearchFiguresInOneLine(FigHead, CurrFigure);
     isMoveFigure := false;
   end;
@@ -1111,6 +1111,7 @@ begin
     end
     else
       newFile;
+    pbMain.Repaint;
   end;
 end;
 

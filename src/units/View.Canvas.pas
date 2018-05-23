@@ -223,12 +223,25 @@ begin                  //\\
     begin
       if (PrevP.y = tmp^.Info.y) and (tmp^.Adr = nil) and  isHorisontalIntersection(EditorForm.getFigureHead,tmp)  then
       begin
+        if (PrevP.x - tmp^.Info.x > 0) and (PrevP.y = tmp^.Info.y) then
+        begin
+          coef := -1;
+        end
+        else if (PrevP.y = tmp^.Info.y) then
+        begin
+          coef := 1;
+        end;
+
         ScaleLineTo(Canvas,tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
         // Перед \ - стрелочка
         if (PrevP.x - tmp^.Info.x > 0) and (PrevP.y = tmp^.Info.y) then
-          drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, -1)
+        begin
+          drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, coef)
+        end
         else if (PrevP.y = tmp^.Info.y) then
-          drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, 1);
+        begin
+          drawArrow(canvas, tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y, coef);
+        end;
         ScaleMoveTo(Canvas,tmp^.Info.x, tmp^.Info.y+Lines_DegLenght);
         ScaleLineTo(Canvas,tmp^.Info.x-Lines_Deg*coef, tmp^.Info.y);
         Point1 :=  tmp^.Info;

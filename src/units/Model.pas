@@ -454,6 +454,8 @@ var
   CurrY : Integer;
   tempY : integer;
 begin
+  if curr^.Info.tp = Line then exit;
+
   with curr^.Info do
   begin
     CurrY := y1 + (y2 - y1) div 2; // Центр по Y переданной фигуры

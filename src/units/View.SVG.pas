@@ -199,6 +199,7 @@ var
   Points: array of TPointsInfo; // Массив точек линии!
   CurrIndex: Integer;
   linecounter:integer;
+  isWasVertLine: Boolean;
 begin
   AssignFile(f, path,CP_UTF8);
   rewrite(f);
@@ -277,6 +278,10 @@ begin
         curr := tmpP^.Info;
         if (tmpP^.Adr = nil) and  isHorisontalIntersection(EditorForm.getFigureHead,tmpP)  then
         begin
+          if Prev.x - curr.x > 0 then
+            coef := -1
+          else
+            coef := 1;
           point1 := prevP.Info;
           Point2.x := curr.x-Lines_Deg*coef;
           point2.y := curr.y;
@@ -285,9 +290,9 @@ begin
           Points[CurrIndex] := point2;
           Inc(CurrIndex);
           if Prev.x - curr.x > 0 then
-            drawSVGArrow(f, curr.x-Lines_Deg*coef, curr.y, -1)
+            drawSVGArrow(f, curr.x-Lines_Deg*coef, curr.y, coef)
           else
-            drawSVGArrow(f, curr.x-Lines_Deg*coef, curr.y, 1);
+            drawSVGArrow(f, curr.x-Lines_Deg*coef, curr.y, coef);
           point1.x := curr.x;
           point1.y := curr.y+Lines_DegLenght;
           point2.x := curr.x-Lines_Deg*coef;
@@ -323,10 +328,11 @@ begin
           writeln(f, '<!-- LASTARROW -->');
           drawArrowAtSVG(f, curr, prev);
         end;
-
+        if isvertLine(tmpP^.Info, prevP^.Info) then
+          isWasVertLine:=true;
          if needMiddleArrow(tmpp, FirstP) then // if these is incoming and outgoing lines
           begin
-            if isFirstLine then
+            if isFirstLine or isWasVertLine then
             begin
               tmpx := curr.x - Prev.x;
               if tmpx > 0 then
