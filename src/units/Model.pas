@@ -17,7 +17,7 @@ uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
  procedure roundCoords(var x,y:integer);
  function getEditMode(status: TDrawMode; x,y: Integer; head: PFigList; CT: TType) :TEditMode;
  procedure checkFigureCoord(R: PFigList);
- procedure copyFigure(head: PFigList; copyfigure:PFigList);
+ function copyFigure(head: PFigList; copyfigure:PFigList):PFigList;
  procedure MagnetizeLines(head: PFigList);
  function ScaleRound(scale: real; x: integer): integer;
  procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
@@ -69,15 +69,17 @@ begin
 end;
 
 
-// Создание копии фигуры
-procedure copyFigure(head: PFigList; copyfigure:PFigList);
+// Создание копии фигуры и возврат ссылки на нее
+function copyFigure(head: PFigList; copyfigure:PFigList):PFigList;
 var
   newfigure: TFigureInfo;
   tmp: PFigList;
 begin
   newfigure := copyfigure^.Info;
   if copyfigure^.Info.tp = Line then
+  begin
     newfigure.PointHead := copyPointList(copyfigure^.Info.PointHead);
+  end;
   if head = nil then exit;
   tmp := head;
   while tmp^.Adr <> nil do
@@ -88,7 +90,17 @@ begin
   tmp := tmp^.Adr;
   tmp^.Adr := nil;
   tmp^.Info := newfigure;
-      
+  if tmp^.Info.tp <> Line then
+  begin
+    with tmp^.Info do
+    begin
+      x1 := x1 + CopyShift;
+      x2 := x2 + CopyShift;
+      y1 := y1 + CopyShift;
+      y2 := y2 + CopyShift;
+    end;
+  end;
+  Result := tmp;
 end;
 
 // Функция вовзращает тип режима редактирования в зависимости от того,

@@ -8,6 +8,8 @@ const
   Default_LineSVG_Width = 2; // Ширина линии в SVG
   Font_Size = 8; // Размер шрифта
 
+  CopyShift = NearFigure + 2; // Сдвиг при копировании
+
 resourcestring // Работа с файлами:
   rsNewFileDlg = 'Вы уверены? Все несохраненные данные будут удалены. Продолжить?';
   rsNewFile = 'Новый файл';

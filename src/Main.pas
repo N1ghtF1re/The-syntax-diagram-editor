@@ -1115,12 +1115,24 @@ begin
 end;
 
 procedure TEditorForm.actPastExecute(Sender: TObject);
+var
+undorec:TUndoStackInfo;
+insfig: PFigList;
 begin
 
   actPast.Enabled := false;
   if CoppyFigure = nil then exit;
-  
-  CopyFigure(FigHead, CoppyFigure); // Create copy of CoppyFigure
+
+  insfig := CopyFigure(FigHead, CoppyFigure); // Create copy of CoppyFigure
+  ClickFigure := insfig;
+  // CHANGES STASCK PUSHING START
+  UndoRec.ChangeType := chInsert;
+  UndoRec.adr := insfig;
+  DM := DrawLine;
+  UndoStackPush(USVertex, UndoRec);
+  actUndo.Enabled := true;
+  // CHANGES STASCK PUSHING END
+  pbMain.Repaint
 end;
 
 procedure TEditorForm.actPNGExecute(Sender: TObject);

@@ -69,7 +69,7 @@ begin
   tmp := tmp^.Adr;
   while tmp <> nil do
   begin
-    addNewPoint(Result, tmp^.Info.x, tmp^.Info.y);
+    addNewPoint(Result, tmp^.Info.x + CopyShift, tmp^.Info.y + CopyShift);
     tmp := tmp^.Adr;
   end;
 
@@ -167,7 +167,7 @@ var
   oldP, newP: TPointsInfo;
   coef: Integer;
 begin
-  temp := head^.Adr;
+  temp := head;
   while temp <> nil do
   begin
     if (temp^.adr <> nil) and (temp^.adr^.Adr <> nil) then
@@ -181,9 +181,12 @@ begin
           coef := 1
         else
           coef := -1;
-        temp^.adr^.adr^.Info.y := temp^.adr^.adr^.Info.y - 5*coef;
-        newP:= temp^.Adr^.Adr.Info;
-        temp := temp^.Adr^.Adr^.Adr;
+
+
+        temp:= temp^.adr^.adr;
+        temp^.Info.y := temp^.Info.y - 5*coef;
+        newP:= temp^.Info;
+        temp := temp^.Adr;
         while (temp <> nil) and ((temp^.Info.y = oldp.y) or (temp^.Info.x = oldp.x)) do
         begin
           if temp^.Info.y = oldp.y then
@@ -419,7 +422,7 @@ end;
 function needMiddleArrow(tmp: PPointsList; FirstP: TPointsInfo) :Boolean;
 begin
   Result := (tmp^.Adr <> nil) {and (tmp^.adr^.Adr = nil) }and (tmp^.Info.x <> FirstP.x)
-        and (tmp^.Info.x = tmp^.adr^.Info.x) and (abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance*2)
+        and (tmp^.Info.x = tmp^.adr^.Info.x) and (tmp^.Info.y <> tmp^.adr^.Info.y) //(abs(tmp^.Info.y - tmp^.adr^.Info.y) > Tolerance)
 end;
 
 
