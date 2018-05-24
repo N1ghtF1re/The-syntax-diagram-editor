@@ -16,6 +16,7 @@ interface
   function searchNearLine(head: PFigList; var x,y: integer):PPointsList;
   procedure removeTrashLines(head: PFigList; curr: PFigList);
   function isvertLine(curr, prev: TPointsInfo): Boolean;
+  procedure checkForPointsMerge (head: PPointsList; deltay, deltax: integer);
 implementation
   uses math, System.SysUtils, vcl.dialogs, Model;
 
@@ -158,6 +159,69 @@ begin
   tmp^.Info.y := y;
   tmp^.Adr := nil;
 end;
+
+// Процедура не допускает "слияния" точек линии
+procedure checkForPointsMerge (head: PPointsList; deltay, deltax: integer);
+var
+  temp: PPointsList;
+  oldP, newP: TPointsInfo;
+  coef: Integer;
+begin
+  temp := head^.Adr;
+  while temp <> nil do
+  begin
+    if (temp^.adr <> nil) and (temp^.adr^.Adr <> nil) then
+    begin
+      if (temp^.Info.y = temp^.Adr.Info.y) and
+         (temp^.Adr.Info.y = temp^.Adr^.Adr.Info.y ) and
+         (temp^.Adr.Info.x = temp^.Adr^.Adr.Info.x ) then
+      begin
+        oldP:= temp^.adr^.adr^.Info;
+        if deltay > 0 then
+          coef := 1
+        else
+          coef := -1;
+        temp^.adr^.adr^.Info.y := temp^.adr^.adr^.Info.y - 5*coef;
+        newP:= temp^.Adr^.Adr.Info;
+        temp := temp^.Adr^.Adr^.Adr;
+        while (temp <> nil) and ((temp^.Info.y = oldp.y) or (temp^.Info.x = oldp.x)) do
+        begin
+          if temp^.Info.y = oldp.y then
+            temp^.Info.y := newp.y;
+          if temp^.Info.x = oldp.x then
+            temp^.Info.x := newp.x;
+          temp := temp^.Adr;
+        end;
+        exit;
+      end;
+      if (temp^.Info.x = temp^.Adr.Info.x) and
+         (temp^.Adr.Info.x = temp^.Adr^.Adr.Info.x ) and
+         (temp^.Adr.Info.y = temp^.Adr^.Adr.Info.y ) then
+      begin
+        oldP:= temp^.adr^.adr^.Info;
+        if deltax > 0 then
+          coef := 1
+        else
+          coef := -1;
+        temp^.adr^.adr^.Info.x := temp^.adr^.adr^.Info.x - 5*coef;
+        newP:= temp^.Adr^.Adr.Info;
+        temp := temp^.Adr^.Adr^.Adr;
+        while (temp <> nil) and ((temp^.Info.y = oldp.y) or (temp^.Info.x = oldp.x)) do
+        begin
+          if temp^.Info.y = oldp.y then
+            temp^.Info.y := newp.y;
+          if temp^.Info.x = oldp.x then
+            temp^.Info.x := newp.x;
+          temp := temp^.Adr;
+        end;
+        exit;
+      end;
+    end;
+
+    temp := temp^.Adr;
+  end;
+end;
+
 
 // Процедура превращает линии под углом в вертикальные или горизонтальные
 // В зависимости от угла наклона. (Все линии в синтаксических диаграммах

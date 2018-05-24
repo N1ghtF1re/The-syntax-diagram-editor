@@ -12,9 +12,6 @@
         <Projects Include="RUS\SyntaxDiag_RUS.bdsproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj">
-            <Dependencies/>
-        </Projects>
         <Projects Include="FRA\SyntaxDiag_FRA.bdsproj">
             <Dependencies/>
         </Projects>
@@ -53,15 +50,6 @@
     <Target Name="SyntaxDiag_RUS:Make">
         <MSBuild Projects="RUS\SyntaxDiag_RUS.bdsproj" Targets="Make"/>
     </Target>
-    <Target Name="FlowG_project">
-        <MSBuild Projects="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj"/>
-    </Target>
-    <Target Name="FlowG_project:Clean">
-        <MSBuild Projects="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="FlowG_project:Make">
-        <MSBuild Projects="..\..\New folder\Flowchart_BKit-master\FlowG_project.dproj" Targets="Make"/>
-    </Target>
     <Target Name="SyntaxDiag_FRA">
         <MSBuild Projects="FRA\SyntaxDiag_FRA.bdsproj"/>
     </Target>
@@ -72,13 +60,13 @@
         <MSBuild Projects="FRA\SyntaxDiag_FRA.bdsproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="SyntaxDiag;SyntaxDiag_ENU;SyntaxDiag_RUS;FlowG_project;SyntaxDiag_FRA"/>
+        <CallTarget Targets="SyntaxDiag;SyntaxDiag_ENU;SyntaxDiag_RUS;SyntaxDiag_FRA"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="SyntaxDiag:Clean;SyntaxDiag_ENU:Clean;SyntaxDiag_RUS:Clean;FlowG_project:Clean;SyntaxDiag_FRA:Clean"/>
+        <CallTarget Targets="SyntaxDiag:Clean;SyntaxDiag_ENU:Clean;SyntaxDiag_RUS:Clean;SyntaxDiag_FRA:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="SyntaxDiag:Make;SyntaxDiag_ENU:Make;SyntaxDiag_RUS:Make;FlowG_project:Make;SyntaxDiag_FRA:Make"/>
+        <CallTarget Targets="SyntaxDiag:Make;SyntaxDiag_ENU:Make;SyntaxDiag_RUS:Make;SyntaxDiag_FRA:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

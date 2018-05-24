@@ -384,7 +384,6 @@ begin
     DM := nodraw;
   if (dm = NoDraw) and (CurrType = None) then
   begin
-  
     EM := getEditMode(DM, Round(x/FScale),Round(y/FScale),FigHead, CurrType);
     changeCursor(sbMain, EM); // Меняем курсор в зависимости от положения мыши
 
