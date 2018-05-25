@@ -178,6 +178,7 @@ var
   isDegEnd: boolean;
   isWasVertLine: Boolean;
   coef: -1..1;
+  additiona: Integer;
 begin                  //\\
   coef := 1;
   canvas.Pen.Width := Trunc(Lines_Width*scale); // Width For Line
@@ -282,12 +283,18 @@ begin                  //\\
         if isFirstLine or isWasVertLine then
         begin
           tmpx := tmp^.Info.x - PrevP.x;
-          if tmpx > 0 then
-            tmpx := 1
-          else
-            tmpx := -1;
-          drawArrow(Canvas,tmp^.Info.x + 10 - (tmp^.Info.x - PrevP.x) div 2, tmp^.Info.y, tmpx);
-          ScaleMoveTo(Canvas,tmp^.Info.x , tmp^.Info.y)
+          if abs(tmpx) > Arrow_Width then
+          begin
+            if tmpx > 0 then
+              tmpx := 1
+            else
+              tmpx := -1;
+
+            // ((Arrow_Width) div 2)*tmpx - вычитание половины ширины стрелки
+            // с учетом направления
+            drawArrow(Canvas,tmp^.Info.x + (Arrow_Width div 2)*tmpx - (tmp^.Info.x - PrevP.x) div 2, tmp^.Info.y, tmpx);
+            ScaleMoveTo(Canvas,tmp^.Info.x , tmp^.Info.y);
+          end;
         end;
         if tmp^.Info.y - tmp^.adr^.Info.y < 0 then
           coef := -1

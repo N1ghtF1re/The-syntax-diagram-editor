@@ -361,7 +361,7 @@ begin
         currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
         currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
         MoveLine(CurrFigure^.Info.PointHead, oldp, currPointAdr^.Info);
-        checkForPointsMerge(CurrFigure^.Info.PointHead, (Tmpy - y), (Tmpx-x));
+        checkForPointsMerge(CurrFigure^.Info.PointHead, currPointAdr, (Tmpy - y), (Tmpx-x));
       end
       else
       begin

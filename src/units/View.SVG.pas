@@ -335,12 +335,15 @@ begin
             if isFirstLine or isWasVertLine then
             begin
               tmpx := curr.x - Prev.x;
-              if tmpx > 0 then
-                tmpx := 1
-              else
-                tmpx := -1;
-              drawSVGArrow(f,curr.x + Arrow_Height - (curr.x - PrevP^.info.x) div 2, curr.y, tmpx);
+              if abs(tmpx) > Arrow_Width then
+              begin
+                if tmpx > 0 then
+                  tmpx := 1
+                else
+                  tmpx := -1;
 
+                drawSVGArrow(f,curr.x + (Arrow_Width div 2)*tmpx - (curr.x - PrevP^.info.x) div 2, curr.y, tmpx);
+              end;
             end;
             if curr.y - tmpP^.adr^.Info.y < 0 then
               coef := -1
