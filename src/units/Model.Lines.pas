@@ -73,7 +73,6 @@ begin
     addNewPoint(Result, tmp^.Info.x + CopyShift, tmp^.Info.y + CopyShift);
     tmp := tmp^.Adr;
   end;
-
 end;
 
 // ƒобавл€ем линию и возвращаем ссылку на нее

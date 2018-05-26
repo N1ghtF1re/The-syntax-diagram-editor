@@ -547,15 +547,39 @@ begin
 
         if (abs(tmpP^.Info.x  - nearP.Info.x) < nearFigure) then
         begin
-          tmpP^.Info := newP;
-          MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+          if (tmpP^.Adr <> nil) and (abs(tmpP^.Adr.Info.x - nearP.Info.x) < NearFigure) then
+          begin
+            // «апрещаем магнитить тупо вертикальные линии
+            tmpP := tmpP^.Adr;
+            while (tmpP <> nil) and ((tmpP^.Info.x  - nearP.Info.x) < nearFigure) do
+              tmpP := tmpP^.adr;
+            if tmpP = nil then break;
+
+          end
+          else
+          begin
+            tmpP^.Info := newP;
+            MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+          end;
         end;
         newP.x := tmpP^.Info.x;
         newP.y := nearP.Info.y;
         if abs(tmpP^.Info.y - nearP.Info.y) < nearFigure then
         begin
-          tmpP^.Info := newP;
-          MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+          if (tmpP^.Adr <> nil) and (abs(tmpP^.Adr.Info.y - nearP.Info.y) < NearFigure) then
+          begin
+            // «апрещаем магнитить тупо горизонтальные линии
+            tmpP := tmpP^.Adr;
+            while (tmpP <> nil) and ((tmpP^.Info.y  - nearP.Info.y) < nearFigure) do
+              tmpP := tmpP^.adr;
+            if tmpP = nil then break;
+
+          end
+          else
+          begin
+            tmpP^.Info := newP;
+            MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);
+          end;
         end;
       end;
       prevP := tmpP;

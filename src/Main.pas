@@ -191,7 +191,8 @@ implementation
 {$R+}
 {$R-}
 
-uses FCanvasSizeSettings, FHtmlView, Model.Files,System.Win.Registry, System.UITypes;
+uses FCanvasSizeSettings, FHtmlView, Model.Files,System.Win.Registry, System.UITypes,
+Vcl.Touch.Gestures;
 
 procedure TEditorForm.changeEditorText(newtext: string);
 begin
@@ -378,7 +379,7 @@ begin
   if (CurrType = Line) and (DM=DrawLine) then
   begin
     pbMain.Repaint;
-    drawProection(pbMain.Canvas, currfigure^.Info.PointHead, x,y);
+    drawProection(pbMain.Canvas, currfigure^.Info.PointHead, Round(x/FScale),Round(y/FScale));
 
   end;
 
