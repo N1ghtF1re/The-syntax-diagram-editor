@@ -10,7 +10,7 @@ uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
  function removeFigure(head: PFigList; adr: PFigList):PFigList;
  procedure removeAllList(head:PFigList);
- procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
+ procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer; Scale: real);
  procedure createFigList(var head: PFigList);
  function addFigure(head: PFigList; x,y: integer; ftype: TType; Text:String = 'Kek'):PFigList;
  function nearRound(x:integer):integer;
@@ -343,10 +343,13 @@ begin
 end;
 
 // Редактирование фигуры и редактирование ее координат
-procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer);
+procedure ChangeCoords(F: PFigList; EM: TEditMode; x,y:integer; var TmpX, TmpY: integer; Scale: real);
 var
   oldp: TPointsInfo;
+  DeltaX, DeltaY: integer;
 begin
+  DeltaX := Round((TmpX - x)/Scale);
+  DeltaY := Round((TmpY - y)/Scale);
   if F <> nil then
   case EM of
     NoEdit:
@@ -358,64 +361,64 @@ begin
       if F^.Info.tp = Line then
       begin
         oldp:= currPointAdr^.Info;
-        currPointAdr^.Info.x := currPointAdr^.Info.x - (TmpX - x);
-        currPointAdr^.Info.y := currPointAdr^.Info.y - (Tmpy - y);
+        currPointAdr^.Info.x := currPointAdr^.Info.x - DeltaX;
+        currPointAdr^.Info.y := currPointAdr^.Info.y - DeltaY;
         MoveLine(CurrFigure^.Info.PointHead, oldp, currPointAdr^.Info);
-        checkForPointsMerge(CurrFigure^.Info.PointHead, currPointAdr, (Tmpy - y), (Tmpx-x));
+        checkForPointsMerge(CurrFigure^.Info.PointHead, currPointAdr, DeltaX, DeltaY);
       end
       else
       begin
         // Смещаем объект
         // TmpX, TmpY - смещение координат относительно прошлого вызова события
-        F^.Info.x1 := F^.Info.x1 - (TmpX - x);
-        F^.Info.x2 := F^.Info.x2 - (TmpX - x);
-        F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
-        F^.Info.y2 := F^.Info.y2 - (TmpY - y);
+        F^.Info.x1 := F^.Info.x1 - DeltaX;
+        F^.Info.x2 := F^.Info.x2 - DeltaX;
+        F^.Info.y1 := F^.Info.y1 - DeltaY;
+        F^.Info.y2 := F^.Info.y2 - DeltaY;
       end;
     end;
     LineMove:
     begin
-      moveALlLinePoint(CurrFigure^.Info.PointHead, (TmpX - x), (Tmpy - y));
+      moveALlLinePoint(CurrFigure^.Info.PointHead, DeltaX, DeltaY);
     end;
     TSide:
     begin
       // смещаем верхнюю сторону
-      F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
+      F^.Info.y1 := F^.Info.y1 - DeltaY;
     end;
     BSide:
     begin
       // Смещаем нижнюю сторону
-       F^.Info.y2 := F^.Info.y2 - (Tmpy - y);
+       F^.Info.y2 := F^.Info.y2 - DeltaY;
     end;
     RSide:
     begin
       // Смещаем правую сторону
-      F^.Info.x2 := F^.Info.x2 - (Tmpx - x);
+      F^.Info.x2 := F^.Info.x2 - DeltaX;
     end;
     LSide:
     begin
       // Смещаем левую сторону
-      F^.Info.x1 := F^.Info.x1 - (Tmpx - x);
+      F^.Info.x1 := F^.Info.x1 - DeltaX;
     end;
     Vert1:
     begin
-      F^.Info.x1 := F^.Info.x1 - (TmpX - x);
-      F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
+      F^.Info.x1 := F^.Info.x1 - DeltaX;
+      F^.Info.y1 := F^.Info.y1 - DeltaY;
     end;
     Vert2:
     begin
-      F^.Info.x2 := F^.Info.x2 - (TmpX - x);
-      F^.Info.y1 := F^.Info.y1 - (Tmpy - y);
+      F^.Info.x2 := F^.Info.x2 - DeltaX;
+      F^.Info.y1 := F^.Info.y1 - DeltaY;
     end;
     Vert3:
     begin
-      F^.Info.x1 := F^.Info.x1 - (TmpX - x);
-      F^.Info.y2 := F^.Info.y2 - (Tmpy - y);
+      F^.Info.x1 := F^.Info.x1 - DeltaX;
+      F^.Info.y2 := F^.Info.y2 - DeltaY;
     end;
     Vert4:
     begin
-      F^.Info.x2 := F^.Info.x2 - (TmpX - x);
-      F^.Info.y2 := F^.Info.y2 - (Tmpy - y);
+      F^.Info.x2 := F^.Info.x2 - DeltaX;
+      F^.Info.y2 := F^.Info.y2 - DeltaY;
     end;
   end;
 end;
@@ -542,7 +545,7 @@ begin
         newP.x := nearP.Info.x;
         newP.y := tmpP^.Info.y;
 
-        if abs(tmpP^.Info.x  - nearP.Info.x) < nearFigure then
+        if (abs(tmpP^.Info.x  - nearP.Info.x) < nearFigure) then
         begin
           tmpP^.Info := newP;
           MoveLine(tmp^.Info.PointHead,oldP, tmpP^.Info);

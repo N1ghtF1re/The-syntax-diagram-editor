@@ -364,6 +364,8 @@ procedure TEditorForm.pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
 var
   undorec: TUndoStackInfo;
 begin
+  if (x > pbMain.Width) or (x < 0) or (y < 0) or (y > pbMain.Height) then
+     exit;
   if dm = ResizeCanvas then
   begin
     updateCanvasSizeWithCoords(x, y);
@@ -417,7 +419,7 @@ begin
     end;
 
     switchChangedStatus(TRUE); 
-    ChangeCoords(CurrFigure, EM, x,y, tempX, tempY ); // Changes coords
+    ChangeCoords(CurrFigure, EM, x,y, tempX, tempY, fscale); // Changes coords
     
     TempX:= X; // Update old coords
     TempY:= Y;

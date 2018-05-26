@@ -201,7 +201,7 @@ object EditorForm: TEditorForm
     object tbFigDef: TToolButton
       Left = 0
       Top = 0
-      Hint = 'Nom du diagramme de syntaxe (Ctrl + 1)'
+      Hint = 'Nom du diagramme de syntaxe'
       ParentCustomHint = False
       Action = actFigDef
       Caption = 'En-t'#234'te du diagramme de syntaxe'
