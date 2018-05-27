@@ -325,7 +325,7 @@ begin
     tempy:= y;
   end;
 
-  // If the click occurred on the figure, we put the current variable in the 
+  // If the click occurred on the figure, we put the current variable in the
   // appropriate variable
   ClickFigure := getClickFigure(Round(x0/FScale) ,Round(y0/FScale), FigHead);
   if (ClickFigure <> nil) and (ClickFigure^.Info.tp <> line) and (CurrFigure <> nil)
@@ -431,7 +431,7 @@ begin
   end;
   if (DM = draw) and (currfigure <> nil)  then
   begin
-    if not isMoveFigure then
+    if (not isMoveFigure) and (CurrType = None) and (EM <> NoEdit) then
     begin
       // START MOVING
 
@@ -466,9 +466,25 @@ end;
 procedure TEditorForm.pbMainMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
+  // If the click occurred on the figure, we put the current variable in the
+  // appropriate variable
+  ClickFigure := getClickFigure(Round(x/FScale) ,Round(y/FScale), FigHead);
+  if (ClickFigure <> nil) and (ClickFigure^.Info.tp <> line) and (CurrFigure <> nil)
+        and (CurrFigure^.Info.tp <> line) then
+  begin
+    // We paste into the text field with the text of the figure the text of the current shape
+    changeEditorText(String(ClickFigure^.Info.Txt));
+  end
+  else
+  begin
+    changeEditorText(prevText);
+  end;
+
   if CurrType = None then
   begin
     removeSelectList(selectFigures);
+    if ClickFigure <> nil then
+      insertSelectsList(selectFigures, ClickFigure);
     addToSelectList(FigHead, selectFigures, SelectRect);
     SelectRect.Top := -1;
   end;
@@ -652,18 +668,25 @@ procedure TEditorForm.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
   UndoRec: TUndoStackInfo;
+  temp: PSelectFigure;
 begin
-  if (key = VK_DELETE) and (ClickFigure <> nil) then
+  if (key = VK_DELETE) and (selectFigures^.Adr <> nil) then
   begin
-    // CHANGES STACK PUSHING START
-    UndoRec.adr := ClickFigure;
-    UndoRec.PrevFigure := removeFigure(FigHead, ClickFigure);
-    UndoRec.ChangeType :=chDelete;
+    temp := selectFigures^.adr;
+    while temp <> nil do
+    begin
+      // CHANGES STACK PUSHING START
+      UndoRec.adr := temp^.figure;
+      UndoRec.PrevFigure := temp^.figure;
+      removeFigure(FigHead, temp^.Figure);
+      UndoRec.ChangeType :=chDelete;
+      UndoStackPush(USVertex, UndoRec);
+      // CHANGES STACK PUSHING END
+      switchChangedStatus(true);
+      temp := temp^.Adr;
+    end;
     actUndo.Enabled := true;
-    UndoStackPush(USVertex, UndoRec);
-    // CHANGES STACK PUSHING END
-    switchChangedStatus(true);
-    ClickFigure := nil;
+    removeselectlist(selectFigures);
     Self.clearScreen;
     drawFigure(pbMain.canvas,FigHead, FScale);
   end;

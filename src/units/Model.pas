@@ -26,6 +26,7 @@ uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
 
  procedure removeSelectList(head: PSelectFigure);
  procedure addToSelectList(Fig: PFigList; var Selects: PSelectFigure; Rect: TRect);
+ procedure insertSelectsList(head : PSelectFigure; adr: PFigList);
 
 implementation
 uses System.Sysutils, main;
@@ -600,7 +601,7 @@ end;
 // Отмена изменений
 procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
 var
-  tmp: PFigList;
+  tmp, tmp2: PFigList;
   tmpP: PPointsList;
 begin
   case UndoRec.ChangeType of
@@ -608,8 +609,17 @@ begin
     begin
       // Снова возвращаем фигуру (Она не была удалена физически, только логически)
       tmp := UndoRec.adr;
-      tmp.Adr := UndoRec.PrevFigure^.Adr;
-      undoRec.PrevFigure^.Adr := tmp;
+      tmp2 := EditorForm.getFigureHead;
+      tmp2 := tmp2;
+      while tmp2^.Adr <> nil do
+      begin
+        tmp2 := tmp2^.adr;
+      end;
+      new(tmp2^.Adr);
+      tmp2 := tmp2^.adr;
+      tmp2^.Adr := nil;
+      tmp2^.Info := tmp^.Info;
+      Dispose(tmp);
     end;
     chAddPoint:
     begin
