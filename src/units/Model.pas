@@ -615,11 +615,8 @@ begin
       begin
         tmp2 := tmp2^.adr;
       end;
-      new(tmp2^.Adr);
-      tmp2 := tmp2^.adr;
-      tmp2^.Adr := nil;
-      tmp2^.Info := tmp^.Info;
-      Dispose(tmp);
+      tmp2^.Adr := tmp;
+      tmp^.Adr := nil;
     end;
     chAddPoint:
     begin
