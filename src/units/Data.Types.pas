@@ -44,6 +44,13 @@ type
     None: (Check:string[5];Width, Height: Integer;);
   end;
 
+  // Список выделенных фигур
+  PSelectFigure = ^TSelectFigure;
+  TSelectFigure = record
+    Figure: PFigList;
+    Adr: PSelectFigure;
+  end;
+
   // UNDO STACK
   TChangeType = (chDelete, chInsert, chAddPoint,  chFigMove, chPointMove, chChangeText,  chCanvasSize, NonDeleted);
   TUndoStackInfo = record

@@ -149,7 +149,9 @@ type
     
   private
     isChanged: Boolean;
+    SelectRect: TRect;
     currpath: string;
+    selectFigures: PSelectFigure;
     isMoveFigure: Boolean;
     oldDM: TDrawMode;
     USVertex: PUndoStack; // US - Undo Stack
@@ -244,7 +246,16 @@ procedure TEditorForm.pbMainMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var x0, y0: Integer;
   UndoRec: TUndoStackInfo;
-begin  
+begin
+  if (CurrType = None) and (em = NoEdit) then
+  begin
+    SelectRect.Left := x;
+    SelectRect.Right := x;
+    SelectRect.Top := y;
+    SelectRect.Bottom := y;
+  end;
+
+
   x0 := x;
   y0 := y;
   roundCoords(x,y); // round coords (Use steps)
@@ -364,6 +375,7 @@ procedure TEditorForm.pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 var
   undorec: TUndoStackInfo;
+  tmp: PSelectFigure;
 begin
   if (x > pbMain.Width) or (x < 0) or (y < 0) or (y > pbMain.Height) then
      exit;
@@ -372,7 +384,18 @@ begin
     updateCanvasSizeWithCoords(x, y);
     exit;
   end;
-  
+
+  if (CurrType = None) and (EM = NoEdit) and (SelectRect.Top <> -1) then
+  begin
+    SelectRect.Bottom := y;
+    SelectRect.Right := x;
+    pbMain.Repaint;
+    pbMain.Canvas.Brush.Style := bsClear;
+    with SelectRect do
+      pbMain.Canvas.Rectangle(Left, top, right, bottom);
+    pbMain.Canvas.Brush.Style := bsSolid;
+  end;
+
   if clickfigure = nil then
     prevText:= edtRectText.Text;
 
@@ -394,6 +417,17 @@ begin
     begin
       selectFigure(pbMain.Canvas, ClickFigure); // add green verts for selected figure
     end;
+    if selectFigures.Adr <> nil then
+    begin
+      tmp := selectFigures^.Adr;
+      while tmp <> nil do
+      begin
+        selectFigure(pbMain.Canvas, tmp.Figure);
+        tmp := tmp^.Adr;
+      end;
+    end;
+
+
   end;
   if (DM = draw) and (currfigure <> nil)  then
   begin
@@ -424,13 +458,21 @@ begin
     
     TempX:= X; // Update old coords
     TempY:= Y;
-    pbMain.Repaint;
+    if EM <> NoEdit then
+      pbMain.Repaint;
   end;
 end;
 
 procedure TEditorForm.pbMainMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
+  if CurrType = None then
+  begin
+    removeSelectList(selectFigures);
+    addToSelectList(FigHead, selectFigures, SelectRect);
+    SelectRect.Top := -1;
+  end;
+
   if DM <> DrawLine then
   begin
     DM := NoDraw; // End draw
@@ -446,7 +488,7 @@ begin
     MagnetizeLines(FigHead);
 
 
-  
+
   Self.pbMain.Repaint;
   pbMain.Repaint;
 end;
@@ -563,6 +605,7 @@ var path : string;
   currLocal: string;
 begin
   // Initialise:
+  SelectRect.Top := -1;
   FScale := 1; // Default Scale
   PBH := pbMain.height;
   PBW := pbMain.Width;
@@ -584,7 +627,7 @@ begin
   CurrFigure := nil;
   clearScreen;
   CoppyFigure := nil;
-
+  createSelectList(selectFigures);
   // UNDO STACK
   CreateStack(USVertex);
   path := analyseParams; // Анализируем входные параметры, открыта ли программа

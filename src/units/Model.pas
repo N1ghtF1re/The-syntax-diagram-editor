@@ -4,7 +4,7 @@ unit Model;
 interface
 
 uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
-    View.SVG, Model.Files, Model.Lines;
+    View.SVG, Model.Files, Model.Lines, System.Types;
 
  function getPointsCount(head: PPointsList):integer;
  function getClickFigure(x,y:integer; head: PFigList):PFigList;
@@ -22,9 +22,16 @@ uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
  function ScaleRound(scale: real; x: integer): integer;
  procedure undoChanges(UndoRec: TUndoStackInfo; Canvas: TCanvas);
  procedure SearchFiguresInOneLine(head, curr: PFigList);
+ procedure createSelectList(var head: PSelectFigure);
+
+ procedure removeSelectList(head: PSelectFigure);
+ procedure addToSelectList(Fig: PFigList; var Selects: PSelectFigure; Rect: TRect);
 
 implementation
 uses System.Sysutils, main;
+
+
+
 
 procedure createFigList(var head: PFigList);
 begin
@@ -653,6 +660,108 @@ begin
   begin
     inc(Result);
     temp := temp^.Adr;
+  end;
+end;
+
+procedure createSelectList(var head: PSelectFigure);
+begin
+  new(head);
+  head^.Adr := nil;
+end;
+
+procedure removeSelectList(head: PSelectFigure);
+var
+  temp, temp2: PSelectFigure;
+begin
+  temp := head^.Adr;
+  while temp <> nil do
+  begin
+    temp2:=temp^.Adr;
+    dispose(temp);
+    temp:=temp2;
+  end;
+  head.Adr := nil;
+end;
+
+
+procedure swap(var x,y: Integer);
+var
+temp:  integer;
+begin
+  temp := x;
+  x := y;
+  y := temp;
+end;
+
+procedure insertSelectsList(head : PSelectFigure; adr: PFigList);
+var
+  temp: PSelectFigure;
+begin
+  temp := head;
+  while temp^.Adr <> nil do
+    temp := temp^.Adr;
+  new(temp^.Adr);
+  temp := temp^.Adr;
+  temP^.Adr := nil;
+  temp^.Figure := adr;
+
+
+end;
+
+procedure addToSelectList(Fig: PFigList; var Selects: PSelectFigure; Rect: TRect);
+var
+  tempF: PFigList;
+  tempS: PSelectFigure;
+  tempP: PPointsList;
+  temp: Integer;
+begin
+  If(Rect.Right < rect.Left) then
+    swap(Rect.Right, rect.Left);
+  if (Rect.Top < rect.Bottom) then
+    swap(Rect.Top, rect.Bottom);
+
+
+  tempF := Fig^.adr;
+  while tempF <> nil do
+  begin
+    if tempF^.Info.tp <> line then
+    begin
+      with tempf^.Info do
+      begin
+        if (((x1 < rect.Right) and (x1 > rect.Left))
+          or
+            ((x2 < rect.Right) and (x2 > rect.Left)))
+          and
+            (((y1 < rect.Top) and (y1 > rect.Bottom))
+          and
+            ((y2 < rect.Top) and (y2 > rect.Bottom)))
+        then
+        begin
+          insertSelectsList(Selects, tempF);
+        end;
+      end;
+    end
+    else
+    begin
+      tempP := tempF^.Info.PointHead.Adr;
+      while tempP <> nil do
+      begin
+        with tempP^.Info do
+        begin
+          if (x < rect.Right) and (x > rect.Left)
+              and
+             (y < rect.Top) and (y > rect.Bottom)
+          then
+          begin
+            insertSelectsList(Selects, tempF);
+            break;
+          end;
+        end;
+        tempP := tempP^.Adr;
+      end;
+    end;
+
+    tempF := tempF^.Adr;
   end;
 end;
 
