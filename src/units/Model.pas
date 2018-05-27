@@ -27,6 +27,7 @@ uses Data.Types, vcl.graphics, View.Canvas,vcl.dialogs, Data.InitData, math,
  procedure removeSelectList(head: PSelectFigure);
  procedure addToSelectList(Fig: PFigList; var Selects: PSelectFigure; Rect: TRect);
  procedure insertSelectsList(head : PSelectFigure; adr: PFigList);
+ function isInSelectedList(head: PSelectFigure; curr: PFigList):boolean;
 
 implementation
 uses System.Sysutils, main;
@@ -771,5 +772,21 @@ begin
     tempF := tempF^.Adr;
   end;
 end;
+
+function isInSelectedList(head: PSelectFigure; curr: PFigList):boolean;
+var
+  tmp: PSelectFigure;
+begin
+  tmp := head;
+  result := false;
+  while tmp <> nil do
+  begin
+    if tmp^.Figure = curr then
+      result := True;
+    tmp := tmp^.adr;
+  end;
+
+end;
+
 
 end.

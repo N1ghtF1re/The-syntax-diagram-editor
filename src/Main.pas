@@ -418,7 +418,7 @@ begin
     
     if selectFigures.Adr <> nil then
     begin
-      if em <> NoEdit then
+      if (em <> NoEdit) and (isInSelectedList(selectFigures, CurrFigure) and ((selectFigures^.Adr <> nil) and (selectFigures^.adr^.Adr <> nil))) then
         changeCursor(sbMain, Move);
 
       tmp := selectFigures^.Adr;
@@ -462,7 +462,7 @@ begin
     switchChangedStatus(TRUE);
     tmp := selectFigures^.Adr;
 
-    if tmp = nil then
+    if ((tmp = nil) or (tmp^.Adr = nil))  or not isInSelectedList(selectFigures, CurrFigure) then
       ChangeCoords(CurrFigure, EM, x,y, tempX, tempY, fscale) // Changes coords
     else
     begin
