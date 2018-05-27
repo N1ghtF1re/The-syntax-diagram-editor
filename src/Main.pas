@@ -183,7 +183,7 @@ var
   EM: TEditMode;
   prevText:String;
   currPointAdr: PPointsList;
-  CoppyFigure: PFigList;
+  CoppyFigures: PSelectFigure;
   //FT: TFigureType;
 
 
@@ -249,6 +249,7 @@ var x0, y0: Integer;
 begin
   if (CurrType = None) and (em = NoEdit) then
   begin
+    removeSelectList(selectFigures);
     SelectRect.Left := x;
     SelectRect.Right := x;
     SelectRect.Top := y;
@@ -410,15 +411,16 @@ begin
     DM := nodraw;
   if (dm = NoDraw) and (CurrType = None) then
   begin
+
     EM := getEditMode(DM, Round(x/FScale),Round(y/FScale),FigHead, CurrType);
     changeCursor(sbMain, EM); // Меняем курсор в зависимости от положения мыши
 
-    if ClickFigure <> nil then
-    begin
-      selectFigure(pbMain.Canvas, ClickFigure); // add green verts for selected figure
-    end;
+    
     if selectFigures.Adr <> nil then
     begin
+      if em <> NoEdit then
+        changeCursor(sbMain, Move);
+
       tmp := selectFigures^.Adr;
       while tmp <> nil do
       begin
@@ -434,28 +436,45 @@ begin
     if (not isMoveFigure) and (CurrType = None) and (EM <> NoEdit) then
     begin
       // START MOVING
-
+      tmp := selectFigures^.Adr;
       // CHANGES STACK PUSHING START
       isMoveFigure := true;
-      undorec.adr := CurrFigure;
-      if CurrFigure^.Info.tp <> Line then
+      while tmp <> nil do
       begin
-        undorec.ChangeType := chFigMove;
-        undorec.PrevInfo := CurrFigure^.Info;
-      end
-      else
-      begin
-        undorec.ChangeType := chPointMove;
-        undorec.st := pointsToStr(CurrFigure^.Info.PointHead^.adr);
+        undorec.adr := tmp^.Figure;
+        if tmp^.figure^.Info.tp <> Line then
+        begin
+          undorec.ChangeType := chFigMove;
+          undorec.PrevInfo := tmp^.figure^.Info;
+        end
+        else
+        begin
+          undorec.ChangeType := chPointMove;
+          undorec.st := pointsToStr(tmp^.figure^.Info.PointHead^.adr);
+        end;
+        UndoStackPush(USVertex, undorec);
+        tmp := tmp^.Adr;
       end;
-      UndoStackPush(USVertex, undorec);
       actUndo.Enabled := true;
       // CHANGES STACK PUSHING END
     end;
 
-    switchChangedStatus(TRUE); 
-    ChangeCoords(CurrFigure, EM, x,y, tempX, tempY, fscale); // Changes coords
-    
+    switchChangedStatus(TRUE);
+    tmp := selectFigures^.Adr;
+
+    if tmp = nil then
+      ChangeCoords(CurrFigure, EM, x,y, tempX, tempY, fscale) // Changes coords
+    else
+    begin
+      while tmp <> nil do
+      begin
+        if tmp^.Figure.Info.tp = line then
+          ChangeCoords(tmp^.Figure, LineMove , x,y, tempX, tempY, fscale)
+        else
+          ChangeCoords(tmp^.Figure, Move , x,y, tempX, tempY, fscale);
+        tmp := tmp^.Adr;
+      end;
+    end;
     TempX:= X; // Update old coords
     TempY:= Y;
     if EM <> NoEdit then
@@ -469,6 +488,11 @@ begin
   // If the click occurred on the figure, we put the current variable in the
   // appropriate variable
   ClickFigure := getClickFigure(Round(x/FScale) ,Round(y/FScale), FigHead);
+  if (ClickFigure <> nil) and not isMoveFigure then
+  begin
+    removeSelectList(selectFigures);
+    insertSelectsList(selectFigures, ClickFigure);
+  end;
   if (ClickFigure <> nil) and (ClickFigure^.Info.tp <> line) and (CurrFigure <> nil)
         and (CurrFigure^.Info.tp <> line) then
   begin
@@ -480,10 +504,10 @@ begin
     changeEditorText(prevText);
   end;
 
-  if CurrType = None then
+  if (CurrType = None) and (EM = noEdit) then
   begin
     removeSelectList(selectFigures);
-    if ClickFigure <> nil then
+    if (ClickFigure <> nil) then
       insertSelectsList(selectFigures, ClickFigure);
     addToSelectList(FigHead, selectFigures, SelectRect);
     SelectRect.Top := -1;
@@ -502,7 +526,6 @@ begin
   end;
   if mniMagnetizeLine.Checked then    
     MagnetizeLines(FigHead);
-
 
 
   Self.pbMain.Repaint;
@@ -642,7 +665,7 @@ begin
   actFigLine.ShortCut := scCtrl or vk4; // CTRL + '4'
   CurrFigure := nil;
   clearScreen;
-  CoppyFigure := nil;
+  createSelectList(CoppyFigures);
   createSelectList(selectFigures);
   // UNDO STACK
   CreateStack(USVertex);
@@ -690,18 +713,28 @@ begin
     Self.clearScreen;
     drawFigure(pbMain.canvas,FigHead, FScale);
   end;
-  if (key = VK_RETURN) and (ClickFigure <> nil) and (ClickFigure.Info.tp <> Line) then
+  if (key = VK_RETURN) and (selectFigures^.Adr <> nil) then
   begin
-    // CHANGES STACK PUSHING START
-    UndoRec.adr := ClickFigure;
-    UndoRec.text := ClickFigure.Info.Txt;
-    UndoRec.ChangeType := chChangeText;
-    UndoStackPush(USVertex, UndoRec);
-    actUndo.Enabled := true;
-    // CHANGES STACK PUSHING END
+    temp := selectFigures^.adr;
+    while temp <> nil do
+    begin
+      if temp^.Figure.Info.tp = line then
+      begin
+        temp := temp^.Adr;
+        continue;
+      end;
+      // CHANGES STACK PUSHING START
+      UndoRec.adr := temp^.Figure;
+      UndoRec.text := temp^.Figure.Info.Txt;
+      UndoRec.ChangeType := chChangeText;
+      UndoStackPush(USVertex, UndoRec);
+      // CHANGES STACK PUSHING END
 
-    // Change Caption of current figure
-    ClickFigure.Info.Txt := ShortString(edtRectText.Text);
+      // Change Caption of current figure
+      temp^.figure.Info.Txt := ShortString(edtRectText.Text);
+      temp := temp^.Adr;
+    end;
+    actUndo.Enabled := true;
     pbMain.Repaint;
   end;
 
@@ -791,6 +824,7 @@ begin
   if path <> '' then
   begin
     ClickFigure := nil;
+    removeSelectList(selectFigures);
     with TBitMap.Create do begin // Create bitmap
       // Change bitmap size
       width := pbMain.Width*ExportScale;
@@ -920,6 +954,7 @@ begin
   if path <> '' then
   begin
     ClickFigure := nil;
+    removeSelectList(selectFigures);
     try
       png := TPngImage.Create;
       bitmap := TBitMap.Create;  // create bitmap
@@ -1055,8 +1090,16 @@ begin
 end;
 
 procedure TEditorForm.actCopyExecute(Sender: TObject);
+var
+  tmp: PSelectFigure;
 begin
-  CoppyFigure := ClickFigure;
+  tmp := selectFigures^.Adr;
+  removeSelectList(CoppyFigures);
+  while tmp <> nil do
+  begin
+    insertSelectsList(CoppyFigures, tmp^.Figure);
+    tmp := tmp^.Adr;
+  end;
   actPast.Enabled := true;
 end;
 
@@ -1187,20 +1230,26 @@ procedure TEditorForm.actPastExecute(Sender: TObject);
 var
 undorec:TUndoStackInfo;
 insfig: PFigList;
+tmp: PSelectFigure;
 begin
 
   actPast.Enabled := false;
-  if CoppyFigure = nil then exit;
-
-  insfig := CopyFigure(FigHead, CoppyFigure); // Create copy of CoppyFigure
-  ClickFigure := insfig;
-  // CHANGES STASCK PUSHING START
-  UndoRec.ChangeType := chInsert;
-  UndoRec.adr := insfig;
-  DM := DrawLine;
-  UndoStackPush(USVertex, UndoRec);
-  actUndo.Enabled := true;
-  // CHANGES STASCK PUSHING END
+  if CoppyFigures^.Adr = nil then exit;
+  removeSelectList(selectFigures);
+  tmp := CoppyFigures.Adr;
+  while tmp <> nil do
+  begin
+    insfig := CopyFigure(FigHead, tmp^.Figure); // Create copy of CoppyFigure
+    // CHANGES STASCK PUSHING START
+    UndoRec.ChangeType := chInsert;
+    UndoRec.adr := insfig;
+    DM := DrawLine;
+    UndoStackPush(USVertex, UndoRec);
+    actUndo.Enabled := true;
+    // CHANGES STASCK PUSHING END
+    insertSelectsList(selectFigures, insfig);
+    tmp := tmp^.Adr;
+  end;
   pbMain.Repaint
 end;
 
@@ -1254,6 +1303,7 @@ begin
 
   if isStackEmpty(USVertex) then (Sender as TAction).Enabled := false;
   ClickFigure := nil;
+  removeSelectList(selectFigures);
   pbMain.Repaint;
 end;
 

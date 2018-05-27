@@ -386,7 +386,7 @@ begin
     end;
     LineMove:
     begin
-      moveALlLinePoint(CurrFigure^.Info.PointHead, DeltaX, DeltaY);
+      moveALlLinePoint(F^.Info.PointHead, DeltaX, DeltaY);
     end;
     TSide:
     begin
