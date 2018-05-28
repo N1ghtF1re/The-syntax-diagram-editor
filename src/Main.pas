@@ -488,7 +488,7 @@ begin
   // If the click occurred on the figure, we put the current variable in the
   // appropriate variable
   ClickFigure := getClickFigure(Round(x/FScale) ,Round(y/FScale), FigHead);
-  if (ClickFigure <> nil) and not isMoveFigure then
+  if (ClickFigure <> nil) and not isInSelectedList(selectFigures, CurrFigure) then
   begin
     removeSelectList(selectFigures);
     insertSelectsList(selectFigures, ClickFigure);
