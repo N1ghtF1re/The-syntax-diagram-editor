@@ -741,7 +741,7 @@ begin
             ((x2 < rect.Right) and (x2 > rect.Left)))
           and
             (((y1 < rect.Top) and (y1 > rect.Bottom))
-          and
+          or
             ((y2 < rect.Top) and (y2 > rect.Bottom)))
         then
         begin
