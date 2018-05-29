@@ -437,8 +437,24 @@ begin
     begin
       // START MOVING
       tmp := selectFigures^.Adr;
+
       // CHANGES STACK PUSHING START
       isMoveFigure := true;
+      if (tmp = nil) and (CurrFigure <> nil) then
+      begin
+        undorec.adr := CurrFigure;
+        if CurrFigure.Info.tp <> Line then
+        begin
+          undorec.ChangeType := chFigMove;
+          undorec.PrevInfo := CurrFigure^.Info;
+        end
+        else
+        begin
+          undorec.ChangeType := chPointMove;
+          undorec.st := pointsToStr(CurrFigure.Info.PointHead^.adr);
+        end;
+        UndoStackPush(USVertex, undorec);
+      end;
       while tmp <> nil do
       begin
         undorec.adr := tmp^.Figure;
@@ -569,7 +585,7 @@ end;
 
 procedure TEditorForm.endDrawLine;
 begin
-  removeTrashLines(FigHead, CurrFigure); 
+  removeTrashLines(FigHead, CurrFigure);
   dm:=NoDraw;
   pbMain.Repaint;
 end;
@@ -1304,7 +1320,12 @@ begin
   if isStackEmpty(USVertex) then (Sender as TAction).Enabled := false;
   ClickFigure := nil;
   removeSelectList(selectFigures);
+
+  if DM <> DrawLine then
+  removeTrashLines(FigHead, CurrFigure);
+
   pbMain.Repaint;
+
 end;
 
 
