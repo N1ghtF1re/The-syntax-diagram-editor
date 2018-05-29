@@ -1,3 +1,6 @@
+// Created by Panrkatiew Alexandr, Technical Director of BrakhMen Corp.
+// www.brakh.men
+
 unit Main;
 
 interface
