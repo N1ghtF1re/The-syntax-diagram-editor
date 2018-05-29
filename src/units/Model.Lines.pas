@@ -278,7 +278,7 @@ begin
         newP:= temp^.Info;
         if isAfter then
         begin
-          movePrevPoints(head, temp, oldp);
+          move(head, temp, oldp);
           exit;
         end;
         temp := temp^.Adr;

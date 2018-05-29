@@ -378,8 +378,6 @@ var
   undorec: TUndoStackInfo;
   tmp: PSelectFigure;
 begin
-  if (x > pbMain.Width) or (x < 0) or (y < 0) or (y > pbMain.Height) then
-     exit;
   if dm = ResizeCanvas then
   begin
     updateCanvasSizeWithCoords(x, y);
@@ -433,6 +431,8 @@ begin
   end;
   if (DM = draw) and (currfigure <> nil)  then
   begin
+    if (x > pbMain.Width) or (x < 0) or (y > pbMain.Height) or (y < 0) then
+        exit;
     if (not isMoveFigure) and (CurrType = None) and (EM <> NoEdit) then
     begin
       // START MOVING
@@ -440,6 +440,7 @@ begin
 
       // CHANGES STACK PUSHING START
       isMoveFigure := true;
+
       if (tmp = nil) and (CurrFigure <> nil) then
       begin
         undorec.adr := CurrFigure;
